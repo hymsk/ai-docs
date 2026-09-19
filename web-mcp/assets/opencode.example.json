@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "ai-docs": {
+      "type": "remote",
+      "url": "http://127.0.0.1:18080/mcp",
+      "enabled": true,
+      "oauth": false,
+      "timeout": 30000,
+      "headers": {
+        "Authorization": "Bearer {env:AI_DOCS_API_TOKEN}"
+      }
+    }
+  }
+}

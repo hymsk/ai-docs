@@ -1,0 +1,11 @@
+{
+  "component": "layouts",
+  "title": "Layouts and Markdown",
+  "summary": "使用受限分栏、代码块和表格组织图文内容，并保持响应式与打印完整。",
+  "aliases": ["columns", "分栏", "代码块", "表格", "布局"],
+  "documents": [
+    {"path": "index.md", "purpose": "布局与标准 Markdown 内容概述", "keywords": ["layout", "markdown", "布局"]},
+    {"path": "columns.md", "purpose": "2-4 列并排比较、移动端和打印行为", "keywords": ["columns", "分栏", "并列", "对比"]},
+    {"path": "code-and-tables.md", "purpose": "代码高亮、复制、折叠和表格使用方法", "keywords": ["代码", "code", "table", "表格", "collapse"]}
+  ]
+}

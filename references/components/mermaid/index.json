@@ -1,0 +1,15 @@
+{
+  "component": "mermaid",
+  "title": "Mermaid",
+  "summary": "用文本语法绘制流程、依赖、调用关系、分组拓扑、时序、甘特、ER、饼图和状态图，适合与 Markdown 一起维护。",
+  "aliases": ["流程图", "依赖图", "拓扑图", "调用图", "网络图", "时序图", "甘特图", "ER 图", "状态图", "简单饼图"],
+  "documents": [
+    {"path": "index.md", "purpose": "Mermaid 作用概述、选型与通用规则", "keywords": ["mermaid", "overview", "选型"]},
+    {"path": "flowchart.md", "purpose": "步骤、分支、审批、数据流、服务依赖、调用关系和分组拓扑", "keywords": ["flowchart", "流程", "分支", "审批", "数据流", "依赖", "拓扑", "调用", "subgraph", "network"]},
+    {"path": "sequence.md", "purpose": "调用顺序、协议交互和异步消息", "keywords": ["sequence", "时序", "调用", "消息", "participant"]},
+    {"path": "gantt.md", "purpose": "项目计划、阶段、日期和任务依赖", "keywords": ["gantt", "甘特", "计划", "日期", "里程碑"]},
+    {"path": "er.md", "purpose": "数据库实体、字段、主外键和基数关系", "keywords": ["er", "实体关系", "数据库", "主键", "外键"]},
+    {"path": "pie.md", "purpose": "少量类别的整体占比", "keywords": ["pie", "饼图", "比例", "占比"]},
+    {"path": "state.md", "purpose": "对象生命周期、状态和迁移条件", "keywords": ["state", "状态", "生命周期", "迁移"]}
+  ]
+}

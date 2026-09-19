@@ -1,0 +1,10 @@
+{
+  "component": "markmap",
+  "title": "Markmap",
+  "summary": "把 Markdown 标题和列表绘制为可缩放思维导图，表达知识树和主题分解。",
+  "aliases": ["mindmap", "思维导图", "知识树", "提纲"],
+  "documents": [
+    {"path": "index.md", "purpose": "Markmap 作用概述、边界和运行时特性", "keywords": ["markmap", "mindmap", "思维导图", "知识树"]},
+    {"path": "hierarchy.md", "purpose": "层级规划、标题列表组合和安全写法", "keywords": ["层级", "提纲", "模块分解", "hierarchy"]}
+  ]
+}

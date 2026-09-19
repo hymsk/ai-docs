@@ -1,0 +1,2 @@
+  "author": "Felix Boehm <me@feedic.com>",
+  "license": "ISC",

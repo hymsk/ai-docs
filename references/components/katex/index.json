@@ -1,0 +1,10 @@
+{
+  "component": "katex",
+  "title": "KaTeX",
+  "summary": "在 Markdown 中排版行内和块级数学公式。",
+  "aliases": ["公式", "数学", "latex", "方程"],
+  "documents": [
+    {"path": "index.md", "purpose": "KaTeX 作用概述、行内与块级选择", "keywords": ["katex", "公式", "latex"]},
+    {"path": "formulas.md", "purpose": "方程、分式、矩阵、积分和求和示例", "keywords": ["方程", "分式", "矩阵", "积分", "求和"]}
+  ]
+}

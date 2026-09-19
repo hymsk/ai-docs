@@ -1,0 +1,61 @@
+{
+  "schema_version": 2,
+  "workspace_root": "/home/alice/.cache/ai-docs-web/workspace",
+  "library_directory": "/home/alice/.local/share/ai-docs-web/data/private/library",
+  "public_directory": "public",
+  "server": {
+    "host": "127.0.0.1",
+    "port": 18080,
+    "public": {
+      "scheme": "http",
+      "host": "127.0.0.1",
+      "port": 18080
+    },
+    "documents_prefix": "/docs/"
+  },
+  "preview": {
+    "enabled": true,
+    "path": "/preview",
+    "write_back": true,
+    "session_seconds": 43200
+  },
+  "library_limits": {
+    "max_files": 1000,
+    "max_total_bytes": 52428800,
+    "max_path_depth": 8
+  },
+  "public_docs": {
+    "max_files": 800,
+    "max_total_bytes": 41943040,
+    "max_concurrent_renders": 1,
+    "render_timeout_seconds": 30
+  },
+  "render_cache": {
+    "max_bytes": 134217728,
+    "max_entries": 128,
+    "max_entry_bytes": 33554432
+  },
+  "mcp": {
+    "path": "/mcp",
+    "reference": {
+      "name": "ai-docs",
+      "scheme": "http",
+      "host": "127.0.0.1",
+      "port": 18080,
+      "path": "/mcp",
+      "timeout_ms": 30000,
+      "token_env": "AI_DOCS_API_TOKEN"
+    }
+  },
+  "renderer": {
+    "node": "/usr/bin/node"
+  },
+  "max_upload_bytes": 5242880,
+  "max_rpc_bytes": 6291456,
+  "request_timeout_seconds": 60,
+  "render_timeout_seconds": 120,
+  "max_concurrent_renders": 2,
+  "auth_required": true,
+  "auth_token_env": "AI_DOCS_API_TOKEN",
+  "allowed_origins": []
+}

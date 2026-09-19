@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check release metadata and local distribution materials
+        run: python3 scripts/check-release.py
+      - name: Test release safeguards
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          node tests/licenses.test.js
+      - name: Check generated component index
+        run: node scripts/build-component-index.js --check
+      - name: Run renderer tests
+        run: |
+          node tests/component-index.test.js
+          node tests/build.test.js
+          node tests/output-modes.test.js
+          node tests/serve.test.js
+          node tests/preview.test.js
+      - name: Run Web MCP tests
+        run: python3 -m unittest discover -s web-mcp/tests -p 'test_*.py'
+      - name: Check script syntax
+        run: |
+          node --check scripts/build.js
+          node --check scripts/preview.js
+          python3 -m py_compile scripts/serve.py scripts/web-mcp-manager.py web-mcp/source/ai_docs_web.py

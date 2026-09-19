@@ -1,0 +1,56 @@
+{
+  "markdownIt": {
+    "type": "script",
+    "source": "../scripts/vendor/markdown-it.min.js",
+    "output": "markdown-it.min.js",
+    "dependencies": []
+  },
+  "highlightCss": {
+    "type": "style",
+    "source": "../scripts/vendor/highlight-styles.css",
+    "output": "highlight-styles.css",
+    "dependencies": []
+  },
+  "katexCss": {
+    "type": "style",
+    "source": "../scripts/vendor/katex.min.css",
+    "output": "katex.min.css",
+    "dependencies": []
+  },
+  "highlightJs": {
+    "type": "script",
+    "source": "../scripts/vendor/highlight.min.js",
+    "output": "highlight.min.js",
+    "dependencies": ["highlightCss"]
+  },
+  "mermaid": {
+    "type": "script",
+    "source": "../scripts/vendor/mermaid.min.js",
+    "output": "mermaid.min.js",
+    "dependencies": []
+  },
+  "d3": {
+    "type": "script",
+    "source": "../scripts/vendor/d3.min.js",
+    "output": "d3.min.js",
+    "dependencies": []
+  },
+  "katexJs": {
+    "type": "script",
+    "source": "../scripts/vendor/katex.min.js",
+    "output": "katex.min.js",
+    "dependencies": ["katexCss"]
+  },
+  "markmapLib": {
+    "type": "script",
+    "source": "../scripts/vendor/markmap-lib.browser.js",
+    "output": "markmap-lib.browser.js",
+    "dependencies": ["katexJs"]
+  },
+  "markmapView": {
+    "type": "script",
+    "source": "../scripts/vendor/markmap-view.browser.js",
+    "output": "markmap-view.browser.js",
+    "dependencies": ["d3", "markmapLib"]
+  }
+}

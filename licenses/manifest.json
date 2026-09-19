@@ -1,0 +1,3053 @@
+{
+  "schema_version": 1,
+  "hash_algorithm": "sha256",
+  "path_base": "repository-root",
+  "coverage": {
+    "direct_vendor_files": "verified-byte-for-byte",
+    "direct_package_licenses": "retained",
+    "identified_bundle_notice_blocks": "retained-with-byte-ranges",
+    "transitive_license_inventory": "partial",
+    "legal_clearance": "not-asserted",
+    "mermaid_sourcemap_package_licenses": "60-versioned-locators-collected; recursive-prebundles-not-complete",
+    "markdown_it_sourcemap_members": "19-of-19-byte-identical-to-exact-dependency-package-members",
+    "d3_dependency_versions": "release-tag-lock-with-partial-source-substring-confirmation",
+    "markmap_dependency_versions": "published-gitHead-lock-without-full-rebuild"
+  },
+  "packages": [
+    {
+      "name": "@babel/runtime",
+      "version": "7.22.6",
+      "source_url": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.6.tgz",
+      "archive_sha256": "86dc5cbe3491b347732cd042591798712b2c9397fa3e87b40583101713da69b2",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "@babel/runtime",
+      "version": "7.23.6",
+      "source_url": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.6.tgz",
+      "archive_sha256": "6f6445c279d141b9e5187bdbe03c2e1755c3fd1a12fb7aa5c94033780abaacdb",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "@braintree/sanitize-url",
+      "version": "7.1.2",
+      "source_url": "https://registry.npmjs.org/@braintree/sanitize-url/-/sanitize-url-7.1.2.tgz",
+      "archive_sha256": "fd9a220c24c5cdd406433cce1c3db7f09222d8f7977f0fe087aec914e1a63dc0",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "@gera2ld/jsx-dom",
+      "version": "2.2.2",
+      "source_url": "https://registry.npmjs.org/@gera2ld/jsx-dom/-/jsx-dom-2.2.2.tgz",
+      "archive_sha256": "04669421b99db59fb9c6866e4e6af1992b02e0ca2ef0863b75735c617417ae63",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "@highlightjs/cdn-assets",
+      "version": "11.11.1",
+      "source_url": "https://registry.npmjs.org/@highlightjs/cdn-assets/-/cdn-assets-11.11.1.tgz",
+      "archive_sha256": "28a06bf6ebcc2218c6e842bdb4f1c8353508a8cada59e85110f91892f5726195",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "@iconify/utils",
+      "version": "3.0.2",
+      "source_url": "https://registry.npmjs.org/@iconify/utils/-/utils-3.0.2.tgz",
+      "archive_sha256": "7f1b0f8bd152444d962bbcb258f57583bea55bb05e437eedf4cc950b9b56f969",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "@iktakahiro/markdown-it-katex",
+      "version": "4.0.1",
+      "source_url": "https://registry.npmjs.org/@iktakahiro/markdown-it-katex/-/markdown-it-katex-4.0.1.tgz",
+      "archive_sha256": "d5f693802182472c1f04cb13ed3d43eec3674811c20614edec90943fb38f8295",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "@upsetjs/venn.js",
+      "version": "2.0.0",
+      "source_url": "https://registry.npmjs.org/@upsetjs/venn.js/-/venn.js-2.0.0.tgz",
+      "archive_sha256": "23c5da5de5c23351c6c6ed891d6416284c05c618e2774bd55484a4c4bef321e4",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "boolbase",
+      "version": "1.0.0",
+      "source_url": "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz",
+      "archive_sha256": "69628ff8092c5ff940ea4a0f29da98d520615bae138755c9e059033606c6caa8",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "cheerio",
+      "version": "1.0.0-rc.12",
+      "source_url": "https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.12.tgz",
+      "archive_sha256": "a2bb5d9696bb2aafb5c10829c76ab4a64c4ee3c931d7884cdcb35cf7f25b7eb8",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "cheerio-select",
+      "version": "2.1.0",
+      "source_url": "https://registry.npmjs.org/cheerio-select/-/cheerio-select-2.1.0.tgz",
+      "archive_sha256": "1c5698cb10db7ca73253a401309d0e758ec379caa088613836bebdb950d6c4cf",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "cose-base",
+      "version": "1.0.3",
+      "source_url": "https://registry.npmjs.org/cose-base/-/cose-base-1.0.3.tgz",
+      "archive_sha256": "a20640fb8c1a2cf226eb9195785e9f714ba1cce1e80cb8f48d131d1bc0909d18",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "cose-base",
+      "version": "2.2.0",
+      "source_url": "https://registry.npmjs.org/cose-base/-/cose-base-2.2.0.tgz",
+      "archive_sha256": "612ec91a30b7f2dc158cca4846eeea1b7f89a97fc672951da3c1932107de6da8",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "css-select",
+      "version": "5.1.0",
+      "source_url": "https://registry.npmjs.org/css-select/-/css-select-5.1.0.tgz",
+      "archive_sha256": "9ea328ea35f9062201497dbe10284d34e967fbe6f4ad5dac5b6c535e59bbaf75",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "css-what",
+      "version": "6.1.0",
+      "source_url": "https://registry.npmjs.org/css-what/-/css-what-6.1.0.tgz",
+      "archive_sha256": "804de9b8da30b3f1cf5c6e91c9cfd0a850459afdea2da058c9812c422ae7d7bf",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "cytoscape",
+      "version": "3.30.2",
+      "source_url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.30.2.tgz",
+      "archive_sha256": "8e9bfaaf9f5f461642355b0d17c6cf1d0d58c5cb9e00ac983e2d242fd1cfb928",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "cytoscape",
+      "version": "3.34.0",
+      "source_url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.34.0.tgz",
+      "archive_sha256": "4155f863f4408d18bb637afb5808dff7840ca7361437067faf45bbe8c970e768",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "cytoscape-cose-bilkent",
+      "version": "4.1.0",
+      "source_url": "https://registry.npmjs.org/cytoscape-cose-bilkent/-/cytoscape-cose-bilkent-4.1.0.tgz",
+      "archive_sha256": "9df46b10952452b1d2a5d4cd942f70709a037bc6b7ef25cf1d9fb70be73bb950",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "cytoscape-fcose",
+      "version": "2.2.0",
+      "source_url": "https://registry.npmjs.org/cytoscape-fcose/-/cytoscape-fcose-2.2.0.tgz",
+      "archive_sha256": "4e1f30e1821fdd4b66f21043c8ea40a8e2ad0ba75e4ccdd2c24d289cf5595432",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "d3",
+      "version": "7.8.5",
+      "source_url": "https://registry.npmjs.org/d3/-/d3-7.8.5.tgz",
+      "archive_sha256": "4112c55e94689de4af27d3f5856878a7cdc95a729acc980a05381d80e945a6af",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3",
+      "version": "7.9.0",
+      "source_url": "https://registry.npmjs.org/d3/-/d3-7.9.0.tgz",
+      "archive_sha256": "7e36605710a2ba54846797c8c6d888911341b215ae53257dc32a49a0b824355e",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-array",
+      "version": "2.12.1",
+      "source_url": "https://registry.npmjs.org/d3-array/-/d3-array-2.12.1.tgz",
+      "archive_sha256": "3795da9bd345fc440b82be032400c538298e021b559ca48342fe9647e44bb86b",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-array",
+      "version": "3.2.4",
+      "source_url": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "archive_sha256": "6dbf3f2be39e48f86775be6e166a5d3e5a585ca7144453cd6ad1912f5ae4417f",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-axis",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-axis/-/d3-axis-3.0.0.tgz",
+      "archive_sha256": "b5ca6e00b9a2503d6b473485684670564a370733cdc8565a45b63f9fb4d944f6",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-brush",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-brush/-/d3-brush-3.0.0.tgz",
+      "archive_sha256": "fde88a49b16f92d067401df00abf88bf07eec3e091343eb902caf9cab02bdf2a",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-chord",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-chord/-/d3-chord-3.0.1.tgz",
+      "archive_sha256": "84c47d193e5e8c5fd3a28783a55b34f08dfaa1c8d764e96d9b49c78a3b6b40b5",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-color",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz",
+      "archive_sha256": "d41bbcd99dd4f00e696546bffc73fed9b8fb6c3354905b6ea1721bff25f33b42",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-contour",
+      "version": "4.0.2",
+      "source_url": "https://registry.npmjs.org/d3-contour/-/d3-contour-4.0.2.tgz",
+      "archive_sha256": "fa347e237c259a987fc3cfd890e2fcb0f2ec42ed125a2c9363854509e86db8f4",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-delaunay",
+      "version": "6.0.4",
+      "source_url": "https://registry.npmjs.org/d3-delaunay/-/d3-delaunay-6.0.4.tgz",
+      "archive_sha256": "935113ffa78d545505c8f1accf95be0e48594737eab34db8f50c9d6319907971",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-dispatch",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-dispatch/-/d3-dispatch-3.0.1.tgz",
+      "archive_sha256": "3d1a0b5c003e0e9608ad57f6ca21a0c8368031fcbe5f5317fe4e50b3f797ea23",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-drag",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-drag/-/d3-drag-3.0.0.tgz",
+      "archive_sha256": "a3ccc9d31d85135f35a4eda3ec0fae6ac22435d4e3fe2d2e0c73b5246460d4db",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-dsv",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-dsv/-/d3-dsv-3.0.1.tgz",
+      "archive_sha256": "fdafcae0362205e2fc63fe3e87fed54822227d9370ce5150914f863ec36153cb",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-ease",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-ease/-/d3-ease-3.0.1.tgz",
+      "archive_sha256": "b249afe4aa8b741beeaf2d14f625ccf49270adb645e3f1c755d11476c1fdbe2a",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-fetch",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-fetch/-/d3-fetch-3.0.1.tgz",
+      "archive_sha256": "8a3d61af2bed2b4899df1a90dfed41c0e10ad79d1bea93a18155f5d4e11a526f",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-flextree",
+      "version": "2.1.2",
+      "source_url": "https://registry.npmjs.org/d3-flextree/-/d3-flextree-2.1.2.tgz",
+      "archive_sha256": "9de2ca6f04ed34d5807d136b6c59816c140812335a0647d35162b6834e048240",
+      "declared_license": "WTFPL"
+    },
+    {
+      "name": "d3-force",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-force/-/d3-force-3.0.0.tgz",
+      "archive_sha256": "deacfa7ecb466f88717fe1863347dd65e5a5422d9f8c893d771cb2a7f987fa15",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-format",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-format/-/d3-format-3.1.0.tgz",
+      "archive_sha256": "5439103fc9b6f033e02bf68fbeb13ecd2c33442f77ea772a4b2b1bc4f4cee5ba",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-geo",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.0.tgz",
+      "archive_sha256": "10a7a2339c3c29680698876146dd6389704bf554f2d64f66329969e7ca35d518",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-geo",
+      "version": "3.1.1",
+      "source_url": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.1.tgz",
+      "archive_sha256": "fe1f2dd81a87d942790c5a7786f4aab03df2b357d46d8af56b613fb8a1bb9be5",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-hierarchy",
+      "version": "1.1.9",
+      "source_url": "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-1.1.9.tgz",
+      "archive_sha256": "6a971346b7732a8296a8e4912be9c85b30051ea5ebda0956787da6d1a15456aa",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-hierarchy",
+      "version": "3.1.2",
+      "source_url": "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-3.1.2.tgz",
+      "archive_sha256": "7681875f06440c088afda1fd834d853dd560166c945e731382ee0c636332360b",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-interpolate",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "archive_sha256": "7e8df78d233cd102a0bb518658dc0b7d5c38442b6f2dbc8b95ffc14ba87c7c33",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-path",
+      "version": "1.0.9",
+      "source_url": "https://registry.npmjs.org/d3-path/-/d3-path-1.0.9.tgz",
+      "archive_sha256": "2c10702bad9be578f0827d00e45010ae59cb67165f65462e5c781913a5505db1",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-path",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-path/-/d3-path-3.1.0.tgz",
+      "archive_sha256": "94e9b69f82f113ed4ada36703c05f6b7406723c55affe2a443d69729d6d5da14",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-polygon",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-polygon/-/d3-polygon-3.0.1.tgz",
+      "archive_sha256": "6a33e6b083bd596a08e6f9e973fdb0d098f9ac8348cdc86346bb3e9c15614aca",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-quadtree",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-quadtree/-/d3-quadtree-3.0.1.tgz",
+      "archive_sha256": "d4145e9cecca8a6077e1099de96375ec9923b0de0df4004bd98aafa17c2d557f",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-random",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-random/-/d3-random-3.0.1.tgz",
+      "archive_sha256": "c35794d70beff4e2e2da799cd7fb0e3e763574f24c0fad38c1841770c12b99e8",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-sankey",
+      "version": "0.12.3",
+      "source_url": "https://registry.npmjs.org/d3-sankey/-/d3-sankey-0.12.3.tgz",
+      "archive_sha256": "6bd8cdb143d4088ff38179def70954419868d4b95f136c168ffef2dad004ff22",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-scale",
+      "version": "4.0.2",
+      "source_url": "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz",
+      "archive_sha256": "bf50a1f34ba0e6fa25cb7ae902abe0b9e2f85ced39fdca7b18fbe863fbaa39a7",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-scale-chromatic",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.0.0.tgz",
+      "archive_sha256": "17d3368477bcdbaa8ae698df4467aabed83bc5cecdfd8d478c3cc2a6d7f18b58",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-scale-chromatic",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.1.0.tgz",
+      "archive_sha256": "2573f980e0acbbecc919f5c5fdf7cd3a8110eda2497da7b94ae303fab9c32aa4",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-selection",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-selection/-/d3-selection-3.0.0.tgz",
+      "archive_sha256": "a1f872f30dca23b76de89cae9e882f56c325433e7f3aee87b95fa830d12789f3",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-shape",
+      "version": "1.3.7",
+      "source_url": "https://registry.npmjs.org/d3-shape/-/d3-shape-1.3.7.tgz",
+      "archive_sha256": "d19261dad8ff192357db2720d57c1786dbfb8c9f42eafe577cb7c4d5b473fd0e",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "d3-shape",
+      "version": "3.2.0",
+      "source_url": "https://registry.npmjs.org/d3-shape/-/d3-shape-3.2.0.tgz",
+      "archive_sha256": "8b4b2bc9daa99a957abe17656c5944fd3f28efb88f788e6b4fdba346cb80e602",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-time",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/d3-time/-/d3-time-3.1.0.tgz",
+      "archive_sha256": "a9f2c8e177b76e7068e7c9c77722c4924c71c9e54f9b1e245d27ef11b28dbc08",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-time-format",
+      "version": "4.1.0",
+      "source_url": "https://registry.npmjs.org/d3-time-format/-/d3-time-format-4.1.0.tgz",
+      "archive_sha256": "46f1492ef6be8afe04a844876a644a4a964da7f87937e90e93f9585acff9d30e",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-timer",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-timer/-/d3-timer-3.0.1.tgz",
+      "archive_sha256": "05cdf901e1876a7f24f4c365a879252752e22e3cc52b131ca616639f07e8ed05",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-transition",
+      "version": "3.0.1",
+      "source_url": "https://registry.npmjs.org/d3-transition/-/d3-transition-3.0.1.tgz",
+      "archive_sha256": "260eb8eaed565581afc00634ec83c83fd3b7e830e2a6b73b49f3f744dce0254c",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "d3-zoom",
+      "version": "3.0.0",
+      "source_url": "https://registry.npmjs.org/d3-zoom/-/d3-zoom-3.0.0.tgz",
+      "archive_sha256": "846d28725c4889d6a2069c6cf084ca7e7730ee917a9b87960ecc53247f840f85",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "dagre-d3-es",
+      "version": "7.0.14",
+      "source_url": "https://registry.npmjs.org/dagre-d3-es/-/dagre-d3-es-7.0.14.tgz",
+      "archive_sha256": "488d146fc076978029da937a54628f840dbbcb48e6f95ea79e6c58cc384fe157",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "dayjs",
+      "version": "1.11.21",
+      "source_url": "https://registry.npmjs.org/dayjs/-/dayjs-1.11.21.tgz",
+      "archive_sha256": "290ec8bf81878ae4927581d9be74125f07722ea8bbea2ff77a2226dce12df876",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "delaunator",
+      "version": "5.0.0",
+      "source_url": "https://registry.npmjs.org/delaunator/-/delaunator-5.0.0.tgz",
+      "archive_sha256": "aaaf3b14a93f903b91c89f3c43bfe105d73811f0f4246a2e0fb327f48783fe7c",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "dom-serializer",
+      "version": "2.0.0",
+      "source_url": "https://registry.npmjs.org/dom-serializer/-/dom-serializer-2.0.0.tgz",
+      "archive_sha256": "e34511f144fc6b34ce536bd60fb1ed27dd965f07a7c317407e79dd6be9e8f399",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "domelementtype",
+      "version": "2.3.0",
+      "source_url": "https://registry.npmjs.org/domelementtype/-/domelementtype-2.3.0.tgz",
+      "archive_sha256": "c67164b4a994eaeaecbd968c2e5e5415407ae6fb4486bbb470594154e25feb45",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "domhandler",
+      "version": "5.0.3",
+      "source_url": "https://registry.npmjs.org/domhandler/-/domhandler-5.0.3.tgz",
+      "archive_sha256": "f3952abb7e2635d8e942822d68cfb1fdaba61148d17a1a5692bdd163d6ca4784",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "dompurify",
+      "version": "3.1.6",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.1.6.tgz",
+      "archive_sha256": "385981ebd0366fcce5313c1801019af737260ca29fe60d38a97f956d5ff1013a",
+      "declared_license": "(MPL-2.0 OR Apache-2.0)"
+    },
+    {
+      "name": "dompurify",
+      "version": "3.4.12",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.12.tgz",
+      "archive_sha256": "4fd255d4cd435ffc74d59b7ffa8b4a92f8e4a7fc84faf1d0f9d298cd7d741616",
+      "declared_license": "(MPL-2.0 OR Apache-2.0)"
+    },
+    {
+      "name": "domutils",
+      "version": "3.1.0",
+      "source_url": "https://registry.npmjs.org/domutils/-/domutils-3.1.0.tgz",
+      "archive_sha256": "3ea1229a26313a1618856ddb6289b79dcd3d383051f4a30c301b5ac2eff2b00f",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "echarts",
+      "version": "5.6.0",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "archive_sha256": "e1b82487dd7f8d9f0438eec1f1433051148e0095ac7a15d4db890afda45cf610",
+      "declared_license": "Apache-2.0"
+    },
+    {
+      "name": "entities",
+      "version": "4.5.0",
+      "source_url": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz",
+      "archive_sha256": "6b0c60f7351a0b65bb1fc8dbb9299f09e7ecf6d89103d0651bf369e6f463a632",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "es-toolkit",
+      "version": "1.45.1",
+      "source_url": "https://registry.npmjs.org/es-toolkit/-/es-toolkit-1.45.1.tgz",
+      "archive_sha256": "0ab10ae18c0853f0c989ee187cecd9d5b2dd561bdf2b3c9f314bbc981aab427f",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "fastdom",
+      "version": "1.0.12",
+      "source_url": "https://registry.npmjs.org/fastdom/-/fastdom-1.0.12.tgz",
+      "archive_sha256": "15e452be64ae3661c3cc9d736524ebb689c23f162765d60741dcc518ec182265",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "highlight.js",
+      "version": "11.11.1",
+      "source_url": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.11.1.tgz",
+      "archive_sha256": "fbc9443263e976583bd5640e550b77f84d8d7e19fc8408dfe53776a5bae7ed39",
+      "declared_license": "BSD-3-Clause"
+    },
+    {
+      "name": "htmlparser2",
+      "version": "8.0.2",
+      "source_url": "https://registry.npmjs.org/htmlparser2/-/htmlparser2-8.0.2.tgz",
+      "archive_sha256": "7913fb842d292726d2b1b1fdd0ca8fb86be41c63efe06a15064c728353274966",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "internmap",
+      "version": "2.0.3",
+      "source_url": "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz",
+      "archive_sha256": "39d1936831a4d3f2bd6e088db28a10de4458d823f652c36b2c808bf5b978c48d",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.1.0",
+      "source_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.0.tgz",
+      "archive_sha256": "0dae332559cf22b21c26ea70e732afd8303ff99412f9c3d9d209faa8882cf2ca",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "js-yaml",
+      "version": "4.3.0",
+      "source_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.0.tgz",
+      "archive_sha256": "8594ee34496dd2e41ec934fd202843dc993be9ab2d7d5d47579146962fbdfae6",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "katex",
+      "version": "0.16.21",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.21.tgz",
+      "archive_sha256": "7764a23b6c42d0a260fc1c8dcfe91d73e07d802dfc0624c08997b33c02dac0cd",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "katex",
+      "version": "0.16.47",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.47.tgz",
+      "archive_sha256": "ad2d1ab2f7fcc227019784320e8a2c5218ff6bb333b36df4136d10365ae29375",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "khroma",
+      "version": "2.1.0",
+      "source_url": "https://registry.npmjs.org/khroma/-/khroma-2.1.0.tgz",
+      "archive_sha256": "8963d209f3a682374d7f7e45e5fa361a58fc060c8528df6656fae0fc7c508110",
+      "declared_license": "not-declared-in-package-json"
+    },
+    {
+      "name": "layout-base",
+      "version": "1.0.2",
+      "source_url": "https://registry.npmjs.org/layout-base/-/layout-base-1.0.2.tgz",
+      "archive_sha256": "efea1306903d9d043c42c1e7931b2d97b4f519cff04b1347fa308032a52eebab",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "layout-base",
+      "version": "2.0.1",
+      "source_url": "https://registry.npmjs.org/layout-base/-/layout-base-2.0.1.tgz",
+      "archive_sha256": "34165e46d8c4b9d719a592e39a60fa5f7324c21a3edd02733e1116b17013defd",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "linkify-it",
+      "version": "5.0.0",
+      "source_url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.0.tgz",
+      "archive_sha256": "6144c5a52d26c2bb917bc320d707cf4a41c94514ce856b8b1baf934d3fb27aa9",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "linkify-it",
+      "version": "5.0.2",
+      "source_url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.2.tgz",
+      "archive_sha256": "f5169c5e5d837b5229180cb7214102d42f5c963f6932f284b608ef9549e927b4",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.17.21",
+      "source_url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz",
+      "archive_sha256": "777598ac703f02b403ef678cd11bce2150ad788f35c774ea7c9cc241a892cb7b",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "lodash-es",
+      "version": "4.18.1",
+      "source_url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.18.1.tgz",
+      "archive_sha256": "b0c810e5cd4cd580ed7b18fc71384b9a80c151dc5c85b1729bd656a49e3f16f8",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it",
+      "version": "14.1.0",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.1.0.tgz",
+      "archive_sha256": "7c4fab4d4d39fe98206a7fbbed4b1e3578f2b70b6b69d309413e33eec140e19f",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it",
+      "version": "14.3.2",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.2.tgz",
+      "archive_sha256": "2646dd49007c7c5594dd9e910ce6b1ab4083b39eba3e6254889c02ef455ea97a",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it-ins",
+      "version": "4.0.0",
+      "source_url": "https://registry.npmjs.org/markdown-it-ins/-/markdown-it-ins-4.0.0.tgz",
+      "archive_sha256": "bf7cbf37d3aa05349b67f92ff3ada9feb2667938dae010af5cfbeddc442b923b",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it-mark",
+      "version": "4.0.0",
+      "source_url": "https://registry.npmjs.org/markdown-it-mark/-/markdown-it-mark-4.0.0.tgz",
+      "archive_sha256": "9705e91a79a1824079b7011b7059d51bb78cf47b8342039bec4fa487aeb3e63c",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it-sub",
+      "version": "2.0.0",
+      "source_url": "https://registry.npmjs.org/markdown-it-sub/-/markdown-it-sub-2.0.0.tgz",
+      "archive_sha256": "81e60321b6e42bb34605ccdfbbd606ca083b0943e21f312da494795b42baa4dc",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markdown-it-sup",
+      "version": "2.0.0",
+      "source_url": "https://registry.npmjs.org/markdown-it-sup/-/markdown-it-sup-2.0.0.tgz",
+      "archive_sha256": "03f5a7a8129fed416046201aa641fa9e49ea6f0d3783ac95247ff915e313335a",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "marked",
+      "version": "16.3.0",
+      "source_url": "https://registry.npmjs.org/marked/-/marked-16.3.0.tgz",
+      "archive_sha256": "c333c47cd3802a1d631dfdd8c6cfc411a88599a872c04ce8cd2291381a7767a0",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markmap-common",
+      "version": "0.17.1",
+      "source_url": "https://registry.npmjs.org/markmap-common/-/markmap-common-0.17.1.tgz",
+      "archive_sha256": "16cf7fb8de17c5eaeeba83a4632b678148f2d42bbac5d6439f157cc74d72cba2",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markmap-html-parser",
+      "version": "0.17.1",
+      "source_url": "https://registry.npmjs.org/markmap-html-parser/-/markmap-html-parser-0.17.1.tgz",
+      "archive_sha256": "8ba1eed793ce02122bc7f1ea15e7be234ee2ebf299c9e9b27847848ae92c8705",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markmap-lib",
+      "version": "0.17.2",
+      "source_url": "https://registry.npmjs.org/markmap-lib/-/markmap-lib-0.17.2.tgz",
+      "archive_sha256": "f4f05a75d34abb827be9d4699a1d43bb388d15337a132b20d123a255a3a5c8f7",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "markmap-view",
+      "version": "0.17.2",
+      "source_url": "https://registry.npmjs.org/markmap-view/-/markmap-view-0.17.2.tgz",
+      "archive_sha256": "595a412af6069946869ef82f1e4795f3a5b2c9c94dc5cee01445ff61ce821cad",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "mdurl",
+      "version": "2.0.0",
+      "source_url": "https://registry.npmjs.org/mdurl/-/mdurl-2.0.0.tgz",
+      "archive_sha256": "8e0ccb320730dad17981e2a4cc97f34f072366442d000de97070fd1ea21321b5",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "mermaid",
+      "version": "11.17.2",
+      "source_url": "https://registry.npmjs.org/mermaid/-/mermaid-11.17.2.tgz",
+      "archive_sha256": "6ad2f42c3fc26bbf9e45cbb6d11898972573ea52b33a5f4ff51952899f950ffd",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "mermaid",
+      "version": "11.4.0",
+      "source_url": "https://registry.npmjs.org/mermaid/-/mermaid-11.4.0.tgz",
+      "archive_sha256": "26f7d5d5498cd889b32f911349b3772d517d99cb7c021f6a9cadca0d19f20e12",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "npm2url",
+      "version": "0.2.4",
+      "source_url": "https://registry.npmjs.org/npm2url/-/npm2url-0.2.4.tgz",
+      "archive_sha256": "3534200dbb90ea0f5d90db42126a2394555161d29d43a531c80f4ab1b26ed622",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "nth-check",
+      "version": "2.1.1",
+      "source_url": "https://registry.npmjs.org/nth-check/-/nth-check-2.1.1.tgz",
+      "archive_sha256": "45dc0a2bc34205656c0fbe8374c725c04b71b40e739b74c9fc763480c8063642",
+      "declared_license": "BSD-2-Clause"
+    },
+    {
+      "name": "parse5",
+      "version": "7.1.2",
+      "source_url": "https://registry.npmjs.org/parse5/-/parse5-7.1.2.tgz",
+      "archive_sha256": "71be0425de25763e8e8224bb142479089bf2ffcf8cf0027a71904af4601085c5",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "parse5-htmlparser2-tree-adapter",
+      "version": "7.0.0",
+      "source_url": "https://registry.npmjs.org/parse5-htmlparser2-tree-adapter/-/parse5-htmlparser2-tree-adapter-7.0.0.tgz",
+      "archive_sha256": "dbdf1738066dee5844a943785b97d47ad90a242c7d5ae3ae174007b40f686f00",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "punycode.js",
+      "version": "2.3.1",
+      "source_url": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz",
+      "archive_sha256": "8768d89aa6359164220014ba575e1464e3ddff11bedff1cc268e39a21f7324a8",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "robust-predicates",
+      "version": "3.0.2",
+      "source_url": "https://registry.npmjs.org/robust-predicates/-/robust-predicates-3.0.2.tgz",
+      "archive_sha256": "962cacbec5dc58976307fa534c335331c11a1f8f315fc698776c4e1fc931e17e",
+      "declared_license": "Unlicense"
+    },
+    {
+      "name": "roughjs",
+      "version": "4.6.6",
+      "source_url": "https://registry.npmjs.org/roughjs/-/roughjs-4.6.6.tgz",
+      "archive_sha256": "373873b2c3f1b7ddba878525c774816057c5818029780c7fba081f06018ba78c",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "stylis",
+      "version": "4.3.6",
+      "source_url": "https://registry.npmjs.org/stylis/-/stylis-4.3.6.tgz",
+      "archive_sha256": "57bd37727276e7e30d2f15472a43c5d5b8ae6cd9cebd36dbb84880c500de568e",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "ts-dedent",
+      "version": "2.2.0",
+      "source_url": "https://registry.npmjs.org/ts-dedent/-/ts-dedent-2.2.0.tgz",
+      "archive_sha256": "f04cddc15ce3aad91287aebdcb0d6b6997b85222769c35c910038f59bfd2234d",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "tslib",
+      "version": "2.3.0",
+      "source_url": "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz",
+      "archive_sha256": "ae285639feff7e3c39de4626352181a5d73b815725e42639b411c43848abffdb",
+      "declared_license": "0BSD"
+    },
+    {
+      "name": "uc.micro",
+      "version": "2.1.0",
+      "source_url": "https://registry.npmjs.org/uc.micro/-/uc.micro-2.1.0.tgz",
+      "archive_sha256": "a31660c690ddac370fe4b17fe6a3a73b8df094f99194ac90d0668d797dabf69b",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "uuid",
+      "version": "14.0.0",
+      "source_url": "https://registry.npmjs.org/uuid/-/uuid-14.0.0.tgz",
+      "archive_sha256": "ca468c168ec7f2021f6a98041e943443b29e67e0e0ff5b4c1caca17c6efa9870",
+      "declared_license": "MIT"
+    },
+    {
+      "name": "yaml",
+      "version": "2.5.1",
+      "source_url": "https://registry.npmjs.org/yaml/-/yaml-2.5.1.tgz",
+      "archive_sha256": "60584141617031cd575dcc6521b1c6996e82bf0366dddd00c121abb40fd048f7",
+      "declared_license": "ISC"
+    },
+    {
+      "name": "zrender",
+      "version": "5.6.1",
+      "source_url": "https://registry.npmjs.org/zrender/-/zrender-5.6.1.tgz",
+      "archive_sha256": "0a2228b558e1a4bd8f1c74d67bb492923e3f5807d03c83d1665fb97af180dc26",
+      "declared_license": "BSD-3-Clause"
+    }
+  ],
+  "vendor_files": [
+    {
+      "file": "scripts/vendor/markdown-it.min.js",
+      "package": "markdown-it",
+      "version": "14.3.2",
+      "source_path": "package/dist/markdown-it.min.js",
+      "sha256": "e32488403e2e565ac12a9669bfdf2b1b876eb0a5c84f8e0699884b562d18eb52",
+      "license_files": [
+        "licenses/markdown-it-14.3.2/LICENSE",
+        "licenses/markdown-it-14.3.2/BUNDLED-NOTICES.txt",
+        "licenses/entities-4.5.0/LICENSE",
+        "licenses/linkify-it-5.0.2/LICENSE",
+        "licenses/mdurl-2.0.0/LICENSE",
+        "licenses/punycode.js-2.3.1/LICENSE-MIT.txt",
+        "licenses/uc.micro-2.1.0/LICENSE.txt"
+      ]
+    },
+    {
+      "file": "scripts/vendor/highlight.min.js",
+      "package": "@highlightjs/cdn-assets",
+      "version": "11.11.1",
+      "source_path": "package/highlight.min.js",
+      "sha256": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381",
+      "license_files": [
+        "licenses/highlight.js-11.11.1/LICENSE",
+        "licenses/highlight.js-11.11.1/BUNDLED-NOTICES.txt"
+      ]
+    },
+    {
+      "file": "scripts/vendor/highlight-styles.css",
+      "package": "highlight.js",
+      "version": "11.11.1",
+      "source_path": "package/styles/github.min.css",
+      "sha256": "3a9a5def8b9c311e5ae43abde85c63133185eed4f0d9f67fea4b00a8308cf066",
+      "license_files": [
+        "licenses/highlight.js-11.11.1/LICENSE",
+        "licenses/highlight.js-11.11.1/GITHUB-THEME-NOTICE.txt"
+      ]
+    },
+    {
+      "file": "scripts/vendor/mermaid.min.js",
+      "package": "mermaid",
+      "version": "11.17.2",
+      "source_path": "package/dist/mermaid.min.js",
+      "sha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+      "license_files": [
+        "licenses/mermaid-11.17.2/LICENSE",
+        "licenses/mermaid-11.17.2/BUNDLED-NOTICES.txt",
+        "licenses/iconify-utils-3.0.2/license.txt",
+        "licenses/dayjs-1.11.21/LICENSE",
+        "licenses/khroma-2.1.0/license",
+        "licenses/dompurify-3.4.12/LICENSE",
+        "licenses/dompurify-3.4.12/license_header",
+        "licenses/dompurify-3.4.12/LICENSE-MPL",
+        "licenses/katex-0.16.47/LICENSE",
+        "licenses/katex-0.16.47/REACT-NOTICE.txt",
+        "licenses/ts-dedent-2.2.0/LICENSE",
+        "licenses/braintree-sanitize-url-7.1.2/LICENSE",
+        "licenses/d3-array-3.2.4/LICENSE",
+        "licenses/internmap-2.0.3/LICENSE",
+        "licenses/d3-axis-3.0.0/LICENSE",
+        "licenses/d3-dispatch-3.0.1/LICENSE",
+        "licenses/d3-selection-3.0.0/LICENSE",
+        "licenses/d3-drag-3.0.0/LICENSE",
+        "licenses/d3-color-3.1.0/LICENSE",
+        "licenses/d3-interpolate-3.0.1/LICENSE",
+        "licenses/d3-timer-3.0.1/LICENSE",
+        "licenses/d3-transition-3.0.1/LICENSE",
+        "licenses/d3-ease-3.0.1/LICENSE",
+        "licenses/d3-brush-3.0.0/LICENSE",
+        "licenses/d3-path-3.1.0/LICENSE",
+        "licenses/d3-chord-3.0.1/LICENSE",
+        "licenses/d3-contour-4.0.2/LICENSE",
+        "licenses/d3-delaunay-6.0.4/LICENSE",
+        "licenses/d3-dsv-3.0.1/LICENSE",
+        "licenses/d3-fetch-3.0.1/LICENSE",
+        "licenses/d3-quadtree-3.0.1/LICENSE",
+        "licenses/d3-force-3.0.0/LICENSE",
+        "licenses/d3-format-3.1.0/LICENSE",
+        "licenses/d3-geo-3.1.1/LICENSE",
+        "licenses/d3-hierarchy-3.1.2/LICENSE",
+        "licenses/d3-polygon-3.0.1/LICENSE",
+        "licenses/d3-random-3.0.1/LICENSE",
+        "licenses/d3-scale-4.0.2/LICENSE",
+        "licenses/d3-time-3.1.0/LICENSE",
+        "licenses/d3-time-format-4.1.0/LICENSE",
+        "licenses/d3-scale-chromatic-3.1.0/LICENSE",
+        "licenses/d3-shape-3.2.0/LICENSE",
+        "licenses/d3-zoom-3.0.0/LICENSE",
+        "licenses/d3-7.9.0/LICENSE",
+        "licenses/es-toolkit-1.45.1/LICENSE",
+        "licenses/marked-16.3.0/LICENSE.md",
+        "licenses/fastdom-1.0.12/LICENSE",
+        "licenses/roughjs-4.6.6/LICENSE",
+        "licenses/js-yaml-4.3.0/LICENSE",
+        "licenses/lodash-es-4.18.1/LICENSE",
+        "licenses/dagre-d3-es-7.0.14/LICENSE.md",
+        "licenses/cytoscape-3.34.0/LICENSE",
+        "licenses/layout-base-1.0.2/LICENSE",
+        "licenses/cose-base-1.0.3/LICENSE",
+        "licenses/cytoscape-cose-bilkent-4.1.0/LICENSE",
+        "licenses/uuid-14.0.0/LICENSE.md",
+        "licenses/d3-array-2.12.1/LICENSE",
+        "licenses/d3-sankey-0.12.3/LICENSE",
+        "licenses/d3-path-1.0.9/LICENSE",
+        "licenses/d3-shape-1.3.7/LICENSE",
+        "licenses/layout-base-2.0.1/LICENSE",
+        "licenses/cose-base-2.2.0/LICENSE",
+        "licenses/cytoscape-fcose-2.2.0/LICENSE",
+        "licenses/upsetjs-venn.js-2.0.0/LICENSE",
+        "licenses/stylis-4.3.6/LICENSE",
+        "licenses/cytoscape-3.34.0/EMBEDDED-NOTICES.txt"
+      ]
+    },
+    {
+      "file": "scripts/vendor/d3.min.js",
+      "package": "d3",
+      "version": "7.8.5",
+      "source_path": "package/dist/d3.min.js",
+      "sha256": "d6b03aefc9f6c44c7bc78713679c78c295028fa914319119e5cc4b4954855b1c",
+      "license_files": [
+        "licenses/d3-7.8.5/LICENSE",
+        "licenses/d3-7.8.5/BUNDLED-NOTICES.txt",
+        "licenses/d3-array-3.2.4/LICENSE",
+        "licenses/d3-axis-3.0.0/LICENSE",
+        "licenses/d3-brush-3.0.0/LICENSE",
+        "licenses/d3-chord-3.0.1/LICENSE",
+        "licenses/d3-color-3.1.0/LICENSE",
+        "licenses/d3-contour-4.0.2/LICENSE",
+        "licenses/d3-delaunay-6.0.4/LICENSE",
+        "licenses/d3-dispatch-3.0.1/LICENSE",
+        "licenses/d3-drag-3.0.0/LICENSE",
+        "licenses/d3-dsv-3.0.1/LICENSE",
+        "licenses/d3-ease-3.0.1/LICENSE",
+        "licenses/d3-fetch-3.0.1/LICENSE",
+        "licenses/d3-force-3.0.0/LICENSE",
+        "licenses/d3-format-3.1.0/LICENSE",
+        "licenses/d3-geo-3.1.0/LICENSE",
+        "licenses/d3-hierarchy-3.1.2/LICENSE",
+        "licenses/d3-interpolate-3.0.1/LICENSE",
+        "licenses/d3-path-3.1.0/LICENSE",
+        "licenses/d3-polygon-3.0.1/LICENSE",
+        "licenses/d3-quadtree-3.0.1/LICENSE",
+        "licenses/d3-random-3.0.1/LICENSE",
+        "licenses/d3-scale-chromatic-3.0.0/LICENSE",
+        "licenses/d3-scale-4.0.2/LICENSE",
+        "licenses/d3-selection-3.0.0/LICENSE",
+        "licenses/d3-shape-3.2.0/LICENSE",
+        "licenses/d3-time-format-4.1.0/LICENSE",
+        "licenses/d3-time-3.1.0/LICENSE",
+        "licenses/d3-timer-3.0.1/LICENSE",
+        "licenses/d3-transition-3.0.1/LICENSE",
+        "licenses/d3-zoom-3.0.0/LICENSE",
+        "licenses/delaunator-5.0.0/LICENSE",
+        "licenses/internmap-2.0.3/LICENSE",
+        "licenses/robust-predicates-3.0.2/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/katex.min.js",
+      "package": "katex",
+      "version": "0.16.21",
+      "source_path": "package/dist/katex.min.js",
+      "sha256": "863811e2baa0849c77bc92d26d44f4d0a4843c2a8ab52c462017dea57316e4d8",
+      "license_files": [
+        "licenses/katex-0.16.21/LICENSE",
+        "licenses/katex-0.16.21/REACT-NOTICE.txt"
+      ]
+    },
+    {
+      "file": "scripts/vendor/katex.min.css",
+      "package": "katex",
+      "version": "0.16.21",
+      "source_path": "package/dist/katex.min.css",
+      "sha256": "f787891b550d554c214aa8902f39ac46df2dbd48fdec500a2040a5dce1e8ab58",
+      "license_files": [
+        "licenses/katex-0.16.21/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/markmap-lib.browser.js",
+      "package": "markmap-lib",
+      "version": "0.17.2",
+      "source_path": "package/dist/browser/index.iife.js",
+      "sha256": "7fa851eda0f0eaf08a88d8894c843a987934bc029dbe0df5901698897ae4131b",
+      "license_files": [
+        "licenses/markmap-lib-0.17.2/LICENSE",
+        "licenses/markmap-lib-0.17.2/BUNDLED-NOTICES.txt",
+        "licenses/gera2ld-jsx-dom-2.2.2/LICENSE",
+        "licenses/markmap-common-0.17.1/LICENSE",
+        "licenses/markmap-html-parser-0.17.1/LICENSE",
+        "licenses/babel-runtime-7.22.6/LICENSE",
+        "licenses/babel-runtime-7.23.6/LICENSE",
+        "licenses/iktakahiro-markdown-it-katex-4.0.1/LICENSE",
+        "licenses/npm2url-0.2.4/LICENSE",
+        "licenses/cheerio-1.0.0-rc.12/LICENSE",
+        "licenses/cheerio-select-2.1.0/LICENSE",
+        "licenses/htmlparser2-8.0.2/LICENSE",
+        "licenses/domhandler-5.0.3/LICENSE",
+        "licenses/domutils-3.1.0/LICENSE",
+        "licenses/entities-4.5.0/LICENSE",
+        "licenses/css-select-5.1.0/LICENSE",
+        "licenses/css-what-6.1.0/LICENSE",
+        "licenses/nth-check-2.1.1/LICENSE",
+        "licenses/boolbase-1.0.0/DECLARATION.txt",
+        "licenses/boolbase-1.0.0/LICENSE",
+        "licenses/domelementtype-2.3.0/LICENSE",
+        "licenses/dom-serializer-2.0.0/LICENSE",
+        "licenses/parse5-7.1.2/LICENSE",
+        "licenses/parse5-htmlparser2-tree-adapter-7.0.0/LICENSE",
+        "licenses/linkify-it-5.0.0/LICENSE",
+        "licenses/markdown-it-ins-4.0.0/LICENSE",
+        "licenses/markdown-it-mark-4.0.0/LICENSE",
+        "licenses/markdown-it-sub-2.0.0/LICENSE",
+        "licenses/markdown-it-sup-2.0.0/LICENSE",
+        "licenses/yaml-2.5.1/LICENSE",
+        "licenses/d3-hierarchy-1.1.9/LICENSE",
+        "licenses/d3-hierarchy-3.1.2/LICENSE",
+        "licenses/linkify-it-5.0.2/LICENSE",
+        "licenses/mdurl-2.0.0/LICENSE",
+        "licenses/punycode.js-2.3.1/LICENSE-MIT.txt",
+        "licenses/uc.micro-2.1.0/LICENSE.txt",
+        "licenses/markdown-it-14.1.0/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/markmap-view.browser.js",
+      "package": "markmap-view",
+      "version": "0.17.2",
+      "source_path": "package/dist/browser/index.js",
+      "sha256": "98770326cd0014f7bcfaaf906316ab6aba170239a93098d5857298f59be405ab",
+      "license_files": [
+        "licenses/markmap-view-0.17.2/LICENSE",
+        "licenses/markmap-view-0.17.2/BUNDLED-NOTICES.txt",
+        "licenses/gera2ld-jsx-dom-2.2.2/LICENSE",
+        "licenses/d3-flextree-2.1.2/LICENSE",
+        "licenses/markmap-common-0.17.1/LICENSE",
+        "licenses/d3-hierarchy-1.1.9/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/echarts.min.js",
+      "package": "echarts",
+      "version": "5.6.0",
+      "source_path": "package/dist/echarts.min.js",
+      "sha256": "bf4a223524e40b77c304bec67e1222cf551f14880cf42c69dc046558e11c07b1",
+      "license_files": [
+        "licenses/echarts-5.6.0/LICENSE",
+        "licenses/echarts-5.6.0/NOTICE",
+        "licenses/echarts-5.6.0/licenses/LICENSE-d3",
+        "licenses/echarts-5.6.0/BUNDLED-NOTICES.txt",
+        "licenses/zrender-5.6.1/LICENSE",
+        "licenses/tslib-2.3.0/LICENSE.txt",
+        "licenses/tslib-2.3.0/CopyrightNotice.txt"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "file": "licenses/boolbase-1.0.0/LICENSE",
+      "package": "boolbase",
+      "version": "1.0.0",
+      "kind": "license",
+      "source_type": "github-file",
+      "source_repository": "fb55/boolbase",
+      "source_commit": "be0bcd8a4e917a0a5895e95b523fbbed05a64871",
+      "source_url": "https://raw.githubusercontent.com/fb55/boolbase/be0bcd8a4e917a0a5895e95b523fbbed05a64871/LICENSE",
+      "source_path": "LICENSE",
+      "source_blob_sha1": "a689aae96e8957e4ab7a3a7449fe5271a6516e4b",
+      "source_sha256": "cdf4d87ae0a6c160227263bf4e39a0a10e30e89ae7256e0f7ac7bde0836552c6",
+      "sha256": "cdf4d87ae0a6c160227263bf4e39a0a10e30e89ae7256e0f7ac7bde0836552c6",
+      "normalization": "none",
+      "npm_member_match": {
+        "source_path": "index.js",
+        "npm_path": "package/index.js",
+        "sha256": "c62510fca8738c7444cdf5012bdd0ce214a1b6f7eaff7facb3a919e4656d7341"
+      }
+    },
+    {
+      "file": "licenses/katex-0.16.21/REACT-NOTICE.txt",
+      "package": "katex",
+      "version": "0.16.21",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.21.tgz",
+      "source_path": "package/dist/katex.mjs",
+      "source_sha256": "400205bfc1925fd42161173b29d84c114929e98b4e4df05d6d420e6f267f67b5",
+      "sha256": "57b066dffd08aa0ce0bc9b2ff4a942f9b974c2d8dcf501f9f17608ff03dc8151",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [[5275, 5351]]
+    },
+    {
+      "file": "licenses/katex-0.16.47/REACT-NOTICE.txt",
+      "package": "katex",
+      "version": "0.16.47",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.47.tgz",
+      "source_path": "package/dist/katex.mjs",
+      "source_sha256": "09a78a9812d1e7d3ace85033512e6a450127b9554ef281b4b6567408694c6e36",
+      "sha256": "57b066dffd08aa0ce0bc9b2ff4a942f9b974c2d8dcf501f9f17608ff03dc8151",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [[2171, 2247]]
+    },
+    {
+      "file": "licenses/babel-runtime-7.22.6/LICENSE",
+      "package": "@babel/runtime",
+      "version": "7.22.6",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.22.6.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/babel-runtime-7.23.6/LICENSE",
+      "package": "@babel/runtime",
+      "version": "7.23.6",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@babel/runtime/-/runtime-7.23.6.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "sha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/boolbase-1.0.0/DECLARATION.txt",
+      "package": "boolbase",
+      "version": "1.0.0",
+      "kind": "notice",
+      "source_url": "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz",
+      "source_path": "package/package.json",
+      "source_sha256": "ca09c0dccbfc43be6be0ac89e9ffa19b64b30f9c74c64da27f719a7244a25e30",
+      "sha256": "b319da4a37aa49b24f31d8a476174d458700e091cd298a3974d2538acae8cb66",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          366,
+          428
+        ]
+      ]
+    },
+    {
+      "file": "licenses/braintree-sanitize-url-7.1.2/LICENSE",
+      "package": "@braintree/sanitize-url",
+      "version": "7.1.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@braintree/sanitize-url/-/sanitize-url-7.1.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "0984740e0c3d725c8044dec7edcefe1dbce180ef5a7bc710c251e19607000158",
+      "sha256": "0984740e0c3d725c8044dec7edcefe1dbce180ef5a7bc710c251e19607000158",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/cheerio-1.0.0-rc.12/LICENSE",
+      "package": "cheerio",
+      "version": "1.0.0-rc.12",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cheerio/-/cheerio-1.0.0-rc.12.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "61c1e21d3a8ff20f9b69abe15104a75584688080febc22f60a4cbf3854becf4e",
+      "sha256": "61c1e21d3a8ff20f9b69abe15104a75584688080febc22f60a4cbf3854becf4e",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/cheerio-select-2.1.0/LICENSE",
+      "package": "cheerio-select",
+      "version": "2.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cheerio-select/-/cheerio-select-2.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/cose-base-1.0.3/LICENSE",
+      "package": "cose-base",
+      "version": "1.0.3",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cose-base/-/cose-base-1.0.3.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a",
+      "sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/cose-base-2.2.0/LICENSE",
+      "package": "cose-base",
+      "version": "2.2.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cose-base/-/cose-base-2.2.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a",
+      "sha256": "5fb3cf4a14c3c5af6e473a192df8bca10c77754e3a0c6492c79fb92a76a5478a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/css-select-5.1.0/LICENSE",
+      "package": "css-select",
+      "version": "5.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/css-select/-/css-select-5.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/css-what-6.1.0/LICENSE",
+      "package": "css-what",
+      "version": "6.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/css-what/-/css-what-6.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/cytoscape-3.30.2/LICENSE",
+      "package": "cytoscape",
+      "version": "3.30.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.30.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a29c0d78a54de204b78357976c3d272a573b8592d0478b9db07af3f1da31a65a",
+      "sha256": "f0af5997ade8b1acfd96acf2de90cc6bfa8118006ca11e92de7e707afd67fddf",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/cytoscape-3.34.0/EMBEDDED-NOTICES.txt",
+      "package": "cytoscape",
+      "version": "3.34.0",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.34.0.tgz",
+      "source_path": "package/dist/cytoscape.esm.mjs",
+      "source_sha256": "9ffbc8172ca3bd6723fba3513f96194f0e4c98225e00f380948f285869517803",
+      "sha256": "9ab27e60dc161a40dadd32491c715ef6593c87e3e99d2fe42d138d89523f2955",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          0,
+          1144
+        ],
+        [
+          189988,
+          190196
+        ],
+        [
+          348467,
+          348651
+        ],
+        [
+          428975,
+          429096
+        ],
+        [
+          432758,
+          432909
+        ],
+        [
+          603579,
+          603779
+        ]
+      ]
+    },
+    {
+      "file": "licenses/cytoscape-3.34.0/LICENSE",
+      "package": "cytoscape",
+      "version": "3.34.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cytoscape/-/cytoscape-3.34.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "eb319c6e6f233607f71e8e2f450391751883cfc0eeb3ca7ef574c13d1d9c2203",
+      "sha256": "f7ebdc2a36c48b5413fe0b60f7a16b6163ff171d5bb35f27dfda432962dd4f49",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/cytoscape-cose-bilkent-4.1.0/LICENSE",
+      "package": "cytoscape-cose-bilkent",
+      "version": "4.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cytoscape-cose-bilkent/-/cytoscape-cose-bilkent-4.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "440fc58a56a12814e417d2b341da89b050da052dc75bdb235607d37ec5fe74ef",
+      "sha256": "cc11ae75fa400984b244cf246384a55b99a3174c1184d7f1362e71a870d1c919",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/cytoscape-fcose-2.2.0/LICENSE",
+      "package": "cytoscape-fcose",
+      "version": "2.2.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/cytoscape-fcose/-/cytoscape-fcose-2.2.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "2837634f403949215760fcdd2fa1ed0c64875d02099ecc8318c704b852f1421d",
+      "sha256": "2837634f403949215760fcdd2fa1ed0c64875d02099ecc8318c704b852f1421d",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-7.8.5/BUNDLED-NOTICES.txt",
+      "package": "d3",
+      "version": "7.8.5",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/d3/-/d3-7.8.5.tgz",
+      "source_path": "package/dist/d3.min.js",
+      "source_sha256": "d6b03aefc9f6c44c7bc78713679c78c295028fa914319119e5cc4b4954855b1c",
+      "sha256": "ad2a613c8044528c6ea01215e9cbc9fdc69fdc8850844604b2eccd401c0900b4",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          0,
+          59
+        ]
+      ]
+    },
+    {
+      "file": "licenses/d3-7.8.5/LICENSE",
+      "package": "d3",
+      "version": "7.8.5",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3/-/d3-7.8.5.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-7.9.0/LICENSE",
+      "package": "d3",
+      "version": "7.9.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3/-/d3-7.9.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-array-2.12.1/LICENSE",
+      "package": "d3-array",
+      "version": "2.12.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-array/-/d3-array-2.12.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "0747bebeb06b10954913149be9b9a8bdf6fad3e6fdcbd9f9524e7a94c13d2cea",
+      "sha256": "0747bebeb06b10954913149be9b9a8bdf6fad3e6fdcbd9f9524e7a94c13d2cea",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-array-3.2.4/LICENSE",
+      "package": "d3-array",
+      "version": "3.2.4",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-array/-/d3-array-3.2.4.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "sha256": "3e6849627f74ff73c257a3ae1efb574015d94fc1035c05ec3c15805165efcbc4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-axis-3.0.0/LICENSE",
+      "package": "d3-axis",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-axis/-/d3-axis-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-brush-3.0.0/LICENSE",
+      "package": "d3-brush",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-brush/-/d3-brush-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-chord-3.0.1/LICENSE",
+      "package": "d3-chord",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-chord/-/d3-chord-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-color-3.1.0/LICENSE",
+      "package": "d3-color",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-color/-/d3-color-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-contour-4.0.2/LICENSE",
+      "package": "d3-contour",
+      "version": "4.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-contour/-/d3-contour-4.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e51cba0e4fa1d8c078e15319868f2b90188f413f9ce9dac1043b62db32901e93",
+      "sha256": "e51cba0e4fa1d8c078e15319868f2b90188f413f9ce9dac1043b62db32901e93",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-delaunay-6.0.4/LICENSE",
+      "package": "d3-delaunay",
+      "version": "6.0.4",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-delaunay/-/d3-delaunay-6.0.4.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "582c3022bd01942336095f92b58a90b1be624dc547d987555c6c956512dd24c1",
+      "sha256": "582c3022bd01942336095f92b58a90b1be624dc547d987555c6c956512dd24c1",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-dispatch-3.0.1/LICENSE",
+      "package": "d3-dispatch",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-dispatch/-/d3-dispatch-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-drag-3.0.0/LICENSE",
+      "package": "d3-drag",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-drag/-/d3-drag-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-dsv-3.0.1/LICENSE",
+      "package": "d3-dsv",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-dsv/-/d3-dsv-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "7842a82012622e5a37bfe4f6c1b67cd3bae6350716b5bf87f36cea0bdc1319dc",
+      "sha256": "7842a82012622e5a37bfe4f6c1b67cd3bae6350716b5bf87f36cea0bdc1319dc",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-ease-3.0.1/LICENSE",
+      "package": "d3-ease",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-ease/-/d3-ease-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "b989d9085148d21ff64a75e14462aefa06b2589a55553b07b1460c70081c7d08",
+      "sha256": "b989d9085148d21ff64a75e14462aefa06b2589a55553b07b1460c70081c7d08",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-fetch-3.0.1/LICENSE",
+      "package": "d3-fetch",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-fetch/-/d3-fetch-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "ffdc17dc9040006bddeb891c95bfbb492e86d6bc64a4a4233666febab1be35e0",
+      "sha256": "ffdc17dc9040006bddeb891c95bfbb492e86d6bc64a4a4233666febab1be35e0",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-flextree-2.1.2/LICENSE",
+      "package": "d3-flextree",
+      "version": "2.1.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-flextree/-/d3-flextree-2.1.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "2db195a4562728bcbd49310a1886e09223dec0bc95ce362c73d7387d6bb45f58",
+      "sha256": "2db195a4562728bcbd49310a1886e09223dec0bc95ce362c73d7387d6bb45f58",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-force-3.0.0/LICENSE",
+      "package": "d3-force",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-force/-/d3-force-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-format-3.1.0/LICENSE",
+      "package": "d3-format",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-format/-/d3-format-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-geo-3.1.0/LICENSE",
+      "package": "d3-geo",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "c53822a70309da589d4a7821c3a0dfc9449bbb4429cecaa295e0cb0461b950c9",
+      "sha256": "c53822a70309da589d4a7821c3a0dfc9449bbb4429cecaa295e0cb0461b950c9",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-geo-3.1.1/LICENSE",
+      "package": "d3-geo",
+      "version": "3.1.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-geo/-/d3-geo-3.1.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee",
+      "sha256": "3e3edc1224eec9c39cd26491a21304a62883c1e5b6a65c5283ccc7a6cc94baee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-hierarchy-1.1.9/LICENSE",
+      "package": "d3-hierarchy",
+      "version": "1.1.9",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-1.1.9.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304",
+      "sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-hierarchy-3.1.2/LICENSE",
+      "package": "d3-hierarchy",
+      "version": "3.1.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-hierarchy/-/d3-hierarchy-3.1.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-interpolate-3.0.1/LICENSE",
+      "package": "d3-interpolate",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-interpolate/-/d3-interpolate-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-path-1.0.9/LICENSE",
+      "package": "d3-path",
+      "version": "1.0.9",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-path/-/d3-path-1.0.9.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "b8265327ab678f554800e71188b1cc6b1ff57522e292d2b1c0be66f27cf328b6",
+      "sha256": "b8265327ab678f554800e71188b1cc6b1ff57522e292d2b1c0be66f27cf328b6",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-path-3.1.0/LICENSE",
+      "package": "d3-path",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-path/-/d3-path-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a09b0d6d76e768fca2085fad05743ee81ddd11946bcda160a3cf5e1081a479aa",
+      "sha256": "a09b0d6d76e768fca2085fad05743ee81ddd11946bcda160a3cf5e1081a479aa",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-polygon-3.0.1/LICENSE",
+      "package": "d3-polygon",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-polygon/-/d3-polygon-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-quadtree-3.0.1/LICENSE",
+      "package": "d3-quadtree",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-quadtree/-/d3-quadtree-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-random-3.0.1/LICENSE",
+      "package": "d3-random",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-random/-/d3-random-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-sankey-0.12.3/LICENSE",
+      "package": "d3-sankey",
+      "version": "0.12.3",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-sankey/-/d3-sankey-0.12.3.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "2bf785e778d67a4f5266cffcd4f2cc5bb98cde73791666e7efeb8002ba32dfa5",
+      "sha256": "2bf785e778d67a4f5266cffcd4f2cc5bb98cde73791666e7efeb8002ba32dfa5",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-scale-4.0.2/LICENSE",
+      "package": "d3-scale",
+      "version": "4.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-scale/-/d3-scale-4.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-scale-chromatic-3.0.0/LICENSE",
+      "package": "d3-scale-chromatic",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "dadb5ea138eef5ab133854c3d26bd0a158f649d0bd433b3eebe177f6d981730e",
+      "sha256": "dadb5ea138eef5ab133854c3d26bd0a158f649d0bd433b3eebe177f6d981730e",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-scale-chromatic-3.1.0/LICENSE",
+      "package": "d3-scale-chromatic",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-scale-chromatic/-/d3-scale-chromatic-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "0986d93944902cca9af86824b6a641b4b7c2d10602fc510c433a8bcd443919fe",
+      "sha256": "0986d93944902cca9af86824b6a641b4b7c2d10602fc510c433a8bcd443919fe",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-selection-3.0.0/LICENSE",
+      "package": "d3-selection",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-selection/-/d3-selection-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-shape-1.3.7/LICENSE",
+      "package": "d3-shape",
+      "version": "1.3.7",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-shape/-/d3-shape-1.3.7.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "7eea8533ea92bd8c32a901e89ecb0305890905bb12711449565ddff96891146d",
+      "sha256": "7eea8533ea92bd8c32a901e89ecb0305890905bb12711449565ddff96891146d",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-shape-3.2.0/LICENSE",
+      "package": "d3-shape",
+      "version": "3.2.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-shape/-/d3-shape-3.2.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-time-3.1.0/LICENSE",
+      "package": "d3-time",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-time/-/d3-time-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "sha256": "faa682e3e430941f958d26180458f5934a62f58dac4d70ccdd15608c15d0f884",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-time-format-4.1.0/LICENSE",
+      "package": "d3-time-format",
+      "version": "4.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-time-format/-/d3-time-format-4.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-timer-3.0.1/LICENSE",
+      "package": "d3-timer",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-timer/-/d3-timer-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-transition-3.0.1/LICENSE",
+      "package": "d3-transition",
+      "version": "3.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-transition/-/d3-transition-3.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/d3-zoom-3.0.0/LICENSE",
+      "package": "d3-zoom",
+      "version": "3.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/d3-zoom/-/d3-zoom-3.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "sha256": "e008c5e25a6be382593089c29bfabbc553c6378eee02895aec46ce396cc404ee",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dagre-d3-es-7.0.14/LICENSE.md",
+      "package": "dagre-d3-es",
+      "version": "7.0.14",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dagre-d3-es/-/dagre-d3-es-7.0.14.tgz",
+      "source_path": "package/LICENSE.md",
+      "source_sha256": "d01eb84ccce437dbf5fd40853bceea0f287930920acea066597a4a25ead63858",
+      "sha256": "d01eb84ccce437dbf5fd40853bceea0f287930920acea066597a4a25ead63858",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dayjs-1.11.21/LICENSE",
+      "package": "dayjs",
+      "version": "1.11.21",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dayjs/-/dayjs-1.11.21.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "5faab7526d055651be3aab769d58897be6bd91f3d39d137f25f12dba1b31d5dc",
+      "sha256": "5faab7526d055651be3aab769d58897be6bd91f3d39d137f25f12dba1b31d5dc",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/delaunator-5.0.0/LICENSE",
+      "package": "delaunator",
+      "version": "5.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/delaunator/-/delaunator-5.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "27043d1a6a0e1985fde12660decbbd3b23c67de900b00609c90d4f0aa492f425",
+      "sha256": "27043d1a6a0e1985fde12660decbbd3b23c67de900b00609c90d4f0aa492f425",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dom-serializer-2.0.0/LICENSE",
+      "package": "dom-serializer",
+      "version": "2.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dom-serializer/-/dom-serializer-2.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "94cfe87de9b178e8fee313a19178e625129e2ce559db32e772e7bd95114ee6ff",
+      "sha256": "94cfe87de9b178e8fee313a19178e625129e2ce559db32e772e7bd95114ee6ff",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/domelementtype-2.3.0/LICENSE",
+      "package": "domelementtype",
+      "version": "2.3.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/domelementtype/-/domelementtype-2.3.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/domhandler-5.0.3/LICENSE",
+      "package": "domhandler",
+      "version": "5.0.3",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/domhandler/-/domhandler-5.0.3.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dompurify-3.1.6/LICENSE",
+      "package": "dompurify",
+      "version": "3.1.6",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.1.6.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "7de658e2401fe36e2a3965a5a11a560d2fffe768194849718a4b58c75bf84bda",
+      "sha256": "7de658e2401fe36e2a3965a5a11a560d2fffe768194849718a4b58c75bf84bda",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dompurify-3.4.12/LICENSE",
+      "package": "dompurify",
+      "version": "3.4.12",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.12.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dompurify-3.4.12/LICENSE-MPL",
+      "package": "dompurify",
+      "version": "3.4.12",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.12.tgz",
+      "source_path": "package/LICENSE-MPL",
+      "source_sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/dompurify-3.4.12/license_header",
+      "package": "dompurify",
+      "version": "3.4.12",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.12.tgz",
+      "source_path": "package/src/license_header",
+      "source_sha256": "5803fa925ae1703b9c752921c95a321570e6cabf06fcf2de895ddaf1687cebef",
+      "sha256": "5803fa925ae1703b9c752921c95a321570e6cabf06fcf2de895ddaf1687cebef",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/domutils-3.1.0/LICENSE",
+      "package": "domutils",
+      "version": "3.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/domutils/-/domutils-3.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/echarts-5.6.0/BUNDLED-NOTICES.txt",
+      "package": "echarts",
+      "version": "5.6.0",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "source_path": "package/dist/echarts.min.js",
+      "source_sha256": "bf4a223524e40b77c304bec67e1222cf551f14880cf42c69dc046558e11c07b1",
+      "sha256": "7a394d0fc0837bf174cf7075e6d2f96813a59bc3668db159994707695de10d34",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          1,
+          791
+        ],
+        [
+          1033,
+          1884
+        ],
+        [
+          88656,
+          88874
+        ]
+      ]
+    },
+    {
+      "file": "licenses/echarts-5.6.0/LICENSE",
+      "package": "echarts",
+      "version": "5.6.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "634293835b43a6dd2094fa39182a3d9a6b9ca43b7fdb9ac354e8037af2a3093a",
+      "sha256": "634293835b43a6dd2094fa39182a3d9a6b9ca43b7fdb9ac354e8037af2a3093a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/echarts-5.6.0/NOTICE",
+      "package": "echarts",
+      "version": "5.6.0",
+      "kind": "notice",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "source_path": "package/NOTICE",
+      "source_sha256": "fa99ac3af859d0e13166906dc53a73ad34a08898da7e8ae83407275496e9e30c",
+      "sha256": "4dd56fd5a0ac348fb8cf5dc46d8ce0a7090fb1856ce39c5baa90e13f9ae356c1",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/echarts-5.6.0/licenses/LICENSE-d3",
+      "package": "echarts",
+      "version": "5.6.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "source_path": "package/licenses/LICENSE-d3",
+      "source_sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304",
+      "sha256": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/entities-4.5.0/LICENSE",
+      "package": "entities",
+      "version": "4.5.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/entities/-/entities-4.5.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/es-toolkit-1.45.1/LICENSE",
+      "package": "es-toolkit",
+      "version": "1.45.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/es-toolkit/-/es-toolkit-1.45.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "ed68888a2a28f32a05e88f24d4d4ee75075a1bda2b6372a1f2e00fa0576a5524",
+      "sha256": "ed68888a2a28f32a05e88f24d4d4ee75075a1bda2b6372a1f2e00fa0576a5524",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/fastdom-1.0.12/LICENSE",
+      "package": "fastdom",
+      "version": "1.0.12",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/fastdom/-/fastdom-1.0.12.tgz",
+      "source_path": "package/README.md",
+      "source_sha256": "cc5669ab6f7741bb061c8a7244addc8e3af1f84ec7d2445744b59d0169a87d11",
+      "sha256": "50c0de64f5cd5e39859b43f7eca7f5843fb3c3d5ac7e34a453e27419ad51e08c",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          6431,
+          7524
+        ]
+      ]
+    },
+    {
+      "file": "licenses/gera2ld-jsx-dom-2.2.2/LICENSE",
+      "package": "@gera2ld/jsx-dom",
+      "version": "2.2.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@gera2ld/jsx-dom/-/jsx-dom-2.2.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/highlight.js-11.11.1/BUNDLED-NOTICES.txt",
+      "package": "@highlightjs/cdn-assets",
+      "version": "11.11.1",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/@highlightjs/cdn-assets/-/cdn-assets-11.11.1.tgz",
+      "source_path": "package/highlight.min.js",
+      "source_sha256": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381",
+      "sha256": "327f1633aa9b8ec716e4d27d3f3ab601eab79fe2feface4229698dfe3fba6dc7",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          0,
+          147
+        ]
+      ]
+    },
+    {
+      "file": "licenses/highlight.js-11.11.1/GITHUB-THEME-NOTICE.txt",
+      "package": "highlight.js",
+      "version": "11.11.1",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.11.1.tgz",
+      "source_path": "package/styles/github.min.css",
+      "source_sha256": "3a9a5def8b9c311e5ae43abde85c63133185eed4f0d9f67fea4b00a8308cf066",
+      "sha256": "5f5b920f5fe92c4bd358ff93e517c3facd236263f117cb5e20ef95131b7d63a5",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          82,
+          330
+        ]
+      ]
+    },
+    {
+      "file": "licenses/highlight.js-11.11.1/LICENSE",
+      "package": "highlight.js",
+      "version": "11.11.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/highlight.js/-/highlight.js-11.11.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490",
+      "sha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490",
+      "normalization": "none",
+      "additional_sources": [
+        {
+          "package": "@highlightjs/cdn-assets",
+          "version": "11.11.1",
+          "source_url": "https://registry.npmjs.org/@highlightjs/cdn-assets/-/cdn-assets-11.11.1.tgz",
+          "source_path": "package/LICENSE",
+          "source_sha256": "6c081431591d9df696c82dc598fe1423765b8a299b200ed00b281afd0f64c490"
+        }
+      ]
+    },
+    {
+      "file": "licenses/htmlparser2-8.0.2/LICENSE",
+      "package": "htmlparser2",
+      "version": "8.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/htmlparser2/-/htmlparser2-8.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "204cfa747341660e4da64cd23e8c876c6b20279d247f48564993d3fc4a2eab47",
+      "sha256": "e7ef69b1061a214641f062449491ea54e5ade7a382b52618892b6106eb1eee08",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/iconify-utils-3.0.2/license.txt",
+      "package": "@iconify/utils",
+      "version": "3.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@iconify/utils/-/utils-3.0.2.tgz",
+      "source_path": "package/license.txt",
+      "source_sha256": "a86793ac023162ce98b91899601c15f6712f44943163c4f92a0a4bf89152b3bf",
+      "sha256": "56fc930ed22382ada309ec7437ad44cfd6c3ac91fe4459fdfb5ffb4701edbde8",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/iktakahiro-markdown-it-katex-4.0.1/LICENSE",
+      "package": "@iktakahiro/markdown-it-katex",
+      "version": "4.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@iktakahiro/markdown-it-katex/-/markdown-it-katex-4.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "b1f4d618713de92af2c132fa330774892639c2c6c688a74dae08fd432524f774",
+      "sha256": "b1f4d618713de92af2c132fa330774892639c2c6c688a74dae08fd432524f774",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/internmap-2.0.3/LICENSE",
+      "package": "internmap",
+      "version": "2.0.3",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/internmap/-/internmap-2.0.3.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f",
+      "sha256": "9ea8903938dab5f12c4572d60725069bec2d1b0dc3bcc210b09bae946a5ebb1f",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/js-yaml-4.1.0/LICENSE",
+      "package": "js-yaml",
+      "version": "4.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+      "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/js-yaml-4.3.0/LICENSE",
+      "package": "js-yaml",
+      "version": "4.3.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+      "sha256": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/katex-0.16.21/LICENSE",
+      "package": "katex",
+      "version": "0.16.21",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.21.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
+      "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/katex-0.16.47/LICENSE",
+      "package": "katex",
+      "version": "0.16.47",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/katex/-/katex-0.16.47.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
+      "sha256": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/khroma-2.1.0/license",
+      "package": "khroma",
+      "version": "2.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/khroma/-/khroma-2.1.0.tgz",
+      "source_path": "package/license",
+      "source_sha256": "66b333b0f66759a0b710459e03f7029abe17f4358114a128d2c972e642961b49",
+      "sha256": "66b333b0f66759a0b710459e03f7029abe17f4358114a128d2c972e642961b49",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/layout-base-1.0.2/LICENSE",
+      "package": "layout-base",
+      "version": "1.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/layout-base/-/layout-base-1.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf",
+      "sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/layout-base-2.0.1/LICENSE",
+      "package": "layout-base",
+      "version": "2.0.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/layout-base/-/layout-base-2.0.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf",
+      "sha256": "eabb762d8a95109a39c9be3247325529a5239a7aca327d909c3ccdc41f3a06bf",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/linkify-it-5.0.0/LICENSE",
+      "package": "linkify-it",
+      "version": "5.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3",
+      "sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/linkify-it-5.0.2/LICENSE",
+      "package": "linkify-it",
+      "version": "5.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/linkify-it/-/linkify-it-5.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3",
+      "sha256": "95e3f7f0e81e9b4940cdfaa1956aaff5e4dfd2fb1565041e7c78eb9a606f23e3",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/lodash-es-4.17.21/LICENSE",
+      "package": "lodash-es",
+      "version": "4.17.21",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.17.21.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
+      "sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/lodash-es-4.18.1/LICENSE",
+      "package": "lodash-es",
+      "version": "4.18.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/lodash-es/-/lodash-es-4.18.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
+      "sha256": "f71e8ed126b46346494aad5486874cd8f0aafe95092ed67d2e3cb6110f939abc",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-14.1.0/BUNDLED-NOTICES.txt",
+      "package": "markdown-it",
+      "version": "14.1.0",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.1.0.tgz",
+      "source_path": "package/dist/markdown-it.min.js",
+      "source_sha256": "38c70a1e7ca91ab40e2d9e6e60129851a717ed1c7d4acbbdd41bf9503791cf68",
+      "sha256": "62b43ed5a724bcb86854b9db4c9ad354f0cd7cf972eb1f64b1427840f20e0568",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          0,
+          81
+        ]
+      ]
+    },
+    {
+      "file": "licenses/markdown-it-14.1.0/LICENSE",
+      "package": "markdown-it",
+      "version": "14.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.1.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-14.3.2/BUNDLED-NOTICES.txt",
+      "package": "markdown-it",
+      "version": "14.3.2",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.2.tgz",
+      "source_path": "package/dist/markdown-it.min.js",
+      "source_sha256": "e32488403e2e565ac12a9669bfdf2b1b876eb0a5c84f8e0699884b562d18eb52",
+      "sha256": "752b9a41cb0fca2c1f0d55cab237afa71001ab23f937b8ba97fd7285f510e180",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          0,
+          81
+        ]
+      ]
+    },
+    {
+      "file": "licenses/markdown-it-14.3.2/LICENSE",
+      "package": "markdown-it",
+      "version": "14.3.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-ins-4.0.0/LICENSE",
+      "package": "markdown-it-ins",
+      "version": "4.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it-ins/-/markdown-it-ins-4.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-mark-4.0.0/LICENSE",
+      "package": "markdown-it-mark",
+      "version": "4.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it-mark/-/markdown-it-mark-4.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-sub-2.0.0/LICENSE",
+      "package": "markdown-it-sub",
+      "version": "2.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it-sub/-/markdown-it-sub-2.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markdown-it-sup-2.0.0/LICENSE",
+      "package": "markdown-it-sup",
+      "version": "2.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markdown-it-sup/-/markdown-it-sup-2.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "sha256": "81d61236a5f25294b2dad0c866d4ad6a40b865148b28df9a71f49ba771a6c54b",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/marked-16.3.0/LICENSE.md",
+      "package": "marked",
+      "version": "16.3.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/marked/-/marked-16.3.0.tgz",
+      "source_path": "package/LICENSE.md",
+      "source_sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c",
+      "sha256": "8e3a3f82f59a60958f56ca08f445647c32a4733dc7ca6c2c46f6eb898471ab9c",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markmap-common-0.17.1/LICENSE",
+      "package": "markmap-common",
+      "version": "0.17.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markmap-common/-/markmap-common-0.17.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markmap-html-parser-0.17.1/LICENSE",
+      "package": "markmap-html-parser",
+      "version": "0.17.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markmap-html-parser/-/markmap-html-parser-0.17.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markmap-lib-0.17.2/BUNDLED-NOTICES.txt",
+      "package": "markmap-lib",
+      "version": "0.17.2",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/markmap-lib/-/markmap-lib-0.17.2.tgz",
+      "source_path": "package/dist/browser/index.iife.js",
+      "source_sha256": "7fa851eda0f0eaf08a88d8894c843a987934bc029dbe0df5901698897ae4131b",
+      "sha256": "e2ffe3f390bae3f4f70fbfe00f5d951b1cfb46558c672267494278d507c4ae52",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          3450,
+          3494
+        ]
+      ]
+    },
+    {
+      "file": "licenses/markmap-lib-0.17.2/LICENSE",
+      "package": "markmap-lib",
+      "version": "0.17.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markmap-lib/-/markmap-lib-0.17.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/markmap-view-0.17.2/BUNDLED-NOTICES.txt",
+      "package": "markmap-view",
+      "version": "0.17.2",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/markmap-view/-/markmap-view-0.17.2.tgz",
+      "source_path": "package/dist/browser/index.js",
+      "source_sha256": "98770326cd0014f7bcfaaf906316ab6aba170239a93098d5857298f59be405ab",
+      "sha256": "247ceb18f8281caaa61996d3652afeab816fdb54854270ce98b252639a6f491e",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          2527,
+          2571
+        ],
+        [
+          11666,
+          11710
+        ]
+      ]
+    },
+    {
+      "file": "licenses/markmap-view-0.17.2/LICENSE",
+      "package": "markmap-view",
+      "version": "0.17.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/markmap-view/-/markmap-view-0.17.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "sha256": "6595d9ee0cf25c14d247e7d78f82f9e3b291bb6a2265e34cb084dc46bdab7cf4",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/mdurl-2.0.0/LICENSE",
+      "package": "mdurl",
+      "version": "2.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/mdurl/-/mdurl-2.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6b6a356c4337e2446841f30f3cdf7e7023af8c5260b5e347c0f987b9f6aa2644",
+      "sha256": "6b6a356c4337e2446841f30f3cdf7e7023af8c5260b5e347c0f987b9f6aa2644",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/mermaid-11.17.2/BUNDLED-NOTICES.txt",
+      "package": "mermaid",
+      "version": "11.17.2",
+      "kind": "bundle-notices",
+      "source_url": "https://registry.npmjs.org/mermaid/-/mermaid-11.17.2.tgz",
+      "source_path": "package/dist/mermaid.min.js",
+      "source_sha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+      "sha256": "90bbfc4ca2d29e9ff97aaf1af7307310e427036e7d4ca77ae74da78a1b450fde",
+      "normalization": "byte-ranges-joined-with-lf-and-final-lf",
+      "source_ranges": [
+        [
+          3570544,
+          3571019
+        ]
+      ]
+    },
+    {
+      "file": "licenses/mermaid-11.17.2/LICENSE",
+      "package": "mermaid",
+      "version": "11.17.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/mermaid/-/mermaid-11.17.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80",
+      "sha256": "ec9fb67dcb25eccc416ed56e1aab819222c805a2a4bfe4cb19e7556bf2ffde80",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/npm2url-0.2.4/LICENSE",
+      "package": "npm2url",
+      "version": "0.2.4",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/npm2url/-/npm2url-0.2.4.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a12c3d66c90212bd599fb4c7c2e771d79440c84b3a229f9164cf20f59411c140",
+      "sha256": "a12c3d66c90212bd599fb4c7c2e771d79440c84b3a229f9164cf20f59411c140",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/nth-check-2.1.1/LICENSE",
+      "package": "nth-check",
+      "version": "2.1.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/nth-check/-/nth-check-2.1.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/parse5-7.1.2/LICENSE",
+      "package": "parse5",
+      "version": "7.1.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/parse5/-/parse5-7.1.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d",
+      "sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/parse5-htmlparser2-tree-adapter-7.0.0/LICENSE",
+      "package": "parse5-htmlparser2-tree-adapter",
+      "version": "7.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/parse5-htmlparser2-tree-adapter/-/parse5-htmlparser2-tree-adapter-7.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d",
+      "sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/punycode.js-2.3.1/LICENSE-MIT.txt",
+      "package": "punycode.js",
+      "version": "2.3.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/punycode.js/-/punycode.js-2.3.1.tgz",
+      "source_path": "package/LICENSE-MIT.txt",
+      "source_sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+      "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/robust-predicates-3.0.2/LICENSE",
+      "package": "robust-predicates",
+      "version": "3.0.2",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/robust-predicates/-/robust-predicates-3.0.2.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "88d9b4eb60579c191ec391ca04c16130572d7eedc4a86daa58bf28c6e14c9bcd",
+      "sha256": "88d9b4eb60579c191ec391ca04c16130572d7eedc4a86daa58bf28c6e14c9bcd",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/roughjs-4.6.6/LICENSE",
+      "package": "roughjs",
+      "version": "4.6.6",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/roughjs/-/roughjs-4.6.6.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "dca9a392272606ac748ac0976a2a1133f14eef841c27beaa51a844d53c56a09d",
+      "sha256": "dca9a392272606ac748ac0976a2a1133f14eef841c27beaa51a844d53c56a09d",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/stylis-4.3.6/LICENSE",
+      "package": "stylis",
+      "version": "4.3.6",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/stylis/-/stylis-4.3.6.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "88c579c6ee44b41137a21321190d177982e5b17d4fa1b83a4a2e3ea325a8fc9a",
+      "sha256": "88c579c6ee44b41137a21321190d177982e5b17d4fa1b83a4a2e3ea325a8fc9a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/ts-dedent-2.2.0/LICENSE",
+      "package": "ts-dedent",
+      "version": "2.2.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/ts-dedent/-/ts-dedent-2.2.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "eff13095d9d762c3bd9dda74370c81e2130c28f2691bc455603abf973bac25b9",
+      "sha256": "eff13095d9d762c3bd9dda74370c81e2130c28f2691bc455603abf973bac25b9",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/tslib-2.3.0/CopyrightNotice.txt",
+      "package": "tslib",
+      "version": "2.3.0",
+      "kind": "notice",
+      "source_url": "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz",
+      "source_path": "package/CopyrightNotice.txt",
+      "source_sha256": "dd835e67a9a297da32f9467d7677a5d02c8e50e10f15da43b810147c79c04b9b",
+      "sha256": "877887436bbb1fc5ff12793813d65f06d664532ca8629667c8bbc755eb035dc1",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/tslib-2.3.0/LICENSE.txt",
+      "package": "tslib",
+      "version": "2.3.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/tslib/-/tslib-2.3.0.tgz",
+      "source_path": "package/LICENSE.txt",
+      "source_sha256": "210b19e543130388c68654b7497e967119ce17145f66ab7d85688fbd70f08751",
+      "sha256": "5989359645911c04a140c49d89496b13feca980bbf36d2250a12d3b9d06250d6",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/uc.micro-2.1.0/LICENSE.txt",
+      "package": "uc.micro",
+      "version": "2.1.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/uc.micro/-/uc.micro-2.1.0.tgz",
+      "source_path": "package/LICENSE.txt",
+      "source_sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+      "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/upsetjs-venn.js-2.0.0/LICENSE",
+      "package": "@upsetjs/venn.js",
+      "version": "2.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/@upsetjs/venn.js/-/venn.js-2.0.0.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "6a3508febf2cfccfee96597394543a6154a4bb0b1f91f28404be42c09e9fcb54",
+      "sha256": "6a3508febf2cfccfee96597394543a6154a4bb0b1f91f28404be42c09e9fcb54",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/uuid-14.0.0/LICENSE.md",
+      "package": "uuid",
+      "version": "14.0.0",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/uuid/-/uuid-14.0.0.tgz",
+      "source_path": "package/LICENSE.md",
+      "source_sha256": "beaa6b04fb82e41dd2ad679e19e27953afb5999b1abbb455b6564e78ebfeb332",
+      "sha256": "beaa6b04fb82e41dd2ad679e19e27953afb5999b1abbb455b6564e78ebfeb332",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/yaml-2.5.1/LICENSE",
+      "package": "yaml",
+      "version": "2.5.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/yaml/-/yaml-2.5.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "5bba27375d93e9119f76c1015f7672cf9ad5f70952296e0842fb2243d6376869",
+      "sha256": "5bba27375d93e9119f76c1015f7672cf9ad5f70952296e0842fb2243d6376869",
+      "normalization": "none"
+    },
+    {
+      "file": "licenses/zrender-5.6.1/LICENSE",
+      "package": "zrender",
+      "version": "5.6.1",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/zrender/-/zrender-5.6.1.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "a681e9d183c72b4af4856935893805eb48c08f0f5a3f260203db7444c20fb98a",
+      "sha256": "55ea01207028f76d844678511f29fc800f8a1e67a8a0fe80470128677847ad32",
+      "normalization": "crlf-to-lf-and-ensure-final-lf"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "echarts-exact-dependencies",
+      "source_url": "https://registry.npmjs.org/echarts/-/echarts-5.6.0.tgz",
+      "source_path": "package/package.json",
+      "source_sha256": "4795dfd3b7ec6432eaee75b685d3053c3f4a86245914c48969006be6c6e2b61d",
+      "observations": [
+        {
+          "json_pointer": "/dependencies/zrender",
+          "value": "5.6.1"
+        },
+        {
+          "json_pointer": "/dependencies/tslib",
+          "value": "2.3.0"
+        }
+      ]
+    },
+    {
+      "id": "jsx-dom-license-conflict",
+      "source_url": "https://registry.npmjs.org/@gera2ld/jsx-dom/-/jsx-dom-2.2.2.tgz",
+      "source_path": "package/package.json",
+      "source_sha256": "db5a0896991c0bfddfd666079e5a1f266b2fb8ac34d4041f5e8add5e0fd79e77",
+      "observations": [
+        {
+          "json_pointer": "/license",
+          "value": "ISC"
+        }
+      ]
+    },
+    {
+      "id": "markmap-flextree-version",
+      "source_url": "https://registry.npmjs.org/markmap-view/-/markmap-view-0.17.2.tgz",
+      "source_path": "package/dist/browser/index.js",
+      "source_sha256": "98770326cd0014f7bcfaaf906316ab6aba170239a93098d5857298f59be405ab",
+      "observations": [
+        {
+          "byte_range": [
+            20601,
+            20660
+          ],
+          "value": "const name = \"d3-flextree\";\n  const version$1 = \"2.1.2\";\n  "
+        }
+      ]
+    },
+    {
+      "id": "mermaid-sourcemap",
+      "source_url": "https://registry.npmjs.org/mermaid/-/mermaid-11.17.2.tgz",
+      "source_path": "package/dist/mermaid.min.js.map",
+      "source_sha256": "43cd977e8e0f351d6c47d31302c564f1c21fdc1e0be0d9e46370ee5e23cea004",
+      "observations": [
+        {
+          "json_pointer": "/sources/0",
+          "value": "../../../node_modules/.pnpm/@iconify+utils@3.0.2/node_modules/@iconify/utils/lib/icon/defaults.js"
+        },
+        {
+          "json_pointer": "/sources/14",
+          "value": "../../../node_modules/.pnpm/dayjs@1.11.21/node_modules/dayjs/dayjs.min.js"
+        },
+        {
+          "json_pointer": "/sources/16",
+          "value": "../../../node_modules/.pnpm/khroma@2.1.0/node_modules/khroma/dist/utils/channel.js"
+        },
+        {
+          "json_pointer": "/sources/62",
+          "value": "../../../node_modules/.pnpm/dompurify@3.4.12/node_modules/dompurify/src/utils.ts"
+        },
+        {
+          "json_pointer": "/sources/67",
+          "value": "../../../node_modules/.pnpm/katex@0.16.47/node_modules/katex/dist/katex.mjs"
+        },
+        {
+          "json_pointer": "/sources/70",
+          "value": "../../../node_modules/.pnpm/ts-dedent@2.2.0/node_modules/ts-dedent/src/index.ts"
+        },
+        {
+          "json_pointer": "/sources/81",
+          "value": "../../../node_modules/.pnpm/@braintree+sanitize-url@7.1.2/node_modules/@braintree/sanitize-url/dist/constants.js"
+        },
+        {
+          "json_pointer": "/sources/83",
+          "value": "../../../node_modules/.pnpm/d3-array@3.2.4/node_modules/d3-array/src/ascending.js"
+        },
+        {
+          "json_pointer": "/sources/88",
+          "value": "../../../node_modules/.pnpm/internmap@2.0.3/node_modules/internmap/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/94",
+          "value": "../../../node_modules/.pnpm/d3-axis@3.0.0/node_modules/d3-axis/src/identity.js"
+        },
+        {
+          "json_pointer": "/sources/97",
+          "value": "../../../node_modules/.pnpm/d3-dispatch@3.0.1/node_modules/d3-dispatch/src/dispatch.js"
+        },
+        {
+          "json_pointer": "/sources/99",
+          "value": "../../../node_modules/.pnpm/d3-selection@3.0.0/node_modules/d3-selection/src/namespaces.js"
+        },
+        {
+          "json_pointer": "/sources/146",
+          "value": "../../../node_modules/.pnpm/d3-drag@3.0.0/node_modules/d3-drag/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/147",
+          "value": "../../../node_modules/.pnpm/d3-color@3.1.0/node_modules/d3-color/src/define.js"
+        },
+        {
+          "json_pointer": "/sources/152",
+          "value": "../../../node_modules/.pnpm/d3-interpolate@3.0.1/node_modules/d3-interpolate/src/basis.js"
+        },
+        {
+          "json_pointer": "/sources/170",
+          "value": "../../../node_modules/.pnpm/d3-timer@3.0.1/node_modules/d3-timer/src/timer.js"
+        },
+        {
+          "json_pointer": "/sources/173",
+          "value": "../../../node_modules/.pnpm/d3-transition@3.0.1_d3-selection@3.0.0/node_modules/d3-transition/src/transition/schedule.js"
+        },
+        {
+          "json_pointer": "/sources/198",
+          "value": "../../../node_modules/.pnpm/d3-ease@3.0.1/node_modules/d3-ease/src/cubic.js"
+        },
+        {
+          "json_pointer": "/sources/203",
+          "value": "../../../node_modules/.pnpm/d3-brush@3.0.0/node_modules/d3-brush/src/constant.js"
+        },
+        {
+          "json_pointer": "/sources/208",
+          "value": "../../../node_modules/.pnpm/d3-path@3.1.0/node_modules/d3-path/src/path.js"
+        },
+        {
+          "json_pointer": "/sources/210",
+          "value": "../../../node_modules/.pnpm/d3-chord@3.0.1/node_modules/d3-chord/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/211",
+          "value": "../../../node_modules/.pnpm/d3-contour@4.0.2/node_modules/d3-contour/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/212",
+          "value": "../../../node_modules/.pnpm/d3-delaunay@6.0.4/node_modules/d3-delaunay/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/213",
+          "value": "../../../node_modules/.pnpm/d3-dsv@3.0.1/node_modules/d3-dsv/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/214",
+          "value": "../../../node_modules/.pnpm/d3-fetch@3.0.1/node_modules/d3-fetch/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/215",
+          "value": "../../../node_modules/.pnpm/d3-quadtree@3.0.1/node_modules/d3-quadtree/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/216",
+          "value": "../../../node_modules/.pnpm/d3-force@3.0.0/node_modules/d3-force/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/217",
+          "value": "../../../node_modules/.pnpm/d3-format@3.1.0/node_modules/d3-format/src/formatDecimal.js"
+        },
+        {
+          "json_pointer": "/sources/233",
+          "value": "../../../node_modules/.pnpm/d3-geo@3.1.1/node_modules/d3-geo/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/234",
+          "value": "../../../node_modules/.pnpm/d3-hierarchy@3.1.2/node_modules/d3-hierarchy/src/hierarchy/count.js"
+        },
+        {
+          "json_pointer": "/sources/256",
+          "value": "../../../node_modules/.pnpm/d3-polygon@3.0.1/node_modules/d3-polygon/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/257",
+          "value": "../../../node_modules/.pnpm/d3-random@3.0.1/node_modules/d3-random/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/258",
+          "value": "../../../node_modules/.pnpm/d3-scale@4.0.2/node_modules/d3-scale/src/init.js"
+        },
+        {
+          "json_pointer": "/sources/267",
+          "value": "../../../node_modules/.pnpm/d3-time@3.1.0/node_modules/d3-time/src/interval.js"
+        },
+        {
+          "json_pointer": "/sources/278",
+          "value": "../../../node_modules/.pnpm/d3-time-format@4.1.0/node_modules/d3-time-format/src/locale.js"
+        },
+        {
+          "json_pointer": "/sources/283",
+          "value": "../../../node_modules/.pnpm/d3-scale-chromatic@3.1.0/node_modules/d3-scale-chromatic/src/colors.js"
+        },
+        {
+          "json_pointer": "/sources/286",
+          "value": "../../../node_modules/.pnpm/d3-shape@3.2.0/node_modules/d3-shape/src/constant.js"
+        },
+        {
+          "json_pointer": "/sources/314",
+          "value": "../../../node_modules/.pnpm/d3-zoom@3.0.0/node_modules/d3-zoom/src/constant.js"
+        },
+        {
+          "json_pointer": "/sources/320",
+          "value": "../../../node_modules/.pnpm/d3@7.9.0/node_modules/d3/src/index.js"
+        },
+        {
+          "json_pointer": "/sources/323",
+          "value": "../../../node_modules/.pnpm/es-toolkit@1.45.1/node_modules/es-toolkit/dist/predicate/isLength.mjs"
+        },
+        {
+          "json_pointer": "/sources/352",
+          "value": "../../../node_modules/.pnpm/marked@16.3.0/node_modules/marked/src/defaults.ts"
+        },
+        {
+          "json_pointer": "/sources/364",
+          "value": "../../../node_modules/.pnpm/fastdom@1.0.12/node_modules/fastdom/fastdom.js"
+        },
+        {
+          "json_pointer": "/sources/380",
+          "value": "../../../node_modules/.pnpm/roughjs@4.6.6_patch_hash=3543d47108cb41b68ec6a671c0e1f9d0cfe2ce524fea5b0992511ae84c3c6b64/node_modules/roughjs/bundled/rough.esm.js"
+        },
+        {
+          "json_pointer": "/sources/464",
+          "value": "../../../node_modules/.pnpm/js-yaml@4.3.0/node_modules/js-yaml/lib/common.js"
+        },
+        {
+          "json_pointer": "/sources/502",
+          "value": "../../../node_modules/.pnpm/lodash-es@4.18.1/node_modules/lodash-es/_freeGlobal.js"
+        },
+        {
+          "json_pointer": "/sources/742",
+          "value": "../../../node_modules/.pnpm/dagre-d3-es@7.0.14/node_modules/dagre-d3-es/src/graphlib/graph.js"
+        },
+        {
+          "json_pointer": "/sources/827",
+          "value": "../../../node_modules/.pnpm/cytoscape@3.34.0/node_modules/cytoscape/dist/cytoscape.esm.mjs"
+        },
+        {
+          "json_pointer": "/sources/828",
+          "value": "../../../node_modules/.pnpm/layout-base@1.0.2/node_modules/layout-base/layout-base.js"
+        },
+        {
+          "json_pointer": "/sources/829",
+          "value": "../../../node_modules/.pnpm/cose-base@1.0.3/node_modules/cose-base/cose-base.js"
+        },
+        {
+          "json_pointer": "/sources/830",
+          "value": "../../../node_modules/.pnpm/cytoscape-cose-bilkent@4.1.0_cytoscape@3.34.0/node_modules/cytoscape-cose-bilkent/cytoscape-cose-bilkent.js"
+        },
+        {
+          "json_pointer": "/sources/974",
+          "value": "../../../node_modules/.pnpm/uuid@14.0.0/node_modules/uuid/dist/stringify.js"
+        },
+        {
+          "json_pointer": "/sources/990",
+          "value": "../../../node_modules/.pnpm/d3-array@2.12.1/node_modules/d3-array/src/max.js"
+        },
+        {
+          "json_pointer": "/sources/994",
+          "value": "../../../node_modules/.pnpm/d3-sankey@0.12.3/node_modules/d3-sankey/src/align.js"
+        },
+        {
+          "json_pointer": "/sources/997",
+          "value": "../../../node_modules/.pnpm/d3-path@1.0.9/node_modules/d3-path/src/path.js"
+        },
+        {
+          "json_pointer": "/sources/999",
+          "value": "../../../node_modules/.pnpm/d3-shape@1.3.7/node_modules/d3-shape/src/constant.js"
+        },
+        {
+          "json_pointer": "/sources/1039",
+          "value": "../../../node_modules/.pnpm/layout-base@2.0.1/node_modules/layout-base/layout-base.js"
+        },
+        {
+          "json_pointer": "/sources/1040",
+          "value": "../../../node_modules/.pnpm/cose-base@2.2.0/node_modules/cose-base/cose-base.js"
+        },
+        {
+          "json_pointer": "/sources/1041",
+          "value": "../../../node_modules/.pnpm/cytoscape-fcose@2.2.0_cytoscape@3.34.0/node_modules/cytoscape-fcose/cytoscape-fcose.js"
+        },
+        {
+          "json_pointer": "/sources/1061",
+          "value": "../../../node_modules/.pnpm/@upsetjs+venn.js@2.0.0/node_modules/@upsetjs/venn.js/build/venn.esm.js"
+        },
+        {
+          "json_pointer": "/sources/1138",
+          "value": "../../../node_modules/.pnpm/stylis@4.3.6/node_modules/stylis/src/Enum.js"
+        }
+      ]
+    },
+    {
+      "id": "markdown-it-sourcemap",
+      "source_url": "https://registry.npmjs.org/markdown-it/-/markdown-it-14.3.2.tgz",
+      "source_path": "package/dist/markdown-it.min.js.map",
+      "source_sha256": "a77cc4205cff5bcb62a4b384cdac5e3c7a2920a88b665842629467319cb09e73",
+      "observations": [
+        {
+          "json_pointer": "/sources/0",
+          "value": "../node_modules/mdurl/lib/decode.mjs"
+        },
+        {
+          "json_pointer": "/sources/1",
+          "value": "../node_modules/mdurl/lib/encode.mjs"
+        },
+        {
+          "json_pointer": "/sources/2",
+          "value": "../node_modules/mdurl/lib/format.mjs"
+        },
+        {
+          "json_pointer": "/sources/3",
+          "value": "../node_modules/mdurl/lib/parse.mjs"
+        },
+        {
+          "json_pointer": "/sources/4",
+          "value": "../node_modules/mdurl/index.mjs"
+        },
+        {
+          "json_pointer": "/sources/5",
+          "value": "../node_modules/uc.micro/properties/Any/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/6",
+          "value": "../node_modules/uc.micro/categories/Cc/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/7",
+          "value": "../node_modules/uc.micro/categories/Cf/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/8",
+          "value": "../node_modules/uc.micro/categories/P/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/9",
+          "value": "../node_modules/uc.micro/categories/S/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/10",
+          "value": "../node_modules/uc.micro/categories/Z/regex.mjs"
+        },
+        {
+          "json_pointer": "/sources/11",
+          "value": "../node_modules/uc.micro/index.mjs"
+        },
+        {
+          "json_pointer": "/sources/12",
+          "value": "../node_modules/entities/lib/esm/generated/decode-data-html.js"
+        },
+        {
+          "json_pointer": "/sources/13",
+          "value": "../node_modules/entities/lib/esm/generated/decode-data-xml.js"
+        },
+        {
+          "json_pointer": "/sources/14",
+          "value": "../node_modules/entities/lib/esm/decode_codepoint.js"
+        },
+        {
+          "json_pointer": "/sources/15",
+          "value": "../node_modules/entities/lib/esm/decode.js"
+        },
+        {
+          "json_pointer": "/sources/64",
+          "value": "../node_modules/linkify-it/lib/re.mjs"
+        },
+        {
+          "json_pointer": "/sources/65",
+          "value": "../node_modules/linkify-it/index.mjs"
+        },
+        {
+          "json_pointer": "/sources/66",
+          "value": "../node_modules/punycode.js/punycode.es6.js"
+        }
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "boolbase-license-body",
+      "status": "resolved-source-recovered",
+      "details": "Recovered the literal ISC LICENSE from upstream commit be0bcd8a4e917a0a5895e95b523fbbed05a64871 (2015-10-14). Its index.js is byte-identical to the complete executable member of boolbase 1.0.0 npm tarball (Git blob 8799fd95dbe31a85c48b956eb19f3625da9f8fb1). The commit still declares version 1.0.0 and ISC; package.json differs in scripts and is not claimed byte-identical. This is a later upstream license addition, not a file in the original npm tarball or proof of Markmap bundle inclusion. Both original metadata and recovered grant are retained."
+    },
+    {
+      "id": "katex-react-adaptation",
+      "status": "open",
+      "details": "KaTeX 0.16.21 and 0.16.47 dist/katex.mjs explicitly attribute hyphenate and escape adaptations to Facebook React under Apache 2. The literal comment is retained with byte ranges for both versions. Their npm packages contain only the top-level MIT LICENSE. The exact adapted React revision, corresponding copyright and complete applicable notices have not been established; the comment alone does not close that chain."
+    },
+    {
+      "id": "recursive-prebundle-attributions",
+      "status": "open",
+      "details": "All 60 versioned package locators in Mermaid 11.17.2 sourcemap have primary license texts. Nested prebundles such as roughjs, Cytoscape, KaTeX and d3-delaunay can inline further origins not exposed as separate sourcemap packages. No complete recursive inventory or legal clearance is asserted. roughjs locator retains the upstream patch hash; 664 source contents match exact npm members, 11 marked TypeScript members are absent from its published tarball."
+    },
+    {
+      "id": "d3-build-attestation",
+      "status": "open",
+      "details": "D3 7.8.5 dependency versions are taken from its v7.8.5 yarn.lock, not semver ranges. Several package source fragments match its unminified dist member. No full source-to-minified rebuild or release attestation proves every locked package was embedded."
+    },
+    {
+      "id": "markmap-build-attestation",
+      "status": "open",
+      "details": "Markmap 0.17.2 published package.json gitHead bbeec32d0efeea4e36755b1909a5993187264487 identifies an upstream pnpm lockfile. Collected candidate dependency licenses are a conservative superset; the tarballs lack sourcemaps and a full rebuild has not established exact inclusion of every candidate. d3-flextree 2.1.2 is explicit; its d3-hierarchy 1.1.9 comes from the release lock. Browser view uses global d3; lib uses global katex."
+    },
+    {
+      "id": "jsx-dom-isc-mit-conflict",
+      "status": "documented-upstream-conflict",
+      "details": "MIT LICENSE in @gera2ld/jsx-dom 2.2.2 tarball matches byte-for-byte tag v2.2.2 commit 9f9660e94280e642ee6ba8e644a3f2cd8903f7e1/LICENSE; both package.json sources and bundle banners say ISC. For this distribution retain the explicit MIT grant and ISC declarations, without claiming upstream dual licensing or legal resolution. Upstream correction remains outstanding."
+    },
+    {
+      "id": "cytoscape-embedded-source-chain",
+      "status": "open",
+      "details": "Cytoscape 3.34.0 exact dist member matches the Mermaid source content. Retained its MIT text and literal Thenable/Ralf Engelschall, jQuery events, Gaetan Renaudeau Bezier, Koen Bok Framer and Gerardo Huck CoSE attributions with byte ranges. The adapted jQuery/Bezier/Framer excerpts do not identify immutable upstream revisions; no invented package version or fabricated copyright/license pairing closes that chain."
+    },
+    {
+      "id": "dompurify-in-place-residual-advisory",
+      "status": "open",
+      "details": "Mermaid 11.17.2 embeds DOMPurify 3.4.12, covered by GHSA-55q2-fjhq-7xh7 (patched 3.4.13). The same dependency was observed in Mermaid 12.0.0; no custom bundle substitution is made. Advisory requires IN_PLACE plus an element-removal hook; applicability/exploitability in AI Docs has not been established."
+    },
+    {
+      "id": "markmap-embedded-markdown-it-advisories",
+      "status": "open",
+      "details": "Markmap 0.17.2 embeds markdown-it code and its release gitHead locks 14.1.0, covered by GHSA-6v5v-wf23-fmfq, GHSA-253c-mchw-3w2r and GHSA-r7fv-28h4-cvq7. Markmap 0.18.12 latest release gitHead also locks 14.1.0, so an unrelated upgrade would not close this. No custom patch to published bundles. Direct markdown-it vendor is 14.3.2; that does not replace Markmap internal parser."
+    }
+  ]
+}

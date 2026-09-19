@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "generatedBy": "scripts/build-component-index.js",
+  "components": [
+    {
+      "component": "echarts",
+      "title": "ECharts",
+      "summary": "用 JSON option 绘制定量数据图，并在构建期生成亮暗静态 SVG。",
+      "aliases": [
+        "数据图",
+        "柱状图",
+        "折线图",
+        "饼图",
+        "散点图",
+        "雷达图"
+      ],
+      "documents": [
+        {
+          "path": "echarts/index.md",
+          "purpose": "ECharts 静态 SSR、JSON 约束与图表选型",
+          "keywords": [
+            "echarts",
+            "数据可视化",
+            "json",
+            "ssr"
+          ]
+        },
+        {
+          "path": "echarts/bar-line.md",
+          "purpose": "类别比较、时间趋势和柱线组合",
+          "keywords": [
+            "bar",
+            "line",
+            "柱状图",
+            "折线图",
+            "趋势",
+            "比较"
+          ]
+        },
+        {
+          "path": "echarts/pie.md",
+          "purpose": "少量类别的占比和构成",
+          "keywords": [
+            "pie",
+            "饼图",
+            "占比",
+            "构成"
+          ]
+        },
+        {
+          "path": "echarts/scatter.md",
+          "purpose": "二维关系、分布和异常值",
+          "keywords": [
+            "scatter",
+            "散点图",
+            "相关",
+            "分布",
+            "异常值"
+          ]
+        },
+        {
+          "path": "echarts/radar.md",
+          "purpose": "多个同量纲或已归一化指标的画像比较",
+          "keywords": [
+            "radar",
+            "雷达图",
+            "多维",
+            "画像"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "katex",
+      "title": "KaTeX",
+      "summary": "在 Markdown 中排版行内和块级数学公式。",
+      "aliases": [
+        "公式",
+        "数学",
+        "latex",
+        "方程"
+      ],
+      "documents": [
+        {
+          "path": "katex/index.md",
+          "purpose": "KaTeX 作用概述、行内与块级选择",
+          "keywords": [
+            "katex",
+            "公式",
+            "latex"
+          ]
+        },
+        {
+          "path": "katex/formulas.md",
+          "purpose": "方程、分式、矩阵、积分和求和示例",
+          "keywords": [
+            "方程",
+            "分式",
+            "矩阵",
+            "积分",
+            "求和"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "layouts",
+      "title": "Layouts and Markdown",
+      "summary": "使用受限分栏、代码块和表格组织图文内容，并保持响应式与打印完整。",
+      "aliases": [
+        "columns",
+        "分栏",
+        "代码块",
+        "表格",
+        "布局"
+      ],
+      "documents": [
+        {
+          "path": "layouts/index.md",
+          "purpose": "布局与标准 Markdown 内容概述",
+          "keywords": [
+            "layout",
+            "markdown",
+            "布局"
+          ]
+        },
+        {
+          "path": "layouts/columns.md",
+          "purpose": "2-4 列并排比较、移动端和打印行为",
+          "keywords": [
+            "columns",
+            "分栏",
+            "并列",
+            "对比"
+          ]
+        },
+        {
+          "path": "layouts/code-and-tables.md",
+          "purpose": "代码高亮、复制、折叠和表格使用方法",
+          "keywords": [
+            "代码",
+            "code",
+            "table",
+            "表格",
+            "collapse"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "markmap",
+      "title": "Markmap",
+      "summary": "把 Markdown 标题和列表绘制为可缩放思维导图，表达知识树和主题分解。",
+      "aliases": [
+        "mindmap",
+        "思维导图",
+        "知识树",
+        "提纲"
+      ],
+      "documents": [
+        {
+          "path": "markmap/index.md",
+          "purpose": "Markmap 作用概述、边界和运行时特性",
+          "keywords": [
+            "markmap",
+            "mindmap",
+            "思维导图",
+            "知识树"
+          ]
+        },
+        {
+          "path": "markmap/hierarchy.md",
+          "purpose": "层级规划、标题列表组合和安全写法",
+          "keywords": [
+            "层级",
+            "提纲",
+            "模块分解",
+            "hierarchy"
+          ]
+        }
+      ]
+    },
+    {
+      "component": "mermaid",
+      "title": "Mermaid",
+      "summary": "用文本语法绘制流程、依赖、调用关系、分组拓扑、时序、甘特、ER、饼图和状态图，适合与 Markdown 一起维护。",
+      "aliases": [
+        "流程图",
+        "依赖图",
+        "拓扑图",
+        "调用图",
+        "网络图",
+        "时序图",
+        "甘特图",
+        "ER 图",
+        "状态图",
+        "简单饼图"
+      ],
+      "documents": [
+        {
+          "path": "mermaid/index.md",
+          "purpose": "Mermaid 作用概述、选型与通用规则",
+          "keywords": [
+            "mermaid",
+            "overview",
+            "选型"
+          ]
+        },
+        {
+          "path": "mermaid/flowchart.md",
+          "purpose": "步骤、分支、审批、数据流、服务依赖、调用关系和分组拓扑",
+          "keywords": [
+            "flowchart",
+            "流程",
+            "分支",
+            "审批",
+            "数据流",
+            "依赖",
+            "拓扑",
+            "调用",
+            "subgraph",
+            "network"
+          ]
+        },
+        {
+          "path": "mermaid/sequence.md",
+          "purpose": "调用顺序、协议交互和异步消息",
+          "keywords": [
+            "sequence",
+            "时序",
+            "调用",
+            "消息",
+            "participant"
+          ]
+        },
+        {
+          "path": "mermaid/gantt.md",
+          "purpose": "项目计划、阶段、日期和任务依赖",
+          "keywords": [
+            "gantt",
+            "甘特",
+            "计划",
+            "日期",
+            "里程碑"
+          ]
+        },
+        {
+          "path": "mermaid/er.md",
+          "purpose": "数据库实体、字段、主外键和基数关系",
+          "keywords": [
+            "er",
+            "实体关系",
+            "数据库",
+            "主键",
+            "外键"
+          ]
+        },
+        {
+          "path": "mermaid/pie.md",
+          "purpose": "少量类别的整体占比",
+          "keywords": [
+            "pie",
+            "饼图",
+            "比例",
+            "占比"
+          ]
+        },
+        {
+          "path": "mermaid/state.md",
+          "purpose": "对象生命周期、状态和迁移条件",
+          "keywords": [
+            "state",
+            "状态",
+            "生命周期",
+            "迁移"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "output": {
+    "mode": "single"
+  },
+  "resources": {
+    "directory": "static"
+  },
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "open": false
+  },
+  "theme": "auto",
+  "contentWidth": 80,
+  "toc": true,
+  "tocLayout": "right",
+  "tocWidth": 20,
+  "visualWidth": 960,
+  "visualHeight": 520,
+  "codeTools": true,
+  "codeCollapse": false,
+  "chartTools": true,
+  "sourceToggle": true,
+  "chartExport": true,
+  "print": true,
+  "themeControl": true,
+  "markmapColors": {
+    "light": ["#0077b6", "#00b4d8", "#48cae4", "#90e0ef", "#023e8a", "#0096c7"],
+    "dark": ["#a78bfa", "#8b5cf6", "#c4b5fd", "#ddd6fe", "#6d28d9", "#7e22ce"]
+  },
+  "strict": true,
+  "mermaidSecurity": "strict"
+}

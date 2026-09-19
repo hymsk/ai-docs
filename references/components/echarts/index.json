@@ -1,0 +1,13 @@
+{
+  "component": "echarts",
+  "title": "ECharts",
+  "summary": "用 JSON option 绘制定量数据图，并在构建期生成亮暗静态 SVG。",
+  "aliases": ["数据图", "柱状图", "折线图", "饼图", "散点图", "雷达图"],
+  "documents": [
+    {"path": "index.md", "purpose": "ECharts 静态 SSR、JSON 约束与图表选型", "keywords": ["echarts", "数据可视化", "json", "ssr"]},
+    {"path": "bar-line.md", "purpose": "类别比较、时间趋势和柱线组合", "keywords": ["bar", "line", "柱状图", "折线图", "趋势", "比较"]},
+    {"path": "pie.md", "purpose": "少量类别的占比和构成", "keywords": ["pie", "饼图", "占比", "构成"]},
+    {"path": "scatter.md", "purpose": "二维关系、分布和异常值", "keywords": ["scatter", "散点图", "相关", "分布", "异常值"]},
+    {"path": "radar.md", "purpose": "多个同量纲或已归一化指标的画像比较", "keywords": ["radar", "雷达图", "多维", "画像"]}
+  ]
+}

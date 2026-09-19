@@ -1,0 +1,37 @@
+# Example only. Prefer `web-mcp-manager.py install --scope system`, which
+# derives these paths from the validated configuration.
+#
+# Schema v2 storage: the library lives under private/library; its public/
+# subdirectory is the publish target rendered live at /docs/.
+# ReadWritePaths below assumes preview.write_back=true (workspace + whole
+# library writable). With preview.write_back=false the generated unit keeps
+# the private library read-only via ReadOnlyPaths and grants write access to
+# the public/ subtree only.
+[Unit]
+Description=AI Docs Web publisher and MCP service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=ai-docs
+Group=ai-docs
+WorkingDirectory=/var/cache/ai-docs-web/workspace
+EnvironmentFile=/etc/ai-docs-web/service.env
+Environment=AI_DOCS_NODE=/usr/bin/node
+ExecStart=/usr/bin/python3 /opt/ai-docs-web/runtime/source/ai_docs_web.py serve
+Restart=on-failure
+RestartSec=3s
+TimeoutStopSec=30s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/opt/ai-docs-web/runtime
+ReadWritePaths=/var/cache/ai-docs-web/workspace /var/lib/ai-docs-web/private/library
+RestrictSUIDSGID=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+[Install]
+WantedBy=multi-user.target
