@@ -75,10 +75,18 @@ try {
   assert.match(fenceVariantsHtml, /"markmap-lib": "0\.17\.2"/, '波浪线 Markmap 应加载 Markmap');
   assert.match(fenceVariantsHtml, /KaTeX parse error/, '含空白的公式应加载 KaTeX');
   const unsupportedTildeDot = write('unsupported-tilde-dot.md', '~~~dot\ndigraph G { A -> B }\n~~~\n');
-  assertFailure(run(['--input', unsupportedTildeDot, '--output', path.join(tempDir, 'unsupported-tilde-dot.html')]), /unsupported-tilde-dot\.md:1: 不支持 dot\/graphviz 图表代码块/, '波浪线 dot fence 必须明确失败');
+  const unsupportedTildeDotOutput = path.join(tempDir, 'unsupported-tilde-dot.html');
+  const tildeDotBuild = run(['--input', unsupportedTildeDot, '--output', unsupportedTildeDotOutput]);
+  assertSuccess(tildeDotBuild, '波浪线 dot fence 应降级为代码块');
+  assert.match(tildeDotBuild.stderr, /unsupported-tilde-dot\.md:1: 不支持 dot\/graphviz 图表代码块/, '波浪线 dot 降级必须给出明确警告');
+  assert.match(fs.readFileSync(unsupportedTildeDotOutput, 'utf8'), /"1":\{"language":"dot"/, '波浪线 dot 应内嵌降级数据');
 
   const unsafeTildeMarkmap = write('unsafe-tilde-markmap.md', '~~~markmap\n# Root\n<img src=x onerror=alert(1)>\n~~~\n');
-  assertFailure(run(['--input', unsafeTildeMarkmap, '--output', path.join(tempDir, 'unsafe-tilde.html')]), /Markmap 源码不能包含原始 HTML/, '波浪线 Markmap 不能绕过原始 HTML 校验');
+  const unsafeTildeOutput = path.join(tempDir, 'unsafe-tilde.html');
+  const unsafeTildeBuild = run(['--input', unsafeTildeMarkmap, '--output', unsafeTildeOutput]);
+  assertSuccess(unsafeTildeBuild, '波浪线 Markmap 原始 HTML 应降级为代码块');
+  assert.match(unsafeTildeBuild.stderr, /unsafe-tilde-markmap\.md:1: Markmap 源码不能包含原始 HTML/, '波浪线 Markmap 降级必须给出明确警告');
+  assert.match(fs.readFileSync(unsafeTildeOutput, 'utf8'), /"1":\{"language":"markmap"/, '波浪线 Markmap 应内嵌降级数据');
 
   const nestedFences = write('nested-fences.md', '# Nested\n\n> ~~~mermaid\n> flowchart LR\n>   A --> B\n> ~~~\n\n- Item\n\n  ~~~javascript\n  console.log(1);\n  ~~~\n');
   const nestedFencesOutput = path.join(tempDir, 'nested-fences.html');
@@ -87,10 +95,18 @@ try {
   assert.match(nestedFencesHtml, /__esbuild_esm_mermaid/, 'blockquote Mermaid 应加载 Mermaid');
   assert.match(nestedFencesHtml, /Highlight\.js v11\.11\.1/, '列表内普通代码 fence 应加载 Highlight.js');
   const unsupportedQuotedGraphviz = write('unsupported-quoted-graphviz.md', '# Nested\n\n> ~~~graphviz\n> digraph Nested { A -> B }\n> ~~~\n');
-  assertFailure(run(['--input', unsupportedQuotedGraphviz, '--output', path.join(tempDir, 'unsupported-quoted-graphviz.html')]), /unsupported-quoted-graphviz\.md:3: 不支持 dot\/graphviz 图表代码块/, 'blockquote graphviz fence 必须明确失败');
+  const quotedGraphvizOutput = path.join(tempDir, 'unsupported-quoted-graphviz.html');
+  const quotedGraphvizBuild = run(['--input', unsupportedQuotedGraphviz, '--output', quotedGraphvizOutput]);
+  assertSuccess(quotedGraphvizBuild, 'blockquote graphviz fence 应降级为代码块');
+  assert.match(quotedGraphvizBuild.stderr, /unsupported-quoted-graphviz\.md:3: 不支持 dot\/graphviz 图表代码块/, 'blockquote graphviz 降级必须给出明确警告');
+  assert.match(fs.readFileSync(quotedGraphvizOutput, 'utf8'), /"3":\{"language":"graphviz"/, 'blockquote graphviz 应内嵌降级数据');
 
   const unsafeQuotedMarkmap = write('unsafe-quoted-markmap.md', '> ~~~markmap\n> # Root <img src=x onerror=alert(1)>\n> ~~~\n');
-  assertFailure(run(['--input', unsafeQuotedMarkmap, '--output', path.join(tempDir, 'unsafe-quoted.html')]), /Markmap 源码不能包含原始 HTML/, 'blockquote Markmap 不能绕过原始 HTML 校验');
+  const unsafeQuotedOutput = path.join(tempDir, 'unsafe-quoted.html');
+  const unsafeQuotedBuild = run(['--input', unsafeQuotedMarkmap, '--output', unsafeQuotedOutput]);
+  assertSuccess(unsafeQuotedBuild, 'blockquote Markmap 原始 HTML 应降级为代码块');
+  assert.match(unsafeQuotedBuild.stderr, /unsafe-quoted-markmap\.md:1: Markmap 源码不能包含原始 HTML/, 'blockquote Markmap 降级必须给出明确警告');
+  assert.match(fs.readFileSync(unsafeQuotedOutput, 'utf8'), /"1":\{"language":"markmap"/, 'blockquote Markmap 应内嵌降级数据');
 
   const multiOutputDir = path.join(tempDir, 'multi');
   assertSuccess(run([

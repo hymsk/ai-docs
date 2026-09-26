@@ -116,7 +116,7 @@ python3 <SKILL_DIR>/scripts/web-mcp-manager.py start
 
 Markdown、表格、代码高亮与复制、折叠；Mermaid 各类图、ECharts 静态数据图、Markmap 思维导图、KaTeX 公式；2-4 列分栏、目录、亮暗主题、图表缩放与 SVG/PNG 导出、浏览器原生打印；ECharts 构建期严格校验。编写方法见 [创作指南](references/authoring-guide.md) 与 [组件目录](references/components/index.json)。
 
-ECharts 当前是静态 SSR（无 tooltip/点击交互）；PDF 由浏览器打印生成。不内置 Graphviz，`dot`/`graphviz` fence 会被拒绝并提示迁移为 Mermaid flowchart。
+ECharts 当前是静态 SSR（无 tooltip/点击交互）；PDF 由浏览器打印生成。不内置 Graphviz，`dot`/`graphviz` fence 会降级为普通代码块（表头带警示标识，悬浮显示原因）而不让构建失败，请迁移为 Mermaid flowchart。
 
 ## 文档
 

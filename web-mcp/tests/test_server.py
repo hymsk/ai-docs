@@ -670,7 +670,7 @@ class AiDocsServerTest(unittest.TestCase):
         self.assertEqual(finite_status, 400)
         self.assertEqual(json.loads(finite_payload)["error"]["code"], -32700)
 
-    def test_graphviz_fence_is_rejected_without_exposing_temporary_paths(self):
+    def test_graphviz_fence_degrades_to_code_block_without_exposing_temporary_paths(self):
         cookie = self.preview_cookie()
         body = json.dumps({
             "path": "graph.md",
@@ -679,12 +679,12 @@ class AiDocsServerTest(unittest.TestCase):
 
         status, payload, unused_headers = self.request("POST", "/preview/api/render", body, headers=cookie)
 
-        error = json.loads(payload)["error"]
-        self.assertEqual(status, 422)
-        self.assertEqual(error["code"], "render_failed")
-        self.assertIn("graph.md:3: 不支持 dot/graphviz 图表代码块", error["message"])
-        self.assertNotIn(str(self.library), error["message"])
-        self.assertNotIn(".ai-docs-preview-", error["message"])
+        rendered = json.loads(payload)["html"]
+        self.assertEqual(status, 200)
+        self.assertIn("graph.md:3: 不支持 dot/graphviz 图表代码块", rendered)
+        self.assertIn("code-chart-badge", rendered)
+        self.assertNotIn(str(self.library), rendered)
+        self.assertNotIn(".ai-docs-preview-", rendered)
 
     def test_opencode_legacy_streamable_http_sequence(self):
         initialize = {
@@ -1251,7 +1251,7 @@ class AiDocsServerTest(unittest.TestCase):
         self.assertEqual(preview_status, 429, preview_payload)
         self.assertEqual(preview_headers["retry-after"], "2")
 
-        failed = json.dumps({"path": "bad.md", "markdown": "```dot\ndigraph G {}\n```\n"}).encode("utf-8")
+        failed = json.dumps({"path": "bad.md", "markdown": "```echarts\n{invalid}\n```\n"}).encode("utf-8")
         failed_status, unused_payload, unused_headers = self.request(
             "POST", "/preview/api/render", failed, headers=cookie
         )

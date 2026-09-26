@@ -116,7 +116,7 @@ Uninstalling does not remove generated HTML artifacts, library data, or deployme
 
 Markdown, tables, code highlighting and copy, folding; Mermaid diagrams of all kinds, static ECharts, Markmap mind maps, KaTeX math; restricted 2–4 column layouts, table of contents, light/dark themes, diagram zoom and SVG/PNG export, native browser printing; strict build-time ECharts validation. Authoring details: [authoring guide](references/authoring-guide.md) and the [component catalog](references/components/index.json).
 
-ECharts output is currently static SSR (no tooltips or click interactions); PDFs come from browser printing. Graphviz is not bundled — `dot`/`graphviz` fences are rejected with a migration hint to Mermaid flowchart.
+ECharts output is currently static SSR (no tooltips or click interactions); PDFs come from browser printing. Graphviz is not bundled — `dot`/`graphviz` fences degrade to plain code blocks with a warning badge in the header (hover for the reason) instead of failing the build; migrate them to Mermaid flowchart.
 
 ## Documentation
 

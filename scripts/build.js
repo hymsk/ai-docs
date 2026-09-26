@@ -995,9 +995,9 @@ function markmapContainsRawHtml(source) {
   return false;
 }
 
-function assertSafeMarkmapSource(source, line) {
+function assertSafeMarkmapSource(source) {
   if (markmapContainsRawHtml(source)) {
-    throw new Error(`${inputFile}:${line}: Markmap 源码不能包含原始 HTML。`);
+    throw new Error('Markmap 源码不能包含原始 HTML。');
   }
 }
 
@@ -1009,38 +1009,73 @@ function visualDimensions(width, height, source) {
   };
 }
 
-function validateVisualFenceOptions(markdown) {
+// 内容级图表问题不再让整个文档构建失败：这些 fence 会降级为普通代码块，
+// 并把原因交给客户端在代码块表头展示（警示标识 + 悬浮提示）。
+// 输入/配置/资源等基础设施错误仍然 fail()，与图表降级互不影响。
+function collectDegradedFences() {
+  const degraded = {};
+  const warnings = [];
+  const lines = new Set();
+  const name = path.basename(inputFile);
+
+  const record = function(line, language, detail) {
+    if (degraded[line]) return;
+    const message = `${name}:${line}: ${detail}`;
+    degraded[line] = { language, message };
+    lines.add(line);
+    warnings.push(`${message}（已降级为代码块展示）`);
+  };
+
   fenceTokens(parsedMarkdownTokens).forEach(function(token) {
     const visual = visualFence(token);
     if (!visual) return;
-    const option = visual.option;
-    if (!option) return;
-    const size = option.match(/^size=(\d+)x(\d+)$/i);
     const line = token.map ? token.map[0] + 1 : 1;
-    if (!size) {
-      fail(`${inputFile}:${line}: 图表代码块只支持 size=<宽>x<高> 参数。`);
+    const context = `${name}:${line}`;
+
+    if (visual.kind === 'dot' || visual.kind === 'graphviz') {
+      record(line, visual.kind, '不支持 dot/graphviz 图表代码块；AI Docs 不再内置 Graphviz，请改用 Mermaid flowchart。');
+      return;
     }
-    visualDimensions(size[1], size[2], `${inputFile}:${line}`);
+
+    if (visual.option) {
+      const size = visual.option.match(/^size=(\d+)x(\d+)$/i);
+      if (!size) {
+        record(line, visual.kind, '图表代码块只支持 size=<宽>x<高> 参数。');
+        return;
+      }
+      try {
+        visualDimensions(size[1], size[2], context);
+      } catch (error) {
+        const raw = String((error && error.message) || error);
+        const detail = raw.startsWith(context)
+          ? raw.slice(context.length).replace(/^\s*的\s*/, '').replace(/^(图表宽度|图表高度)\s+/, '$1')
+          : raw;
+        record(line, visual.kind, detail);
+        return;
+      }
+    }
+
+    if (visual.kind === 'markmap' || visual.kind === 'mindmap') {
+      try {
+        assertSafeMarkmapSource(token.content);
+      } catch (error) {
+        record(line, visual.kind, String((error && error.message) || error));
+      }
+    }
   });
+
+  return { degraded, warnings, lines };
 }
 
-function rejectUnsupportedGraphvizFences() {
-  fenceTokens(parsedMarkdownTokens).forEach(function(token) {
-    const visual = visualFence(token);
-    if (!visual || (visual.kind !== 'dot' && visual.kind !== 'graphviz')) return;
-    const line = token.map ? token.map[0] + 1 : 1;
-    fail(`${inputFile}:${line}: 不支持 dot/graphviz 图表代码块；AI Docs 不再内置 Graphviz，请改用 Mermaid flowchart。`);
-  });
-}
-
-async function preRenderStaticCharts(markdown) {
+async function preRenderStaticCharts(markdown, degradedLines) {
   let index = 0;
   let echartsRenderer = null;
   const blocks = {};
   const failures = [];
   const fences = fenceTokens(parsedMarkdownTokens).filter(function(token) {
     const visual = visualFence(token);
-    return visual && visual.kind === 'echarts';
+    if (!visual || visual.kind !== 'echarts') return false;
+    return !degradedLines.has(token.map ? token.map[0] + 1 : 1);
   });
 
   for (const token of fences) {
@@ -1098,15 +1133,6 @@ async function preRenderStaticCharts(markdown) {
   return { markdown, blocks, warnings: failures };
 }
 
-function validateMarkmapSources(markdown) {
-  fenceTokens(parsedMarkdownTokens).forEach(function(token) {
-    const visual = visualFence(token);
-    if (visual && (visual.kind === 'markmap' || visual.kind === 'mindmap')) {
-      assertSafeMarkmapSource(token.content, token.map ? token.map[0] + 1 : 1);
-    }
-  });
-}
-
 function bootstrapTheme(configuredTheme) {
   var storageKey = 'ai-docs-theme';
   var theme = configuredTheme;
@@ -1120,7 +1146,7 @@ function bootstrapTheme(configuredTheme) {
   document.documentElement.setAttribute('data-theme-preference', theme);
 }
 
-function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, title) {
+function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, title, degradedFences) {
   'use strict';
 
   // 构建期预渲染不改动 Markdown 原文，渲染输入与下载源是同一份内容，
@@ -1238,7 +1264,8 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
       minimize: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3m8-5a2 2 0 0 1 2-2h3"></path></svg>',
       sun: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"></path></svg>',
       moon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 14.2A8.6 8.6 0 0 1 9.8 3.4a8.6 8.6 0 1 0 10.8 10.8z"></path></svg>',
-      themeAuto: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"></circle><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"></path></svg>'
+      themeAuto: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6"></circle><path d="M12 3.4a8.6 8.6 0 0 1 0 17.2z" fill="currentColor" stroke="none"></path></svg>',
+      warning: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4.2 21 19.8H3z"></path><path d="M12 10v4.1"></path><path d="M12 17.3h.01"></path></svg>'
     };
     return icons[name] || '';
   }
@@ -1577,6 +1604,19 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     var infoMatch = info.match(/^(mermaid|markmap|mindmap|echarts)(?:\s+size=(\d+)x(\d+))?$/);
     var content = token.content;
 
+    // 构建期判定为不可渲染的图表 fence：按普通代码块输出，并带上原因，
+    // 由 enhanceCodeBlocks 在表头加警示标识与悬浮提示。
+    var degradedEntry = degradedFences && degradedFences[token.map ? token.map[0] + 1 : 0];
+    if (degradedEntry) {
+      var degradedHtml = defaultFence(tokens, index, rendererOptions, env, self);
+      var codeAt = degradedHtml.indexOf('<code');
+      if (codeAt === -1) return degradedHtml;
+      var language = degradedEntry.language || info.split(/\s+/)[0] || 'text';
+      var degradedAttributes = ' data-visual-error="' + escapeHtml(degradedEntry.message) +
+        '" data-visual-language="' + escapeHtml(language) + '"';
+      return degradedHtml.slice(0, codeAt + 5) + degradedAttributes + degradedHtml.slice(codeAt + 5);
+    }
+
     if (infoMatch && infoMatch[1] === 'mermaid') {
       var mermaidId = 'mermaid-' + mermaidBlocks.length;
       mermaidBlocks.push({
@@ -1704,11 +1744,22 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
 
       var toolbar = document.createElement('div');
       toolbar.className = 'code-toolbar';
+      var visualError = code.getAttribute('data-visual-error');
+      if (visualError) {
+        // 图表降级为代码块：表头加警示标识，悬浮显示构建期记录的原因。
+        var badge = document.createElement('span');
+        badge.className = 'code-chart-badge';
+        badge.innerHTML = iconSvg('warning') + '<span>图表</span>';
+        badge.title = visualError;
+        badge.setAttribute('aria-label', '图表未渲染，已按代码块展示：' + visualError);
+        toolbar.appendChild(badge);
+      }
       if (settings.codeTools) {
         var label = document.createElement('span');
         label.className = 'code-language';
+        var visualLanguage = code.getAttribute('data-visual-language');
         var languageMatch = code.className.match(/(?:^|\s)language-([^\s]+)/);
-        label.textContent = languageMatch ? languageMatch[1] : 'text';
+        label.textContent = visualLanguage || (languageMatch ? languageMatch[1] : 'text');
         toolbar.appendChild(label);
         var copy = addIconButton(toolbar, 'copy', '复制代码', function() {
           copyText(code.textContent).then(function() {
@@ -2871,10 +2922,10 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
 }
 
 async function main() {
-  rejectUnsupportedGraphvizFences();
-  validateVisualFenceOptions(sourceMarkdown);
-  validateMarkmapSources(sourceMarkdown);
-  const preparedMarkdown = await preRenderStaticCharts(sourceMarkdown);
+  const degradedFences = collectDegradedFences();
+  const preparedMarkdown = await preRenderStaticCharts(sourceMarkdown, degradedFences.lines);
+  preparedMarkdown.warnings = degradedFences.warnings.concat(preparedMarkdown.warnings);
+  preparedMarkdown.degraded = degradedFences.degraded;
   const markdownContent = preparedMarkdown.markdown;
   const resourceMarkup = buildResourceMarkup(selectedResources, resourceManifest);
   const html = `<!DOCTYPE html>
@@ -3019,6 +3070,9 @@ pre code { display: block; padding: 1em 1.2em; border-radius: 0; border: 0; back
 .code-block pre { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
 .code-toolbar { display: flex; align-items: center; gap: 0.5rem; min-height: 2.2rem; padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--border); background: var(--bg-code); }
   .code-language { margin-right: auto; color: var(--text2); font-family: var(--mono); font-size: 0.76rem; }
+  .code-chart-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.05rem 0.42rem; border: 1px solid #d97706; border-radius: var(--radius-sm); background: #fef3c7; color: #92400e; font-size: 0.72rem; line-height: 1.55; cursor: help; white-space: nowrap; }
+  .code-chart-badge svg { width: 0.85rem; height: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+html[data-theme="dark"] .code-chart-badge { border-color: #a16207; background: #3b2f0b; color: #fbbf24; }
   .icon-button { display: inline-flex; align-items: center; justify-content: center; width: 2rem; min-width: 2rem; padding: 0.25rem; }
   .icon-button svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .code-block.is-collapsed pre { display: none; }
@@ -3151,7 +3205,7 @@ body.visual-maximized-open { overflow: hidden; }
 <div class="viewer-layout" id="viewer-layout"><main class="container" id="content"></main><aside class="toc-panel" id="toc-panel" aria-label="文档目录" aria-hidden="true"><div class="toc-title">目录</div><nav id="toc-content"></nav></aside></div>
 ${licenseMarkup()}
 ${resourceMarkup.scripts}
-<script>(${clientRuntime.toString()})(${scriptJson(markdownContent)}, ${scriptJson(sourceDownloadName)}, ${scriptJson(preparedMarkdown.blocks)}, ${scriptJson(options)}, ${scriptJson(title)});</script>
+<script>(${clientRuntime.toString()})(${scriptJson(markdownContent)}, ${scriptJson(sourceDownloadName)}, ${scriptJson(preparedMarkdown.blocks)}, ${scriptJson(options)}, ${scriptJson(title)}, ${scriptJson(preparedMarkdown.degraded)});</script>
 </body>
 </html>`;
 

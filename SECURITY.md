@@ -7,7 +7,7 @@
 ## Security Model
 
 - 构建器及内置脚本/样式不依赖 CDN；资源清单拒绝远程 URL。但 Markdown 图片可以引用远程地址，独立 HTML 打开后可能请求它们。对不可信 Markdown，发布或打开前检查并移除外部图片；不能把内置资源离线等同于任何输入都不会联网。
-- 默认启用严格输入校验和 Mermaid strict security；原始 HTML、脚本、事件属性、任意嵌入及 `dot`/`graphviz` fence 会被拒绝或按文档明确处理。
+- 默认启用严格输入校验和 Mermaid strict security；原始 HTML、脚本、事件属性与任意嵌入会被拒绝。`dot`/`graphviz`、非法 `size=` 和含原始 HTML 的 Markmap 等内容级图表问题降级为普通代码块，不执行也不渲染。
 - Web API 与 MCP 默认要求 Bearer Token；Token 只保存在仓库外的私有凭据文件中，不传给 Node renderer。
 - 安装器默认使用用户级 XDG 路径，并将配置和凭据保持为 `0600`；system scope 必须显式指定。
 - 外网默认只公开 `/docs/`，后端继续监听 loopback。`nginx-template` 默认拒绝公网预览和 session；仅显式 `--expose-preview` 且后端预览已开启时生成带 Basic Auth 的代理，后端预览禁用时该参数会报错。公网 MCP 独立使用 `--expose-mcp`。模板不会自动应用或 reload。`/static/` 和旧 `/v1/renders` 已移除，不公开 `/healthz`。

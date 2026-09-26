@@ -33,7 +33,7 @@ compatibility: 构建需要 Node.js 18+ 和文件系统访问；Python 工具需
 - 不在 Markdown 中使用原始 HTML、脚本、事件属性或任意嵌入内容。分栏只使用受限的 `::: columns` 语法。
 - 不使用 `code-group`，也不承诺直接生成 PDF。需要 PDF 时使用生成页面的浏览器原生打印；需要源文件时使用页面的“下载 MD”。
 - 把 ECharts 构建成功和 Mermaid/Markmap 浏览器运行成功区分开；未做浏览器检查时明确说明。
-- 不使用 `dot`/`graphviz` fence。AI Docs 不内置 Graphviz，已有 DOT 图应迁移为 Mermaid flowchart；构建器会对残留 fence 明确报错。
+- 不使用 `dot`/`graphviz` fence。AI Docs 不内置 Graphviz，已有 DOT 图应迁移为 Mermaid flowchart；残留 fence 会降级为代码块并在表头给出警示标识，不中断构建。
 
 ## 资源定位
 
@@ -230,9 +230,9 @@ http://127.0.0.1:18080/preview/
 | 现象 | 处理 |
 | --- | --- |
 | ECharts JSON 解析失败 | 删除注释、尾逗号、函数和未加引号的键 |
-| `dot`/`graphviz` fence 被拒绝 | 将依赖、调用关系或拓扑迁移为 Mermaid flowchart/subgraph |
-| 图表 size 被拒绝 | 只保留 `size=宽x高`，并满足范围 |
-| Markmap 原始 HTML 被拒绝 | 改成普通 Markdown 文本或链接语法 |
+| `dot`/`graphviz` fence 未渲染成图（表头警示） | 将依赖、调用关系或拓扑迁移为 Mermaid flowchart/subgraph |
+| 图表 size 未生效（表头警示） | 只保留 `size=宽x高`，并满足范围 |
+| Markmap 未渲染成思维导图（表头警示） | 改成普通 Markdown 文本或链接语法 |
 | 输出覆盖输入被拒绝 | 选择不同的 `.html` 路径，不绕过保护 |
 
 ### 7. 验证成品
@@ -285,7 +285,7 @@ python3 -m unittest discover -s <SKILL_DIR>/web-mcp/tests -p 'test_*.py'
 ## 当前边界
 
 - ECharts 在构建期生成亮/暗静态 SVG；tooltip、hover emphasis 等浏览器交互不会保留。
-- `dot`/`graphviz` fence 不受支持，并且无论是否启用 `--no-strict` 都会失败；请迁移为 Mermaid flowchart。
+- `dot`/`graphviz` fence 不受支持，会降级为普通代码块（表头警示 + 悬浮原因）而不让构建失败，与 `--no-strict` 无关；请迁移为 Mermaid flowchart。
 - Mermaid 和 Markmap 在页面打开后渲染，构建成功不等于它们已在浏览器中成功。
 - KaTeX 字体没有完整内联，复杂字形和可伸缩定界符可能使用系统字体回退。
 - 页面使用浏览器原生搜索和打印，不提供自定义搜索控件或直接 PDF 生成。

@@ -34,7 +34,7 @@ function assertFailure(result, text, description) {
   assert.match(result.stderr, text, `${description}\n${result.stderr}`);
 }
 
-function assertColumnsRuntime(html) {
+function renderClientMarkdown(html) {
   const script = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi), function(match) { return match[1]; }).at(-1);
   const stop = {};
   let rendered = '';
@@ -77,6 +77,11 @@ function assertColumnsRuntime(html) {
   } catch (error) {
     if (error !== stop) throw error;
   }
+  return rendered;
+}
+
+function assertColumnsRuntime(html) {
+  const rendered = renderClientMarkdown(html);
   assert.match(rendered, /<div class="columns-layout" style="--column-count:2">/, '横向布局应生成两列容器');
   assert.match(rendered, /<section class="column-layout">/, '横向布局应生成受控列容器');
   return rendered;
@@ -354,7 +359,11 @@ try {
   assert.strictEqual(JSON.stringify(visualDefinitions.markmap[0].dimensions), JSON.stringify({ width: 720, height: 420 }), 'Markmap 应保留单图尺寸');
   assert.match(sizedVisualsHtml, /"dimensions":\{"width":800,"height":400\}[\s\S]*?"svg":"/, '静态图应保留单图尺寸');
   const invalidVisualSize = write('invalid-visual-size.md', '```mermaid size=bad\nflowchart LR\n  A --> B\n```\n');
-  assertFailure(run(['--input', invalidVisualSize, '--output', path.join(tempDir, 'invalid-visual-size.html')]), /图表代码块只支持 size=<宽>x<高> 参数/, '图表尺寸标记必须受限');
+  const invalidVisualSizeOutput = path.join(tempDir, 'invalid-visual-size.html');
+  const invalidSizeBuild = run(['--input', invalidVisualSize, '--output', invalidVisualSizeOutput]);
+  assertSuccess(invalidSizeBuild, '非法尺寸标记应降级为代码块而不是让构建失败');
+  assert.match(invalidSizeBuild.stderr, /图表代码块只支持 size=<宽>x<高> 参数/, '非法尺寸必须给出明确警告');
+  assert.match(renderClientMarkdown(fs.readFileSync(invalidVisualSizeOutput, 'utf8')), /data-visual-error="invalid-visual-size\.md:1: 图表代码块只支持/, '非法尺寸 fence 应带降级属性');
 
   const sampleMarkdown = fs.readFileSync(path.join(toolDir, 'assets', 'full-example.md'), 'utf8');
   const columnsSample = sampleMarkdown.match(/## 10\. 分栏内图表\n\n([\s\S]*?)\n## 11\./);
@@ -371,10 +380,24 @@ try {
   assert.match(fs.readFileSync(invalidColumnsOutput, 'utf8'), /只有一列/, '无效横向布局源码应保留给普通 Markdown 渲染');
 
   const unsupportedDot = write('unsupported-dot.md', '# Graph\n\n```dot\ndigraph G { A -> B }\n```\n');
-  assertFailure(run(['--input', unsupportedDot, '--output', path.join(tempDir, 'unsupported-dot.html')]), /unsupported-dot\.md:3: 不支持 dot\/graphviz 图表代码块/, 'dot fence 必须明确失败');
-  assertFailure(run(['--input', unsupportedDot, '--output', path.join(tempDir, 'unsupported-dot-loose.html'), '--no-strict']), /不支持 dot\/graphviz 图表代码块/, '--no-strict 不能把 dot fence 静默降级');
+  const unsupportedDotOutput = path.join(tempDir, 'unsupported-dot.html');
+  const dotBuild = run(['--input', unsupportedDot, '--output', unsupportedDotOutput]);
+  assertSuccess(dotBuild, 'dot fence 应降级为代码块而不是让构建失败');
+  assert.match(dotBuild.stderr, /unsupported-dot\.md:3: 不支持 dot\/graphviz 图表代码块；AI Docs 不再内置 Graphviz[\s\S]*（已降级为代码块展示）/, 'dot 降级必须打印明确警告');
+  const unsupportedDotHtml = fs.readFileSync(unsupportedDotOutput, 'utf8');
+  assert.match(unsupportedDotHtml, /"3":\{"language":"dot","message":"unsupported-dot\.md:3: 不支持 dot\/graphviz 图表代码块/, '输出应内嵌降级原因供悬浮提示使用');
+  assert.match(unsupportedDotHtml, /code-chart-badge/, '输出应包含表头警示标识逻辑');
+  const dotRendered = renderClientMarkdown(unsupportedDotHtml);
+  assert.match(dotRendered, /<code data-visual-error="unsupported-dot\.md:3: 不支持 dot\/graphviz 图表代码块[^"]*"/, '客户端渲染应把 dot fence 输出为带错误属性的代码块');
+  assert.doesNotMatch(dotRendered, /<div class="visual-box/, 'dot fence 不应生成图表容器');
+
+  assertSuccess(run(['--input', unsupportedDot, '--output', path.join(tempDir, 'unsupported-dot-loose.html'), '--no-strict']), 'dot 降级与 --no-strict 无关');
   const unsupportedGraphviz = write('unsupported-graphviz.md', '```graphviz\ndigraph G { A -> B }\n```\n');
-  assertFailure(run(['--input', unsupportedGraphviz, '--output', path.join(tempDir, 'unsupported-graphviz.html')]), /unsupported-graphviz\.md:1: 不支持 dot\/graphviz 图表代码块/, 'graphviz fence 别名必须明确失败');
+  const graphvizOutput = path.join(tempDir, 'unsupported-graphviz.html');
+  const graphvizBuild = run(['--input', unsupportedGraphviz, '--output', graphvizOutput]);
+  assertSuccess(graphvizBuild, 'graphviz fence 别名同样降级为代码块');
+  assert.match(graphvizBuild.stderr, /unsupported-graphviz\.md:1: 不支持 dot\/graphviz 图表代码块/, 'graphviz 降级必须打印明确警告');
+  assert.match(renderClientMarkdown(fs.readFileSync(graphvizOutput, 'utf8')), /data-visual-error="unsupported-graphviz\.md:1:/, 'graphviz fence 应带降级属性');
 
   const invalidChart = write('invalid-chart.md', '# Error\n\n```echarts\n{invalid}\n```\n');
   assertFailure(run(['--input', invalidChart, '--output', path.join(tempDir, 'strict.html')]), /图表渲染校验失败/, '严格模式必须拒绝无效图表');
@@ -383,11 +406,21 @@ try {
   assert.match(fs.readFileSync(looseOutput, 'utf8'), /渲染校验失败/);
 
   const unsafeMarkmap = write('unsafe-markmap.md', '# Error\n\n```markmap\n# Root\n<img src=x onerror=alert(1)>\n```\n');
-  assertFailure(run(['--input', unsafeMarkmap, '--output', path.join(tempDir, 'unsafe.html')]), /Markmap 源码不能包含原始 HTML/, 'Markmap 原始 HTML 必须被拒绝');
+  const unsafeOutput = path.join(tempDir, 'unsafe.html');
+  const unsafeBuild = run(['--input', unsafeMarkmap, '--output', unsafeOutput]);
+  assertSuccess(unsafeBuild, '含原始 HTML 的 Markmap 应降级为代码块而不是让构建失败');
+  assert.match(unsafeBuild.stderr, /unsafe-markmap\.md:3: Markmap 源码不能包含原始 HTML/, 'Markmap 降级必须给出明确警告');
+  const unsafeRendered = renderClientMarkdown(fs.readFileSync(unsafeOutput, 'utf8'));
+  assert.match(unsafeRendered, /data-visual-error="unsafe-markmap\.md:3: Markmap 源码不能包含原始 HTML/, 'Markmap 应带降级属性');
+  assert.doesNotMatch(unsafeRendered, /markmap-box/, '不安全 Markmap 不应生成思维导图容器');
 
   // 带引号属性值可合法包含 < >，曾绕过属性段不允许尖括号的正则校验。
   const bypassMarkmap = write('bypass-markmap.md', '# Error\n\n```markmap\n# Root <img data-x="<" src=x onerror="pwned">\n```\n');
-  assertFailure(run(['--input', bypassMarkmap, '--output', path.join(tempDir, 'bypass.html')]), /Markmap 源码不能包含原始 HTML/, '带引号属性值中的尖括号不得绕过 Markmap HTML 拒绝');
+  const bypassOutput = path.join(tempDir, 'bypass.html');
+  const bypassBuild = run(['--input', bypassMarkmap, '--output', bypassOutput]);
+  assertSuccess(bypassBuild, '带引号属性值中的尖括号同样只降级不失败');
+  assert.match(bypassBuild.stderr, /bypass-markmap\.md:3: Markmap 源码不能包含原始 HTML/, '绕过写法必须给出明确警告');
+  assert.match(renderClientMarkdown(fs.readFileSync(bypassOutput, 'utf8')), /data-visual-error="bypass-markmap\.md:3: Markmap 源码不能包含原始 HTML/, '绕过写法应带降级属性');
 
   // 合法 autolink 与含 < 的普通文本不是原始 HTML，不得误伤。
   const autolinkMarkmap = write('autolink-markmap.md', '# OK\n\n```markmap\n# Root <https://example.com>\n## a < b\n```\n');

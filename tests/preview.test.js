@@ -228,9 +228,12 @@ async function main() {
     assert.strictEqual(JSON.parse(save.body).saved, true);
     assert.strictEqual(fs.readFileSync(source, 'utf8'), changedMarkdown, '保存 API 应写回 Markdown 源文件');
 
-    const invalidRender = await request(new URL('render', baseUrl).toString(), 'POST', { markdown: '```dot\ndigraph G { A -> B }\n```\n' });
-    assert.strictEqual(invalidRender.status, 422);
-    assert.match(JSON.parse(invalidRender.body).error, /不支持 dot\/graphviz/);
+    const degradedRender = await request(new URL('render', baseUrl).toString(), 'POST', { markdown: '```dot\ndigraph G { A -> B }\n```\n' });
+    assert.strictEqual(degradedRender.status, 200, degradedRender.body);
+    const degradedHtml = JSON.parse(degradedRender.body).html;
+    assert(degradedHtml, 'dot 降级渲染应返回 HTML');
+    assert.match(degradedHtml, /不支持 dot\/graphviz 图表代码块/, '降级原因应内嵌进 HTML 供悬浮提示使用');
+    assert.match(degradedHtml, /code-chart-badge/, '输出应包含表头警示标识逻辑');
 
     const forbidden = await request(new URL('secret.txt', baseUrl).toString(), 'GET');
     assert.strictEqual(forbidden.status, 404, '预览服务器不应提供任意本地文件');

@@ -23,7 +23,7 @@ node <SKILL_DIR>/scripts/build.js document.md document.html
 | 单文件 | `--output-mode single` | `output.mode: "single"` | 一个按需内联依赖的自包含 HTML，默认模式 |
 | 本地多文件 | `--output-mode multi` | `output.mode: "multi"` | HTML 与本地静态依赖目录，适合 Nginx 或 Python HTTP 服务 |
 
-当前不支持 CDN 或任意远程资源 URL。ECharts 始终在构建期生成静态 SVG，不会复制 ECharts 浏览器运行时。AI Docs 不内置 Graphviz；`dot`/`graphviz` fence 会以非零退出码失败，请迁移为 Mermaid flowchart。
+当前不支持 CDN 或任意远程资源 URL。ECharts 始终在构建期生成静态 SVG，不会复制 ECharts 浏览器运行时。AI Docs 不内置 Graphviz；`dot`/`graphviz` fence 会降级为普通代码块（表头警示标识，悬浮显示原因），构建仍以 0 退出，请迁移为 Mermaid flowchart。
 
 ### 单文件
 
