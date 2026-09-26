@@ -354,7 +354,7 @@ class AiDocsHandler(http.server.BaseHTTPRequestHandler):
                 relative, markdown = self._preview_request()
                 self._send_json(
                     200,
-                    {"path": relative, "html": self.service.preview.render(relative, markdown, link_target="_blank")},
+                    {"path": relative, "html": self.service.preview.render(relative, markdown, link_target="_blank", editor_preview=True)},
                     maximum=MAX_PREVIEW_RESPONSE_BYTES,
                 )
                 return

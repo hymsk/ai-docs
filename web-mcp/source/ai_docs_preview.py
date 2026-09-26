@@ -149,7 +149,9 @@ PREVIEW_EDITOR_SCRIPT = """
   var renderTimer = 0;
   var latestRequest = 0;
   var dragging = false;
-  var previewScrollY = 0;
+  var previewScrollState = null;
+  var restoreToken = 0;
+  var editorSyncTarget = null;
 
   function setStatus(message, error) {
     status.textContent = message;
@@ -177,7 +179,11 @@ PREVIEW_EDITOR_SCRIPT = """
     renderButton.disabled = true;
     request(base + 'api/render', { path: path, markdown: editor.value }).then(function(result) {
       if (requestId !== latestRequest) return;
+      restoreToken++;
+      preview.style.visibility = 'hidden';
       preview.srcdoc = result.html;
+      var token = restoreToken;
+      window.setTimeout(function() { if (restoreToken === token) preview.style.visibility = ''; }, 8500);
       setStatus('渲染完成');
     }).catch(function(error) {
       if (requestId !== latestRequest) return;
@@ -246,17 +252,40 @@ PREVIEW_EDITOR_SCRIPT = """
     if (event.key.toLowerCase() === 's') { event.preventDefault(); save(); }
     if (event.key === 'Enter') { event.preventDefault(); render(); }
   });
-  // 渲染产物在 beforeunload 时上报滚动位置；srcdoc 替换触发 load 后恢复
+  // 双向按进度同步手动滚动；重渲染则优先恢复原可见标题及其视口偏移。
+  editor.addEventListener('scroll', function() {
+    if (editorSyncTarget !== null && Math.abs(editor.scrollTop - editorSyncTarget) < 2) {
+      editorSyncTarget = null;
+      return;
+    }
+    editorSyncTarget = null;
+    var max = Math.max(0, editor.scrollHeight - editor.clientHeight);
+    var ratio = max ? editor.scrollTop / max : 0;
+    if (preview.style.visibility === 'hidden') previewScrollState = { ratio: ratio, id: '', offset: 0 };
+    else try { preview.contentWindow.postMessage({ type: 'ai-docs-scroll-sync', ratio: ratio }, '*'); } catch (error) {}
+  }, { passive: true });
   window.addEventListener('message', function(event) {
+    if (event.source !== preview.contentWindow) return;
     var data = event.data;
-    if (data && data.type === 'ai-docs-scroll-state' && typeof data.y === 'number') {
-      previewScrollY = data.y;
+    if (data && data.type === 'ai-docs-scroll-restored' && data.token === restoreToken) {
+      preview.style.visibility = '';
+    }
+    if (data && data.type === 'ai-docs-scroll-state' && typeof data.ratio === 'number' && preview.style.visibility !== 'hidden') {
+      previewScrollState = data;
+      if (!data.sync) {
+        var top = Math.max(0, editor.scrollHeight - editor.clientHeight) * Math.max(0, Math.min(1, data.ratio));
+        if (Math.abs(editor.scrollTop - top) > 1) {
+          editorSyncTarget = top;
+          editor.scrollTop = top;
+        }
+      }
     }
   });
   preview.addEventListener('load', function() {
-    if (!previewScrollY) return;
+    if (!previewScrollState) { preview.style.visibility = ''; return; }
     try {
-      preview.contentWindow.postMessage({ type: 'ai-docs-scroll-restore', y: previewScrollY }, '*');
+      preview.contentWindow.postMessage({ type: 'ai-docs-scroll-restore', ratio: previewScrollState.ratio,
+        id: previewScrollState.id, offset: previewScrollState.offset, token: restoreToken }, '*');
     } catch (error) {}
   });
   render();
@@ -360,23 +389,52 @@ PREVIEW_LINK_HELPER_SCRIPT = """
     if (target) target.scrollIntoView();
   });
 
-  // 编辑器预览 srcdoc 整体替换时保持滚动位置：卸载前上报给父页面，
-  // 新文档加载后按父页面指令恢复。sandbox iframe 跨源，只能走 postMessage。
-  window.addEventListener('beforeunload', function() {
-    try {
-      parent.postMessage({ type: 'ai-docs-scroll-state', y: window.scrollY || window.pageYOffset || 0 }, '*');
-    } catch (error) {}
-  });
+  // sandbox iframe 跨源；上报滚动进度和当前可见标题，供编辑器同步和刷新恢复。
+  var syncTarget = null;
+  function scrollState() {
+    var y = window.scrollY || window.pageYOffset || 0;
+    var max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+    var heading = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].getBoundingClientRect().top > 80) break;
+      heading = headings[i];
+    }
+    parent.postMessage({ type: 'ai-docs-scroll-state', ratio: max ? y / max : 0,
+      id: heading ? heading.id : '', offset: heading ? heading.getBoundingClientRect().top : 0,
+      sync: syncTarget !== null && Math.abs(y - syncTarget) < 2 }, '*');
+    syncTarget = null;
+  }
+  window.addEventListener('scroll', scrollState, { passive: true });
+  window.addEventListener('load', scrollState);
   window.addEventListener('message', function(event) {
     var data = event.data;
-    if (!data || data.type !== 'ai-docs-scroll-restore' || typeof data.y !== 'number') return;
-    restoreScroll(data.y);
+    if (!data) return;
+    if (data.type === 'ai-docs-scroll-sync' && typeof data.ratio === 'number') {
+      var top = Math.max(0, document.documentElement.scrollHeight - window.innerHeight) * Math.max(0, Math.min(1, data.ratio));
+      if (Math.abs((window.scrollY || 0) - top) > 1) {
+        syncTarget = top;
+        window.scrollTo({ top: top, behavior: 'instant' });
+      }
+      return;
+    }
+    if (data.type === 'ai-docs-scroll-restore') restoreScroll(data);
   });
   // 图表渲染是异步的：load 时占位壳可能尚无高度，立即滚动会被钳制。
   // 等 clientRuntime 的渲染完成信号，超时兜底直接滚。
-  function restoreScroll(y) {
+  function restoreScroll(state) {
+    function apply() {
+      var heading = state.id && document.getElementById(state.id);
+      var max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      var top = heading ? (window.scrollY || 0) + heading.getBoundingClientRect().top - state.offset : max * Math.max(0, Math.min(1, state.ratio || 0));
+      if (Math.abs((window.scrollY || 0) - top) > 1) {
+        syncTarget = top;
+        window.scrollTo({ top: top, behavior: 'instant' });
+      }
+      parent.postMessage({ type: 'ai-docs-scroll-restored', token: state.token }, '*');
+    }
     if (document.documentElement.getAttribute('data-dynamic-visuals') === 'done') {
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
       return;
     }
     var finished = false;
@@ -384,26 +442,35 @@ PREVIEW_LINK_HELPER_SCRIPT = """
       if (document.documentElement.getAttribute('data-dynamic-visuals') !== 'done') return;
       finished = true;
       observer.disconnect();
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-dynamic-visuals'] });
     setTimeout(function() {
       if (finished) return;
       observer.disconnect();
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
     }, 8000);
   }
 }());</script>
 """
 
 
-def prepare_preview_html(rendered: str, current_path: str, preview_prefix: str, link_target: str) -> str:
+def prepare_preview_html(
+    rendered: str, current_path: str, preview_prefix: str, link_target: str, editor_preview: bool = False,
+) -> str:
     """Constrain srcdoc automatic loads and inject the client-side link helper."""
     marker = "<head>"
     if marker not in rendered:
         raise ServiceError(500, "render_failed", "renderer output has no head element")
     policy = '<meta http-equiv="Content-Security-Policy" content="{}">'.format(html.escape(PREVIEW_RENDER_CSP, quote=True))
     result = rendered.replace(marker, marker + policy, 1)
+    if editor_preview:
+        # 编辑器每次渲染都会替换 iframe，仅关闭编辑预览的入场动画和滚动过渡。
+        style = '<style>html { scroll-behavior: auto; } .container { animation: none; }</style>'
+        head_end = result.rfind('</head>')
+        if head_end == -1:
+            raise ServiceError(500, "render_failed", "renderer output has no head closing tag")
+        result = result[:head_end] + style + result[head_end:]
     context = json_compact({
         "path": safe_relative_markdown_path(current_path),
         "viewBase": preview_prefix + "view?path=",

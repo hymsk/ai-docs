@@ -154,21 +154,51 @@ function scriptJson(value) {
 // 与 web-mcp PREVIEW_LINK_HELPER_SCRIPT 的滚动段保持同一消息协议。
 const SCROLL_KEEPER_SCRIPT = `<script>(function() {
   'use strict';
-  window.addEventListener('beforeunload', function() {
-    try {
-      parent.postMessage({ type: 'ai-docs-scroll-state', y: window.scrollY || window.pageYOffset || 0 }, '*');
-    } catch (error) {}
-  });
+  var syncTarget = null;
+  function scrollState() {
+    var y = window.scrollY || window.pageYOffset || 0;
+    var max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    var headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+    var heading = null;
+    for (var i = 0; i < headings.length; i++) {
+      if (headings[i].getBoundingClientRect().top > 80) break;
+      heading = headings[i];
+    }
+    parent.postMessage({ type: 'ai-docs-scroll-state', ratio: max ? y / max : 0,
+      id: heading ? heading.id : '', offset: heading ? heading.getBoundingClientRect().top : 0,
+      sync: syncTarget !== null && Math.abs(y - syncTarget) < 2 }, '*');
+    syncTarget = null;
+  }
+  window.addEventListener('scroll', scrollState, { passive: true });
+  window.addEventListener('load', scrollState);
   window.addEventListener('message', function(event) {
     var data = event.data;
-    if (!data || data.type !== 'ai-docs-scroll-restore' || typeof data.y !== 'number') return;
-    restoreScroll(data.y);
+    if (!data) return;
+    if (data.type === 'ai-docs-scroll-sync' && typeof data.ratio === 'number') {
+      var top = Math.max(0, document.documentElement.scrollHeight - window.innerHeight) * Math.max(0, Math.min(1, data.ratio));
+      if (Math.abs((window.scrollY || 0) - top) > 1) {
+        syncTarget = top;
+        window.scrollTo({ top: top, behavior: 'instant' });
+      }
+      return;
+    }
+    if (data.type === 'ai-docs-scroll-restore') restoreScroll(data);
   });
   // 图表渲染是异步的：load 时占位壳可能尚无高度，立即滚动会被钳制。
   // 等 clientRuntime 的渲染完成信号，超时兜底直接滚。
-  function restoreScroll(y) {
+  function restoreScroll(state) {
+    function apply() {
+      var heading = state.id && document.getElementById(state.id);
+      var max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      var top = heading ? (window.scrollY || 0) + heading.getBoundingClientRect().top - state.offset : max * Math.max(0, Math.min(1, state.ratio || 0));
+      if (Math.abs((window.scrollY || 0) - top) > 1) {
+        syncTarget = top;
+        window.scrollTo({ top: top, behavior: 'instant' });
+      }
+      parent.postMessage({ type: 'ai-docs-scroll-restored', token: state.token }, '*');
+    }
     if (document.documentElement.getAttribute('data-dynamic-visuals') === 'done') {
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
       return;
     }
     var finished = false;
@@ -176,13 +206,13 @@ const SCROLL_KEEPER_SCRIPT = `<script>(function() {
       if (document.documentElement.getAttribute('data-dynamic-visuals') !== 'done') return;
       finished = true;
       observer.disconnect();
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-dynamic-visuals'] });
     setTimeout(function() {
       if (finished) return;
       observer.disconnect();
-      try { window.scrollTo(0, y); } catch (error) {}
+      apply();
     }, 8000);
   }
   // srcdoc 文档的 base URL 继承父页面地址：页内锚点点击会把 iframe 导航到
@@ -202,6 +232,11 @@ const SCROLL_KEEPER_SCRIPT = `<script>(function() {
 }());</script>`;
 
 function injectScrollKeeper(rendered) {
+  // 编辑时每次更新都会重建 iframe；只在预览产物中关闭入场及平滑滚动，
+  // 避免重渲染和恢复滚动位置时反复出现下滑动画，不影响离线成品。
+  const style = '<style>html { scroll-behavior: auto; } .container { animation: none; }</style>';
+  const headEnd = rendered.lastIndexOf('</head>');
+  if (headEnd !== -1) rendered = rendered.slice(0, headEnd) + style + rendered.slice(headEnd);
   // 锚定文档末尾真正的 </body>：内联 vendor 脚本字符串里也可能出现该片段
   const index = rendered.lastIndexOf('</body>');
   if (index === -1) return rendered + SCROLL_KEEPER_SCRIPT;
@@ -287,7 +322,9 @@ button { font: inherit; }
   var renderTimer = 0;
   var latestRequest = 0;
   var dragging = false;
-  var previewScrollY = 0;
+  var previewScrollState = null;
+  var restoreToken = 0;
+  var editorSyncTarget = null;
   var accessKey = new URLSearchParams(window.location.search).get('key') || '';
 
   editor.value = initialMarkdown;
@@ -320,7 +357,11 @@ button { font: inherit; }
     renderButton.disabled = true;
     request('/render', { markdown: editor.value }).then(function(result) {
       if (requestId !== latestRequest) return;
+      restoreToken++;
+      preview.style.visibility = 'hidden';
       preview.srcdoc = result.html;
+      var token = restoreToken;
+      window.setTimeout(function() { if (restoreToken === token) preview.style.visibility = ''; }, 8500);
       setStatus('渲染完成');
     }).catch(function(error) {
       if (requestId !== latestRequest) return;
@@ -389,17 +430,40 @@ button { font: inherit; }
     if (event.key.toLowerCase() === 's') { event.preventDefault(); save(); }
     if (event.key === 'Enter') { event.preventDefault(); render(); }
   });
-  // 渲染产物在 beforeunload 时上报滚动位置；srcdoc 替换触发 load 后恢复
+  // 双向按进度同步手动滚动；重渲染则优先恢复原可见标题及其视口偏移。
+  editor.addEventListener('scroll', function() {
+    if (editorSyncTarget !== null && Math.abs(editor.scrollTop - editorSyncTarget) < 2) {
+      editorSyncTarget = null;
+      return;
+    }
+    editorSyncTarget = null;
+    var max = Math.max(0, editor.scrollHeight - editor.clientHeight);
+    var ratio = max ? editor.scrollTop / max : 0;
+    if (preview.style.visibility === 'hidden') previewScrollState = { ratio: ratio, id: '', offset: 0 };
+    else try { preview.contentWindow.postMessage({ type: 'ai-docs-scroll-sync', ratio: ratio }, '*'); } catch (error) {}
+  }, { passive: true });
   window.addEventListener('message', function(event) {
+    if (event.source !== preview.contentWindow) return;
     var data = event.data;
-    if (data && data.type === 'ai-docs-scroll-state' && typeof data.y === 'number') {
-      previewScrollY = data.y;
+    if (data && data.type === 'ai-docs-scroll-restored' && data.token === restoreToken) {
+      preview.style.visibility = '';
+    }
+    if (data && data.type === 'ai-docs-scroll-state' && typeof data.ratio === 'number' && preview.style.visibility !== 'hidden') {
+      previewScrollState = data;
+      if (!data.sync) {
+        var top = Math.max(0, editor.scrollHeight - editor.clientHeight) * Math.max(0, Math.min(1, data.ratio));
+        if (Math.abs(editor.scrollTop - top) > 1) {
+          editorSyncTarget = top;
+          editor.scrollTop = top;
+        }
+      }
     }
   });
   preview.addEventListener('load', function() {
-    if (!previewScrollY) return;
+    if (!previewScrollState) { preview.style.visibility = ''; return; }
     try {
-      preview.contentWindow.postMessage({ type: 'ai-docs-scroll-restore', y: previewScrollY }, '*');
+      preview.contentWindow.postMessage({ type: 'ai-docs-scroll-restore', ratio: previewScrollState.ratio,
+        id: previewScrollState.id, offset: previewScrollState.offset, token: restoreToken }, '*');
     } catch (error) {}
   });
   render();

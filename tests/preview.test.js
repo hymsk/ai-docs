@@ -8,6 +8,7 @@ const fs = require('fs');
 const http = require('http');
 const os = require('os');
 const path = require('path');
+const vm = require('vm');
 
 const skillDir = path.resolve(__dirname, '..');
 const previewScript = path.join(skillDir, 'scripts', 'preview.js');
@@ -65,6 +66,123 @@ function run(command, args) {
   return childProcess.spawnSync(command, args, { cwd: skillDir, encoding: 'utf8' });
 }
 
+function assertScrollProtocol(rendered) {
+  const script = rendered.match(/<script>\(function\(\) \{\n  'use strict';\n  var syncTarget = null;([\s\S]*?)<\/script>/);
+  assert.ok(script, '预览应注入 iframe 滚动协议');
+  const listeners = {};
+  const sent = [];
+  let headingTop = 560;
+  const heading = { id: 'section-b', getBoundingClientRect: () => ({ top: headingTop - y }) };
+  let y = 600;
+  const doc = {
+    documentElement: { scrollHeight: 2000, getAttribute: () => 'done' },
+    querySelectorAll: () => [heading],
+    getElementById: (id) => id === heading.id ? heading : null,
+    addEventListener: () => {}
+  };
+  const win = {
+    innerHeight: 1000,
+    get scrollY() { return y; },
+    addEventListener: (type, fn) => { listeners[type] = fn; },
+    scrollTo: ({ top }) => { y = Math.max(0, Math.min(1000, top)); }
+  };
+  vm.runInNewContext(script[0].slice(8, -9), {
+    window: win, document: doc, parent: { postMessage: (message) => sent.push(message) }, setTimeout: () => {}
+  });
+  listeners.scroll();
+  assert.strictEqual(sent.at(-1).id, 'section-b');
+  assert.strictEqual(sent.at(-1).ratio, .6);
+  assert.strictEqual(sent.at(-1).offset, -40);
+  listeners.message({ data: { type: 'ai-docs-scroll-sync', ratio: .25 } });
+  assert.strictEqual(y, 250, '编辑区滚动应同步到预览区');
+  listeners.scroll();
+  assert.strictEqual(sent.at(-1).sync, true, '同步滚动不能再次驱动编辑区');
+  headingTop = 760;
+  listeners.message({ data: { type: 'ai-docs-scroll-restore', id: 'section-b', offset: -40, ratio: .6, token: 1 } });
+  assert.strictEqual(y, 800, '前方内容增加后标题应保持原来的视口位置，而非旧像素高度');
+  assert.strictEqual(sent.at(-1).type, 'ai-docs-scroll-restored');
+  assert.strictEqual(sent.at(-1).token, 1);
+  listeners.message({ data: { type: 'ai-docs-scroll-restore', id: 'missing', offset: 0, ratio: .5, token: 2 } });
+  assert.strictEqual(y, 500, '锚点消失时回退到比例位置');
+}
+
+function assertWebScrollProtocol(script) {
+  const start = script.indexOf('  var syncTarget = null;');
+  const end = script.indexOf('}());</script>', start);
+  assert.ok(start !== -1 && end > start, 'Web 编辑预览应包含滚动同步协议');
+  const listeners = {};
+  const sent = [];
+  let y = 600;
+  let headingTop = 560;
+  const heading = { id: 'section-b', getBoundingClientRect: () => ({ top: headingTop - y }) };
+  const document = {
+    documentElement: { scrollHeight: 2000, getAttribute: () => 'done' },
+    querySelectorAll: () => [heading],
+    getElementById: (id) => id === heading.id ? heading : null
+  };
+  const window = {
+    innerHeight: 1000,
+    get scrollY() { return y; },
+    addEventListener: (name, callback) => { listeners[name] = callback; },
+    scrollTo: ({ top }) => { y = Math.max(0, Math.min(1000, top)); }
+  };
+  vm.runInNewContext(script.slice(start, end), {
+    window, document, parent: { postMessage: (message) => sent.push(message) }, setTimeout: () => {}
+  });
+  listeners.scroll();
+  assert.strictEqual(sent.at(-1).id, 'section-b');
+  listeners.message({ data: { type: 'ai-docs-scroll-sync', ratio: .25 } });
+  assert.strictEqual(y, 250);
+  listeners.scroll();
+  assert.strictEqual(sent.at(-1).sync, true);
+  headingTop = 760;
+  listeners.message({ data: { type: 'ai-docs-scroll-restore', id: 'section-b', offset: -40, ratio: .6, token: 3 } });
+  assert.strictEqual(y, 800);
+  assert.strictEqual(sent.at(-1).token, 3);
+}
+
+function assertEditorScrollProtocol(page) {
+  const script = Array.from(page.matchAll(/<script>([\s\S]*?)<\/script>/g)).at(-1)[1];
+  const listeners = {};
+  const editorListeners = {};
+  const frameListeners = {};
+  const posted = [];
+  const frame = { postMessage: (message) => posted.push(message) };
+  const editor = {
+    value: '', scrollTop: 0, scrollHeight: 2000, clientHeight: 1000,
+    addEventListener: (type, callback) => { editorListeners[type] = callback; }
+  };
+  const preview = { style: {}, contentWindow: frame, addEventListener: (type, callback) => { frameListeners[type] = callback; } };
+  const element = { disabled: false, classList: { toggle: () => {} }, addEventListener: () => {}, setAttribute: () => {}, getAttribute: () => '50' };
+  const elements = { editor, preview, status: { ...element }, render: { ...element }, save: { ...element }, workspace: { ...element }, splitter: { ...element } };
+  let resolveRender;
+  const context = {
+    document: { getElementById: (id) => elements[id], addEventListener: (type, callback) => { listeners[type] = callback; } },
+    window: { location: { search: '' }, clearTimeout: () => {}, setTimeout: () => 1,
+      addEventListener: (type, callback) => { listeners[type] = callback; } },
+    URLSearchParams, fetch: () => new Promise((resolve) => { resolveRender = resolve; })
+  };
+  vm.runInNewContext(script, context);
+  editor.scrollTop = 400;
+  editorListeners.scroll();
+  assert.strictEqual(posted.at(-1).type, 'ai-docs-scroll-sync');
+  assert.strictEqual(posted.at(-1).ratio, .4);
+  listeners.message({ source: frame, data: { type: 'ai-docs-scroll-state', ratio: .7, id: 'section-b', offset: -40, sync: false } });
+  assert.strictEqual(editor.scrollTop, 700, '手动滚动预览应带动编辑器');
+  editorListeners.scroll();
+  assert.strictEqual(posted.length, 1, '程序同步不能反向回弹');
+  resolveRender({ ok: true, json: () => Promise.resolve({ html: '<html></html>' }) });
+  return new Promise((resolve) => setImmediate(resolve)).then(() => {
+    assert.strictEqual(preview.style.visibility, 'hidden', '刷新前应遮住 iframe 的初始滚动位置');
+    frameListeners.load();
+    assert.strictEqual(posted.at(-1).type, 'ai-docs-scroll-restore');
+    assert.strictEqual(posted.at(-1).id, 'section-b');
+    assert.strictEqual(posted.at(-1).offset, -40);
+    listeners.message({ source: frame, data: { type: 'ai-docs-scroll-restored', token: posted.at(-1).token } });
+    assert.strictEqual(preview.style.visibility, '', '锚点恢复后再显示预览');
+  });
+}
+
 async function close(child) {
   if (child.exitCode != null || child.signalCode != null) return;
   child.kill('SIGTERM');
@@ -89,6 +207,7 @@ async function main() {
     assert.match(page.body, /sandbox="allow-scripts allow-downloads allow-modals"/);
     assert.match(page.body, /AI Docs renderer/);
     assert.match(page.body, /初始标题/);
+    await assertEditorScrollProtocol(page.body);
 
     const changedMarkdown = '# 新标题\n\n```mermaid\nflowchart LR\n  A --> B\n```\n';
     const render = await request(new URL('render', baseUrl).toString(), 'POST', { markdown: changedMarkdown });
@@ -96,6 +215,12 @@ async function main() {
     const rendered = JSON.parse(render.body);
     assert.match(rendered.html, /新标题/);
     assert.match(rendered.html, /mermaid/);
+    assert.match(rendered.html, /html \{ scroll-behavior: auto; \} \.container \{ animation: none; \}/, '编辑预览应关闭重渲染的下滑动效');
+    assert.ok(rendered.html.indexOf('.container { animation: none; }') > rendered.html.indexOf('animation: viewer-in 260ms'), '预览覆盖样式应在 renderer 样式之后');
+    assert.ok(rendered.html.indexOf('.container { animation: none; }') < rendered.html.indexOf('</head>'), '预览覆盖样式应留在 head 内');
+    assertScrollProtocol(rendered.html);
+    const webPreviewSource = fs.readFileSync(path.join(skillDir, 'web-mcp', 'source', 'ai_docs_preview.py'), 'utf8');
+    assertWebScrollProtocol(webPreviewSource);
     assert.strictEqual(fs.readFileSync(source, 'utf8'), '# 初始标题\n\n初始正文。\n', '预览渲染不能自动修改源文件');
 
     const save = await request(new URL('save', baseUrl).toString(), 'POST', { markdown: changedMarkdown });

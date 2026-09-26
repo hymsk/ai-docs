@@ -316,7 +316,7 @@ class PreviewStore:
         result = self.library.write(relative, markdown, overwrite=True)
         return {"saved": True, "path": result["path"], "size_bytes": result["size_bytes"]}
 
-    def render(self, relative: str, markdown: str, link_target: str = "_top") -> str:
+    def render(self, relative: str, markdown: str, link_target: str = "_top", editor_preview: bool = False) -> str:
         if link_target not in ("_top", "_blank"):
             raise ServiceError(500, "invalid_configuration", "preview link target must be _top or _blank")
         relative = safe_relative_markdown_path(relative)
@@ -329,7 +329,7 @@ class PreviewStore:
             self.config, self.capacity, Path(relative).name, content,
             self.config.render_timeout_seconds, ".ai-docs-preview-",
         )
-        return prepare_preview_html(rendered, relative, self.config.preview_prefix, link_target)
+        return prepare_preview_html(rendered, relative, self.config.preview_prefix, link_target, editor_preview)
 
 
 def render_markdown_document(

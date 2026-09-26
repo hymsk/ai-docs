@@ -356,6 +356,7 @@ class AiDocsServerTest(unittest.TestCase):
         # 阅读页把 URL 片段接力给 iframe 内的锚点滚动
         self.assertIn('id="reader-frame"', page)
         self.assertIn("ai-docs-scroll", page)
+        self.assertNotIn('html { scroll-behavior: auto; } .container { animation: none; }', page)
 
         render_body = json.dumps({"path": "notes/guide.md", "markdown": "[同级](sibling.md)\n"}).encode("utf-8")
         status, payload, _ = self.request("POST", "/preview/api/render", render_body, headers=cookie)
@@ -367,6 +368,14 @@ class AiDocsServerTest(unittest.TestCase):
             rendered["html"],
         )
         self.assertIn('http-equiv="Content-Security-Policy"', rendered["html"])
+        self.assertIn('html { scroll-behavior: auto; } .container { animation: none; }', rendered["html"])
+        self.assertIn("type: 'ai-docs-scroll-state'", rendered["html"])
+        self.assertIn("type: 'ai-docs-scroll-restored'", rendered["html"])
+        self.assertIn("document.getElementById(state.id)", rendered["html"])
+        self.assertLess(rendered["html"].index('animation: viewer-in 260ms'),
+                        rendered["html"].index('.container { animation: none; }'))
+        self.assertLess(rendered["html"].index('.container { animation: none; }'),
+                        rendered["html"].index('</head>'))
 
     def test_prepare_preview_html_anchors_real_body_close_tag(self):
         # 内联 vendor 脚本可能含有 "</body></html>" 字符串（如 DOMPurify），
@@ -1061,6 +1070,8 @@ class AiDocsServerTest(unittest.TestCase):
             editor,
         )
         self.assertIn('data-base="/preview/"', editor)
+        self.assertIn("type: 'ai-docs-scroll-sync'", editor)
+        self.assertIn("type: 'ai-docs-scroll-restore'", editor)
 
         render_body = json.dumps({
             "path": "notes/guide.md",
