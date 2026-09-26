@@ -23,6 +23,14 @@ node <SKILL_DIR>/scripts/build.js document.md document.html
 | 单文件 | `--output-mode single` | `output.mode: "single"` | 一个按需内联依赖的自包含 HTML，默认模式 |
 | 本地多文件 | `--output-mode multi` | `output.mode: "multi"` | HTML 与本地静态依赖目录，适合 Nginx 或 Python HTTP 服务 |
 
+### 资源模式
+
+单文件输出下资源默认按需内联（`--resources-mode inline`，`resources.mode: "inline"`）。服务端托管场景可改用 `--resources-mode linked`（`resources.mode: "linked"`）：HTML 不再内联资源，而是引用 `--public-path` 指向的文件，这些文件需要由外部服务提供；`linked` 必须显式指定 `resources.publicPath`，否则构建失败。Web 服务的预览与公开页面即使用该模式，资源由 `/assets/<renderer-fingerprint>/<file>` 端点提供，见 [web-mcp-setup](web-mcp-setup.md)。
+
+无论哪种模式，依赖都会被分类为关键资源（Markdown-it、Highlight.js、KaTeX 等，参与内容渲染）与延后引擎（Mermaid、D3、Markmap，位于渲染入口之后，内容呈现后再执行），以避免大脚本阻塞首屏。
+
+`--emit-resources <directory>` 把资源清单按与内联/multi 复制完全一致的转换写入目录（服务端用于托管导出），不接受输入文件，普通文档构建无需使用。
+
 当前不支持 CDN 或任意远程资源 URL。ECharts 始终在构建期生成静态 SVG，不会复制 ECharts 浏览器运行时。AI Docs 不内置 Graphviz；`dot`/`graphviz` fence 会降级为普通代码块（表头警示标识，悬浮显示原因），构建仍以 0 退出，请迁移为 Mermaid flowchart。
 
 ### 单文件
@@ -43,7 +51,7 @@ node <SKILL_DIR>/scripts/build.js \
 | Mermaid fence | Mermaid |
 | Markmap/Mindmap fence | D3、KaTeX、Markmap Lib、Markmap View |
 
-未使用的可选资源不会写入成品。单文件不请求外部脚本或样式，可直接离线打开。
+未使用的可选资源不会写入成品。默认的 `inline` 单文件不请求外部脚本或样式，可直接离线打开；`linked` 模式则引用 `publicPath` 下托管的同一套文件，需要外部服务提供它们。
 
 ### 本地多文件
 
@@ -101,6 +109,7 @@ node <SKILL_DIR>/scripts/build.js \
 | --- | --- | --- | --- |
 | `--static-dir <directory>` | `resources.directory` | `static` | 多文件依赖写入目录，相对于输出 HTML |
 | `--public-path <url-path>` | `resources.publicPath` | 从静态目录推导 | HTML 中的本地资源 URL 前缀 |
+| `--resources-mode <inline\|linked>` | `resources.mode` | `inline` | 单文件下资源内联进 HTML，还是引用 `publicPath` 下由外部托管的文件 |
 
 `resources.directory` 必须位于输出 HTML 目录内，不能使用绝对路径、软链接或 `..` 越界。已有资源目标必须是单链接普通文件，不能是软链接、悬空软链接或硬链接。`resources.publicPath` 只接受本地相对 URL 或根路径 URL，例如 `./static/`、`../shared/`、`/docs/static/`；不接受 URL 协议、协议相对地址、query 或 fragment。
 

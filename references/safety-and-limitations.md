@@ -40,7 +40,9 @@ Markdown、图表源码和配置都可能来自不可信输入。处理时：
 
 单文件模式按内容把需要的脚本和样式内联到 HTML；多文件模式把相同依赖写入 HTML 旁的本地静态目录。两种模式的内置资源都不需要 CDN，资源清单也不接受远程 URL。但 Markdown 图片链接不受该清单限制，独立 HTML 打开后可能请求远端；严格模式不保证拒绝所有远程图片。
 
-单文件可以直接离线打开。多文件依赖本地 URL，正式部署应由 Nginx 等静态服务器提供，本地检查可使用 `serve.py`。默认 `./static/` 可直接服务输出目录；若 `resources.publicPath` 配置为 `/docs/static/`，应服务 `docs` 的上级目录并访问 `/docs/`。`resources.publicPath` 只改变 HTML 中的本地 URL，不能配置 URL 协议、query 或 fragment。
+`resources.mode: "linked"`（`--resources-mode linked`）只影响单文件输出：HTML 引用 `publicPath` 托管的文件而不内联，此时页面不再能离线独立打开；Web 服务的预览与公开页面使用该模式，资源由同源 `/assets/` 端点提供。无论哪种模式，大体积图表引擎都排在渲染入口之后，内容先呈现、引擎就绪后再绘制图表。
+
+单文件可以直接离线打开。多文件依赖本地 URL，正式部署应由 Nginx 等静态服务器提供，本地检查可使用 `serve.py`。默认 `./static/` 可直接服务输出目录；若 `resources.publicPath` 配置为 `/docs/static/`，应服务 `docs` 的上级目录并访问 `/docs/`。`resources.publicPath` 只改变 HTML 中的本地 URL，不能配置 URL 协议、query 或 fragment。服务端部署的 `linked` 模式走 `/assets/<fingerprint>/`，该路径必须由反代转发到后端（`nginx-template` 已包含）。
 
 多文件构建拒绝静态目录路径中的软链接，以及资源目标软链接、悬空软链接和硬链接；所有资源通过预检和预读后才开始写入。`serve.py` 也拒绝通过服务根目录内软链接访问根目录外文件。
 

@@ -232,6 +232,57 @@ try {
   assertSuccess(run(['--input', plain, '--config', linkedConfig]), '配置软链接应按用户传入路径解析相对目录');
   assert(fs.existsSync(path.join(configLinkDir, 'public', 'index.html')), '构建器应以配置软链接所在目录解析相对输出路径');
 
+  // linked：single 模式只引用外部托管资源，不内联也不复制
+  const linkedOutput = path.join(tempDir, 'linked.html');
+  assertSuccess(run([
+    '--input', features,
+    '--output', linkedOutput,
+    '--resources-mode', 'linked',
+    '--public-path', '/assets/fixture-fingerprint/'
+  ]), 'linked 资源模式应成功构建');
+  const linkedHtml = fs.readFileSync(linkedOutput, 'utf8');
+  assert.match(linkedHtml, /<script src="\/assets\/fixture-fingerprint\/markdown-it\.min\.js"><\/script>/);
+  assert.match(linkedHtml, /<script type="text\/ai-docs-engine" data-defer-engine="mermaid" src="\/assets\/fixture-fingerprint\/mermaid\.min\.js"><\/script>/);
+  assert.match(linkedHtml, /<link rel="stylesheet" href="\/assets\/fixture-fingerprint\/katex\.min\.css">/);
+  assert.doesNotMatch(executableScripts(linkedHtml), /markdown-it 14\.3\.2/, 'linked HTML 不应内联 vendor 源码');
+  assert(!fs.existsSync(path.join(tempDir, 'static')), 'linked 模式不应复制资源目录');
+  const linkedRuntimeAt = linkedHtml.indexOf('container.innerHTML = md.render(raw);');
+  const linkedMermaidAt = linkedHtml.indexOf('/assets/fixture-fingerprint/mermaid.min.js');
+  const linkedMarkdownItAt = linkedHtml.indexOf('/assets/fixture-fingerprint/markdown-it.min.js');
+  assert(linkedRuntimeAt > 0, 'linked 页面应包含 clientRuntime 渲染入口');
+  assert(linkedMarkdownItAt < linkedRuntimeAt, '关键资源必须排在 clientRuntime 之前');
+  assert(linkedMermaidAt > linkedRuntimeAt, '延后引擎必须排在 clientRuntime 之后');
+
+  assertFailure(
+    run(['--input', plain, '--output', path.join(tempDir, 'unlinked.html'), '--resources-mode', 'linked']),
+    /必须显式指定 resources\.publicPath/,
+    'linked 模式缺 publicPath 必须失败'
+  );
+  assertFailure(
+    run(['--input', plain, '--output', path.join(tempDir, 'mode.html'), '--resources-mode', 'remote']),
+    /resources\.mode 必须是 inline 或 linked/,
+    '未知资源模式必须失败'
+  );
+
+  // --emit-resources：服务端托管资源走与内联/multi 完全相同的转换
+  const emitDir = path.join(tempDir, 'emitted');
+  assertSuccess(run(['--emit-resources', emitDir]), '资源导出应成功');
+  assert.deepStrictEqual(fs.readdirSync(emitDir).sort(), [
+    'd3.min.js', 'highlight-styles.css', 'highlight.min.js', 'katex.min.css',
+    'katex.min.js', 'markdown-it.min.js', 'markmap-lib.browser.js',
+    'markmap-view.browser.js', 'mermaid.min.js'
+  ]);
+  assert.match(fs.readFileSync(path.join(emitDir, 'd3.min.js'), 'utf8'), /var d3=globalThis\.d3;/, '导出的 D3 应带全局变量绑定');
+  assert.doesNotMatch(fs.readFileSync(path.join(emitDir, 'katex.min.css'), 'utf8'), /@font-face/, '导出的 KaTeX CSS 应去掉字体声明');
+  const emittedMermaidContext = require('vm').createContext({ console, setTimeout, clearTimeout });
+  require('vm').runInContext(fs.readFileSync(path.join(emitDir, 'mermaid.min.js'), 'utf8'), emittedMermaidContext, { timeout: 10000 });
+  assert.strictEqual(typeof emittedMermaidContext.mermaid.initialize, 'function', '导出的 Mermaid 应可运行');
+  assertFailure(
+    run(['--emit-resources', path.join(tempDir, 'unused'), '--input', plain]),
+    /--emit-resources 不接受输入文件/,
+    '资源导出不能与输入文件同时使用'
+  );
+
   console.log('ai-docs output mode tests passed');
 } finally {
   fs.rmSync(tempDir, { recursive: true, force: true });

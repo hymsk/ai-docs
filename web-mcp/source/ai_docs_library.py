@@ -12,15 +12,20 @@ import binascii
 import datetime
 import hashlib
 import hmac
+import json
 import os
+import re
+import shutil
 import subprocess
 import tempfile
 import threading
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from ai_docs_common import (
-    MARKDOWN_SUFFIXES, ServiceError, markdown_bytes, resolve_library_path,
+    DEFAULT_ASSETS_PREFIX, DEFAULT_PUBLIC_RENDER_TIMEOUT, MARKDOWN_SUFFIXES,
+    ServiceError, markdown_bytes, renderer_fingerprint, resolve_library_path,
     safe_relative_markdown_path, safe_relative_subdirectory,
 )
 from ai_docs_preview import prepare_preview_html
@@ -332,6 +337,15 @@ class PreviewStore:
         return prepare_preview_html(rendered, relative, self.config.preview_prefix, link_target, editor_preview)
 
 
+def _renderer_environment() -> Dict[str, str]:
+    """Minimal environment for renderer subprocesses (also used for asset export)."""
+    return {
+        name: os.environ[name]
+        for name in ("HOME", "LANG", "LC_ALL", "PATH", "TZ")
+        if name in os.environ
+    }
+
+
 def render_markdown_document(
     config,
     capacity: threading.BoundedSemaphore,
@@ -359,12 +373,12 @@ def render_markdown_document(
                 "--input", str(source),
                 "--output", str(output),
                 "--output-mode", "single",
+                # 服务端统一只出引用型 HTML：大资源由 /assets/<fingerprint>/ 端点托管，
+                # 避免每次渲染重复内联 3.4MB 脚本阻塞首屏。
+                "--resources-mode", "linked",
+                "--public-path", "{}{}/".format(DEFAULT_ASSETS_PREFIX, renderer_fingerprint(config)),
             ]
-            environment = {
-                name: os.environ[name]
-                for name in ("HOME", "LANG", "LC_ALL", "PATH", "TZ")
-                if name in os.environ
-            }
+            environment = _renderer_environment()
             try:
                 completed = subprocess.run(
                     command,
@@ -393,3 +407,128 @@ def render_markdown_document(
             return output.read_text(encoding="utf-8")
     finally:
         capacity.release()
+
+
+# ---------------------------------------------------------------------------
+# Renderer asset endpoint (/assets/<fingerprint>/<file>)
+#
+# Linked HTML only writes URLs; the bytes come from here. The conversion rules
+# stay in scripts/build.js (--emit-resources), so the service never reimplements
+# resourceContent() transformations (mermaid/d3/katex adjustments).
+
+_ASSET_READY_MARKER = ".ready"
+_FINGERPRINT_PATTERN = re.compile(r"[0-9a-f]{64}")
+_ASSET_CONTENT_TYPES = {
+    "script": "application/javascript; charset=utf-8",
+    "style": "text/css; charset=utf-8",
+}
+_ASSET_EXPORT_LOCKS: Dict[str, threading.Lock] = {}
+_ASSET_EXPORT_LOCKS_GUARD = threading.Lock()
+
+
+def _asset_export_lock(key: str) -> threading.Lock:
+    with _ASSET_EXPORT_LOCKS_GUARD:
+        lock = _ASSET_EXPORT_LOCKS.get(key)
+        if lock is None:
+            lock = threading.Lock()
+            _ASSET_EXPORT_LOCKS[key] = lock
+        return lock
+
+
+@lru_cache(maxsize=8)
+def _resource_content_types(renderer_directory: str, manifest_mtime: int) -> Dict[str, str]:
+    del manifest_mtime  # part of the cache key so renderer updates re-read it
+    manifest_path = Path(renderer_directory) / "assets" / "default-resources.json"
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        raise ServiceError(500, "renderer_manifest_unavailable", "resource manifest is unreadable") from error
+    types: Dict[str, str] = {}
+    if isinstance(data, dict):
+        for item in data.values():
+            if not isinstance(item, dict):
+                continue
+            output = item.get("output")
+            content_type = _ASSET_CONTENT_TYPES.get(item.get("type"))
+            if isinstance(output, str) and content_type and "/" not in output and output not in ("", ".", ".."):
+                types[output] = content_type
+    if not types:
+        raise ServiceError(500, "renderer_manifest_unavailable", "resource manifest has no servable assets")
+    return types
+
+
+def resource_content_types(config) -> Dict[str, str]:
+    manifest_path = config.renderer_directory / "assets" / "default-resources.json"
+    try:
+        manifest_mtime = int(manifest_path.stat().st_mtime)
+    except OSError as error:
+        raise ServiceError(500, "renderer_manifest_unavailable", "resource manifest is unreadable") from error
+    return _resource_content_types(str(config.renderer_directory), manifest_mtime)
+
+
+def ensure_resource_assets(config, fingerprint: str, timeout_seconds: int = DEFAULT_PUBLIC_RENDER_TIMEOUT) -> Path:
+    """Materialize converted assets under workspace_root/asset-cache/<fingerprint>.
+
+    Idempotent per fingerprint: a ready marker is written only after a complete
+    export, and the final rename happens under a per-fingerprint lock so
+    concurrent first requests cannot observe a partial directory.
+    """
+    if not _FINGERPRINT_PATTERN.fullmatch(fingerprint or ""):
+        raise ServiceError(404, "not_found", "asset was not found")
+    root = config.workspace_root / "asset-cache" / fingerprint
+    if (root / _ASSET_READY_MARKER).is_file():
+        return root
+    with _asset_export_lock(fingerprint):
+        if (root / _ASSET_READY_MARKER).is_file():
+            return root
+        parent = root.parent
+        parent.mkdir(parents=True, exist_ok=True)
+        # Only our own cache paths: incomplete leftovers are safe to discard.
+        temporary = parent / "{}.{}".format(fingerprint, os.getpid())
+        for stale in (temporary, root):
+            if stale.exists():
+                shutil.rmtree(stale, ignore_errors=True)
+        command = [
+            str(config.node_executable),
+            str(config.renderer_directory / "scripts" / "build.js"),
+            "--emit-resources", str(temporary),
+        ]
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=str(config.workspace_root),
+                env=_renderer_environment(),
+                capture_output=True,
+                text=True,
+                timeout=timeout_seconds,
+                check=False,
+            )
+        except subprocess.TimeoutExpired as error:
+            raise ServiceError(504, "asset_export_timeout", "asset export exceeded the configured timeout") from error
+        if completed.returncode != 0 or not temporary.is_dir():
+            detail = (completed.stderr or completed.stdout or "").strip()[-2000:]
+            shutil.rmtree(temporary, ignore_errors=True)
+            raise ServiceError(500, "asset_export_failed", detail or "renderer asset export failed")
+        try:
+            (temporary / _ASSET_READY_MARKER).write_text("", encoding="utf-8")
+            os.replace(temporary, root)
+        except OSError as error:
+            shutil.rmtree(temporary, ignore_errors=True)
+            raise ServiceError(500, "asset_export_failed", "cannot publish exported assets") from error
+    return root
+
+
+def read_resource_asset(config, fingerprint: str, name: str, timeout_seconds: int = DEFAULT_PUBLIC_RENDER_TIMEOUT) -> Tuple[str, bytes]:
+    """Return (content_type, body) for a manifest-whitelisted asset file."""
+    # 指纹必须精确匹配当前 renderer：随机合法 hex 不得触发资源导出。
+    if not _FINGERPRINT_PATTERN.fullmatch(fingerprint or "") or fingerprint != renderer_fingerprint(config):
+        raise ServiceError(404, "not_found", "asset was not found")
+    content_type = resource_content_types(config).get(name)
+    if content_type is None:
+        raise ServiceError(404, "not_found", "asset was not found")
+    root = ensure_resource_assets(config, fingerprint, timeout_seconds)
+    try:
+        body = (root / name).read_bytes()
+    except OSError as error:
+        raise ServiceError(404, "not_found", "asset was not found") from error
+    return content_type, body

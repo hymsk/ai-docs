@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import ipaddress
 import json
 import os
@@ -32,6 +33,23 @@ def effective_renderer_directory() -> Path:
     return bundled_renderer_directory()
 
 
+def renderer_fingerprint(config) -> str:
+    """Hash build.js plus vendored assets; drives render cache and asset URLs."""
+    digest = hashlib.sha256()
+    scripts = config.renderer_directory / "scripts"
+    targets = [scripts / "build.js"]
+    vendor = scripts / "vendor"
+    if vendor.is_dir():
+        targets.extend(sorted(path for path in vendor.rglob("*") if path.is_file()))
+    for target in targets:
+        try:
+            digest.update(target.relative_to(scripts).as_posix().encode("utf-8"))
+            digest.update(target.read_bytes())
+        except OSError:
+            continue
+    return digest.hexdigest()
+
+
 LEGACY_PROTOCOL_VERSIONS = ("2025-11-25", "2025-06-18", "2025-03-26")
 
 
@@ -45,6 +63,11 @@ DEFAULT_PROTOCOL_VERSION = LEGACY_PROTOCOL_VERSIONS[0]
 
 
 DEFAULT_DOCUMENTS_PREFIX = "/docs/"
+
+
+# 渲染器资源端点前缀（不可配置）：/assets/<renderer-fingerprint>/<file>。
+# URL 带指纹可长期缓存，版本更新自动切换新路径。
+DEFAULT_ASSETS_PREFIX = "/assets/"
 
 
 DEFAULT_STATIC_PREFIX = "/static/"

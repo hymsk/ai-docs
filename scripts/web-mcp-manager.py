@@ -1494,6 +1494,18 @@ def _nginx_template(paths: InstallPaths, public_settings: Dict[str, Any], expose
         proxy_read_timeout %(docs_proxy_read_timeout)ss;
         add_header X-Content-Type-Options "nosniff" always;
     }
+
+    # Renderer assets (/assets/<fingerprint>/<file>): manifest-whitelisted vendor
+    # files only, served read-only by the backend with immutable caching.
+    location ^~ /assets/ {
+        proxy_pass http://%(backend_host)s:%(port)s;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 30s;
+        proxy_read_timeout 30s;
+    }
 %(preview_block)s%(mcp_block)s    location ^~ /v1/ { return 404; }
     location = /healthz { return 404; }
     location / { return 404; }

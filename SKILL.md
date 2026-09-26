@@ -54,7 +54,7 @@ compatibility: 构建需要 Node.js 18+ 和文件系统访问；Python 工具需
 | `references/components/<component>/index.md` | 确定组件后，先读取该组件概述和详细文档索引 |
 | `assets/document-template.md` | 从零创建标准报告时 |
 | `assets/default-config.json` | 需要稳定复用默认页面设置时 |
-| `assets/default-resources.json` | 维护按需内联或多文件复制的本地资源清单时；普通文档任务通常无需读取 |
+| `assets/default-resources.json` | 维护按需内联、多文件复制或 linked 托管导出的本地资源清单时；普通文档任务通常无需读取 |
 | `assets/full-example.md` | 需要查看全部已支持语法的组合示例时 |
 
 可直接查询组件目录：

@@ -12,12 +12,12 @@ from typing import Any, Dict, Optional, Tuple
 from urllib.parse import quote, unquote, urlparse
 
 from ai_docs_common import (
-    MAX_PREVIEW_RESPONSE_BYTES, MAX_RPC_RESPONSE_BYTES, PREVIEW_SESSION_COOKIE,
-    ServiceError, json_bytes, normalized_origin,
+    DEFAULT_ASSETS_PREFIX, MAX_PREVIEW_RESPONSE_BYTES, MAX_RPC_RESPONSE_BYTES,
+    PREVIEW_SESSION_COOKIE, ServiceError, json_bytes, normalized_origin,
     parse_json, safe_relative_markdown_path,
 )
 from ai_docs_config import ServiceConfig
-from ai_docs_library import LibraryStore, PreviewStore
+from ai_docs_library import LibraryStore, PreviewStore, read_resource_asset
 from ai_docs_mcp import McpService
 from ai_docs_public import PublicDocs, not_found_response
 from ai_docs_preview import (
@@ -233,6 +233,9 @@ class AiDocsHandler(http.server.BaseHTTPRequestHandler):
                 self._authorized()
                 self._send_json(200, {"ok": True, "config": self.service.config.describe()})
                 return
+            if path.startswith(DEFAULT_ASSETS_PREFIX):
+                self._serve_asset(path)
+                return
             prefix = self.service.config.documents_prefix
             preview_prefix = self.service.config.preview_prefix
             if path.rstrip("/") == self.service.config.preview_path:
@@ -301,6 +304,20 @@ class AiDocsHandler(http.server.BaseHTTPRequestHandler):
         except OSError as error:
             self._error(ServiceError(500, "io_error", str(error)))
 
+    def _serve_asset(self, path: str, head: bool = False) -> None:
+        """Serve one manifest-whitelisted renderer asset; fingerprint pins the bytes."""
+        remainder = path[len(DEFAULT_ASSETS_PREFIX):]
+        fingerprint, separator, name = remainder.partition("/")
+        if not separator or not name or "/" in name:
+            raise ServiceError(404, "not_found", "asset was not found")
+        content_type, body = read_resource_asset(self.service.config, fingerprint, name)
+        self._send_bytes(200, body, {
+            "Content-Type": content_type,
+            # fingerprint 在 URL 里，版本更新会切换到新 URL。
+            "Cache-Control": "public, max-age=31536000, immutable",
+            "X-Content-Type-Options": "nosniff",
+        }, head=head)
+
     def _serve_docs(self, path: str, head: bool = False) -> None:
         """Serve the public docs surface; any failure collapses to the HTML 404 page."""
         prefix = self.service.config.documents_prefix
@@ -319,9 +336,12 @@ class AiDocsHandler(http.server.BaseHTTPRequestHandler):
         self._send_bytes(status, body, response_headers, head=head)
 
     def do_HEAD(self) -> None:
-        """Public docs support HEAD for cache revalidation; everything else 404s."""
+        """Public docs and renderer assets support HEAD; everything else 404s."""
         try:
             path = self._path()
+            if path.startswith(DEFAULT_ASSETS_PREFIX):
+                self._serve_asset(path, head=True)
+                return
             prefix = self.service.config.documents_prefix
             if path == prefix.rstrip("/") or path.startswith(prefix):
                 self._serve_docs(path, head=True)

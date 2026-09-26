@@ -14,7 +14,7 @@ import json
 import os
 from typing import List, Optional
 
-from ai_docs_common import ServiceError, normalized_origin  # noqa: F401  (re-exported)
+from ai_docs_common import DEFAULT_ASSETS_PREFIX, ServiceError, normalized_origin  # noqa: F401  (re-exported)
 from ai_docs_config import ServiceConfig  # noqa: F401  (re-exported)
 from ai_docs_http import AiDocsHTTPServer, configure_identity
 from ai_docs_preview import (  # noqa: F401  (re-exported)
@@ -61,7 +61,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 "library_directory": os.access(config.library_directory, os.W_OK | os.X_OK),
                 "public_root": os.access(config.public_root, os.W_OK | os.X_OK),
             }
-            proxy_paths = [config.mcp_path, config.documents_prefix, "/healthz"]
+            proxy_paths = [config.mcp_path, config.documents_prefix, DEFAULT_ASSETS_PREFIX, "/healthz"]
             if config.preview_enabled:
                 proxy_paths.extend((config.preview_path, config.preview_prefix))
             payload = {"ok": token_configured and all(writable.values()), "server": {"name": SERVER_NAME, "version": SERVER_VERSION}, "config": config.describe(), "node": {"available": True, "executable": str(config.node_executable)}, "authentication": {"required": config.auth_required, "token_configured": token_configured}, "writable": writable, "nginx": {

@@ -19,7 +19,8 @@ from urllib.parse import quote
 
 from ai_docs_common import (
     MARKDOWN_SUFFIXES, PUBLIC_INDEX_FILE, ServiceError, json_compact,
-    resolve_library_path, safe_relative_markdown_path, safe_relative_subdirectory,
+    renderer_fingerprint, resolve_library_path, safe_relative_markdown_path,
+    safe_relative_subdirectory,
 )
 from ai_docs_library import LibraryStore, render_markdown_document
 from ai_docs_preview import PREVIEW_RENDER_CSP
@@ -194,25 +195,9 @@ class PublicDocs:
         self.library = library
         self.capacity = threading.BoundedSemaphore(config.public_max_concurrent_renders)
         self.cache = RenderCache(config.cache_max_bytes, config.cache_max_entries, config.cache_max_entry_bytes)
-        self.renderer_fingerprint = self._renderer_fingerprint(config)
+        self.renderer_fingerprint = renderer_fingerprint(config)
         self.inflight: Dict[Tuple[str, str, str, str], threading.Lock] = {}
         self.inflight_lock = threading.Lock()
-
-    @staticmethod
-    def _renderer_fingerprint(config) -> str:
-        digest = hashlib.sha256()
-        scripts = config.renderer_directory / "scripts"
-        targets = [scripts / "build.js"]
-        vendor = scripts / "vendor"
-        if vendor.is_dir():
-            targets.extend(sorted(path for path in vendor.rglob("*") if path.is_file()))
-        for target in targets:
-            try:
-                digest.update(target.relative_to(scripts).as_posix().encode("utf-8"))
-                digest.update(target.read_bytes())
-            except OSError:
-                continue
-        return digest.hexdigest()
 
     # ------------------------------------------------------------ resolution
 

@@ -45,8 +45,13 @@ const DEFAULT_OUTPUT_OPTIONS = Object.freeze({
 
 const DEFAULT_RESOURCE_OPTIONS = Object.freeze({
   directory: 'static',
-  publicPath: ''
+  publicPath: '',
+  mode: 'inline'
 });
+
+// clientRuntime 完成内容渲染并绘制一帧后再装载的重资源：避免 3.4MB 级脚本
+// 编译阻塞首屏。engines 输出为非执行标签，由 clientRuntime 主动装载后再渲染图表。
+const DEFERRED_RESOURCE_NAMES = Object.freeze(new Set(['mermaid', 'd3', 'markmapLib', 'markmapView']));
 
 const RESOURCE_ORDER = Object.freeze([
   'markdownIt', 'highlightCss', 'katexCss', 'highlightJs', 'mermaid', 'd3', 'katexJs',
@@ -79,6 +84,9 @@ function printUsage() {
 本地资源（multi 模式）:
       --static-dir <directory>    依赖写入目录，相对于输出 HTML（默认 static）
       --public-path <url-path>    HTML 中的资源 URL 前缀（默认由 static-dir 推导）
+      --resources-mode <inline|linked>
+                                  single 模式下资源是内联进 HTML（默认 inline），
+                                  还是引用 --public-path 下由外部托管的文件（linked）
 
 页面功能:
       --toc / --no-toc            启用/关闭目录和标题锚点（默认启用）
@@ -203,7 +211,8 @@ if (!runPreviewIfRequested(process.argv.slice(2))) {
 function parseRawArguments(argv) {
   const raw = {
     settings: {}, positionals: [], input: '', output: '', title: '', configPath: '',
-    outputMode: '', outputDir: '', outputName: '', staticDir: '', publicPath: ''
+    outputMode: '', outputDir: '', outputName: '', staticDir: '', publicPath: '', resourcesMode: '',
+    emitResources: ''
   };
   const booleanFlags = {
     '--toc': ['toc', true], '--no-toc': ['toc', false],
@@ -279,6 +288,16 @@ function parseRawArguments(argv) {
       index++;
       continue;
     }
+    if (arg === '--resources-mode') {
+      raw.resourcesMode = getOptionValue(argv, index, arg);
+      index++;
+      continue;
+    }
+    if (arg === '--emit-resources') {
+      raw.emitResources = getOptionValue(argv, index, arg);
+      index++;
+      continue;
+    }
     if (arg === '--theme') {
       raw.settings.theme = getOptionValue(argv, index, arg);
       index++;
@@ -320,7 +339,8 @@ function parseRawArguments(argv) {
     const value = equals === -1 ? '' : arg.slice(equals + 1);
     if (name === '--input' || name === '--output' || name === '--title' || name === '--config' ||
         name === '--output-mode' || name === '--output-dir' || name === '--output-name' ||
-        name === '--static-dir' || name === '--public-path' ||
+        name === '--static-dir' || name === '--public-path' || name === '--resources-mode' ||
+        name === '--emit-resources' ||
         name === '--theme' || name === '--content-width' || name === '--toc-layout' || name === '--toc-width' ||
         name === '--visual-width' || name === '--visual-height' || name === '--mermaid-security') {
       if (!value) fail(`${name} 需要一个值。`);
@@ -333,6 +353,8 @@ function parseRawArguments(argv) {
       if (name === '--output-name') raw.outputName = value;
       if (name === '--static-dir') raw.staticDir = value;
       if (name === '--public-path') raw.publicPath = value;
+      if (name === '--resources-mode') raw.resourcesMode = value;
+      if (name === '--emit-resources') raw.emitResources = value;
       if (name === '--theme') raw.settings.theme = value;
       if (name === '--content-width') raw.settings.contentWidth = value;
       if (name === '--toc-layout') raw.settings.tocLayout = value;
@@ -489,6 +511,13 @@ function normalizeResourceOptions(value, source) {
   if (typeof value !== 'object' || Array.isArray(value)) fail(`${source} 的 resources 必须是 JSON 对象。`);
   const normalized = {};
   for (const [name, setting] of Object.entries(value)) {
+    if (name === 'mode') {
+      if (typeof setting !== 'string' || !['inline', 'linked'].includes(setting)) {
+        fail(`${source} 的 resources.mode 必须是 inline 或 linked。`);
+      }
+      normalized[name] = setting;
+      continue;
+    }
     if (name === 'config' || name === 'directory' || name === 'publicPath') {
       if (typeof setting !== 'string' || !setting.trim()) fail(`${source} 的 resources.${name} 必须是非空字符串。`);
       normalized[name] = setting;
@@ -595,6 +624,10 @@ function normalizePublicPath(value, source) {
 
 function parseInvocation(argv) {
   const raw = parseRawArguments(argv);
+  if (raw.emitResources) {
+    if (raw.input || raw.positionals.length) fail('--emit-resources 不接受输入文件。');
+    return { emitResources: path.resolve(raw.emitResources) };
+  }
   const fileConfig = raw.configPath ? readConfig(raw.configPath) : {
     settings: {}, output: {}, resources: {}, server: {}, path: '', directory: process.cwd()
   };
@@ -648,7 +681,14 @@ function parseInvocation(argv) {
   const resourceOptions = Object.assign({}, DEFAULT_RESOURCE_OPTIONS, fileConfig.resources);
   if (raw.staticDir) resourceOptions.directory = raw.staticDir;
   if (raw.publicPath) resourceOptions.publicPath = raw.publicPath;
+  if (raw.resourcesMode) resourceOptions.mode = raw.resourcesMode;
+  if (!['inline', 'linked'].includes(resourceOptions.mode)) {
+    fail('resources.mode 必须是 inline 或 linked。');
+  }
   resourceOptions.directory = normalizeManagedDirectory(resourceOptions.directory, 'resources.directory');
+  if (outputOptions.mode === 'single' && resourceOptions.mode === 'linked' && !resourceOptions.publicPath) {
+    fail('linked 模式必须显式指定 resources.publicPath；该路径下的资源文件需自行托管。');
+  }
   resourceOptions.publicPath = resourceOptions.publicPath
     ? normalizePublicPath(resourceOptions.publicPath, 'resources.publicPath')
     : './' + resourceOptions.directory.split(path.sep).map(encodeURIComponent).join('/') + '/';
@@ -673,6 +713,47 @@ try {
 
 const vendorDir = path.join(__dirname, 'vendor');
 const defaultResourceConfigPath = path.join(__dirname, '..', 'assets', 'default-resources.json');
+
+// 服务端托管资源：按 manifest 输出经过与内联/multi 复制同一套转换的文件，
+// 供 Web 端点读取，避免在服务端复刻 resourceContent() 的转换规则。
+function emitResourceFiles(directory) {
+  const manifest = loadResourceManifest();
+  const names = Object.keys(manifest);
+  fs.mkdirSync(directory, { recursive: true });
+  const stat = fs.lstatSync(directory);
+  if (stat.isSymbolicLink() || !stat.isDirectory()) fail(`资源导出目录必须是普通目录: ${directory}`);
+  names.forEach(function(name) {
+    const item = manifest[name];
+    const content = resourceContent(name, item);
+    const target = path.join(directory, item.output);
+    if (item.type === 'script' && /<\/script/i.test(content)) fail(`资源 ${name} 包含不能安全内联的 </script。`);
+    if (item.type === 'style' && /<\/style/i.test(content)) fail(`资源 ${name} 包含不能安全内联的 </style。`);
+    let existing = null;
+    try {
+      existing = fs.lstatSync(target);
+    } catch (error) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+    if (existing && (existing.isSymbolicLink() || !existing.isFile() || existing.nlink > 1)) {
+      fail(`资源导出目标必须是普通文件且不能是硬链接: ${target}`);
+    }
+    const flags = fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_TRUNC |
+      (fs.constants.O_NOFOLLOW || 0);
+    let descriptor;
+    try {
+      descriptor = fs.openSync(target, flags, 0o644);
+      fs.writeFileSync(descriptor, content, 'utf-8');
+    } finally {
+      if (descriptor != null) fs.closeSync(descriptor);
+    }
+  });
+  console.log(`已导出资源 ${names.length} 个: ${directory}`);
+}
+
+if (invocation.emitResources) {
+  emitResourceFiles(invocation.emitResources);
+  process.exit(0);
+}
 
 const { inputFile, outputFile, title, options, output, resources } = invocation;
 const sourceMarkdown = fs.readFileSync(inputFile, 'utf-8');
@@ -823,19 +904,47 @@ function escAttribute(value) {
 
 function buildResourceMarkup(selectedNames, manifest) {
   const styles = [];
-  const scripts = [];
+  const criticalScripts = [];
+  const deferredScripts = [];
+  const pushScript = function(name, markup) {
+    (DEFERRED_RESOURCE_NAMES.has(name) ? deferredScripts : criticalScripts).push(markup);
+  };
+  // 延后引擎标记给 clientRuntime 判断等待时机；inline/linked/multi 三种输出一致。
+  // type 使用非 JS MIME：浏览器不解析执行、也不在 HTML 解析期发起请求，
+  // 由 clientRuntime 在内容绘制一帧后自行装载，避免 3.4MB 编译阻塞首屏。
+  const scriptTag = function(name, attributes) {
+    if (!DEFERRED_RESOURCE_NAMES.has(name)) return `<script${attributes}>`;
+    return `<script type="text/ai-docs-engine" data-defer-engine="${escAttribute(name)}"${attributes}>`;
+  };
   if (output.mode === 'single') {
+    const linked = resources.mode === 'linked';
     selectedNames.forEach(function(name) {
       const item = manifest[name];
+      if (linked) {
+        // 服务端托管：HTML 只引用 publicPath 下的资源文件，不内联也不复制。
+        const url = resources.publicPath + encodeURIComponent(item.output);
+        if (item.type === 'style') {
+          styles.push(`<link rel="stylesheet" href="${escAttribute(url)}">`);
+        } else {
+          pushScript(name, `${scriptTag(name, ` src="${escAttribute(url)}"`)}</script>`);
+        }
+        return;
+      }
       const content = resourceContent(name, item);
       if (item.type === 'script' && /<\/script/i.test(content)) fail(`资源 ${name} 包含不能安全内联的 </script。`);
       if (item.type === 'style' && /<\/style/i.test(content)) fail(`资源 ${name} 包含不能安全内联的 </style。`);
-      const markup = item.type === 'style'
-        ? `<style>${content}</style>`
-        : `<script>${content}</script>`;
-      (item.type === 'style' ? styles : scripts).push(markup);
+      if (item.type === 'style') {
+        styles.push(`<style>${content}</style>`);
+      } else {
+        pushScript(name, `${scriptTag(name, '')}${content}</script>`);
+      }
     });
-    return { styles: styles.join('\n'), scripts: scripts.join('\n'), copied: [] };
+    return {
+      styles: styles.join('\n'),
+      scriptsCritical: criticalScripts.join('\n'),
+      scriptsDeferred: deferredScripts.join('\n'),
+      copied: []
+    };
   }
 
   const staticRoot = path.resolve(path.dirname(outputFile), resources.directory);
@@ -877,7 +986,7 @@ function buildResourceMarkup(selectedNames, manifest) {
 
   const copied = [];
   pendingResources.forEach(function(pending) {
-    const { item, target, content } = pending;
+    const { name, item, target, content } = pending;
     const flags = fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_TRUNC |
       (fs.constants.O_NOFOLLOW || 0);
     let descriptor;
@@ -889,12 +998,18 @@ function buildResourceMarkup(selectedNames, manifest) {
     }
     copied.push(target);
     const url = resources.publicPath + encodeURIComponent(item.output);
-    const markup = item.type === 'style'
-      ? `<link rel="stylesheet" href="${escAttribute(url)}">`
-      : `<script src="${escAttribute(url)}"></script>`;
-    (item.type === 'style' ? styles : scripts).push(markup);
+    if (item.type === 'style') {
+      styles.push(`<link rel="stylesheet" href="${escAttribute(url)}">`);
+    } else {
+      pushScript(name, `${scriptTag(name, ` src="${escAttribute(url)}"`)}</script>`);
+    }
   });
-  return { styles: styles.join('\n'), scripts: scripts.join('\n'), copied };
+  return {
+    styles: styles.join('\n'),
+    scriptsCritical: criticalScripts.join('\n'),
+    scriptsDeferred: deferredScripts.join('\n'),
+    copied
+  };
 }
 
 const resourceManifest = loadResourceManifest();
@@ -1146,7 +1261,7 @@ function bootstrapTheme(configuredTheme) {
   document.documentElement.setAttribute('data-theme-preference', theme);
 }
 
-function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, title, degradedFences) {
+function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, title, degradedFences, deferredEngineNames) {
   'use strict';
 
   // 构建期预渲染不改动 Markdown 原文，渲染输入与下载源是同一份内容，
@@ -1190,6 +1305,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
   var renderGeneration = 0;
   var dynamicVisualsReady = Promise.resolve();
   var visualsStarted = false;
+  var dynamicVisualsStarted = false;
   var visualResizeFrame = 0;
   var allVisualShells = [];
   var visualZoomState = Object.create(null);
@@ -1238,7 +1354,8 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     }
     if (visualsStarted) {
       refreshStaticCharts();
-      refreshDynamicVisuals();
+      // 图表引擎尚未就绪时只刷新静态部分，等装载完成后的首轮统一渲染。
+      if (dynamicVisualsStarted) refreshDynamicVisuals();
     }
   }
 
@@ -2872,7 +2989,72 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
   adjustMathOverflow();
   staticRenderErrors = renderStaticCharts();
   visualsStarted = true;
-  refreshDynamicVisuals();
+  function startDynamicVisuals() {
+    if (dynamicVisualsStarted) return dynamicVisualsReady;
+    dynamicVisualsStarted = true;
+    dynamicVisualsReady = refreshDynamicVisuals();
+    return dynamicVisualsReady;
+  }
+  function afterPaint(callback) {
+    // 双 rAF：内容 DOM 更新后至少完成一帧绘制，再装载重型引擎。
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(function() {
+        window.requestAnimationFrame(callback);
+      });
+    } else {
+      window.setTimeout(callback, 0);
+    }
+  }
+  function whenIdle(callback) {
+    // 绘制后再让出一个空闲期，确保内容帧真正交付给观察者与合成器。
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(function() { callback(); }, { timeout: 3000 });
+    } else {
+      window.setTimeout(callback, 0);
+    }
+  }
+  function loadDeferredEngines(done) {
+    var tags = [];
+    var candidates = document.querySelectorAll('script[data-defer-engine]');
+    for (var i = 0; i < candidates.length; i++) tags.push(candidates[i]);
+    if (!tags.length) { done(); return; }
+    var pending = tags.length;
+    var settled = false;
+    function settle() {
+      pending -= 1;
+      if (pending <= 0 && !settled) { settled = true; done(); }
+    }
+    tags.forEach(function(tag) {
+      var executable = document.createElement('script');
+      var engine = tag.getAttribute('data-defer-engine');
+      if (engine) executable.setAttribute('data-defer-engine-run', engine);
+      var src = tag.getAttribute('src');
+      if (src) {
+        // async=false：并行下载、按插入顺序执行，保持 d3 → markmap 依赖。
+        executable.async = false;
+        executable.src = src;
+        executable.onload = settle;
+        executable.onerror = settle;
+        document.body.appendChild(executable);
+        return;
+      }
+      // inline 模式：同一段代码改用可执行标签晚些时候同步求值（内容已绘制）。
+      executable.text = tag.text || tag.textContent || '';
+      document.body.appendChild(executable);
+      settle();
+    });
+  }
+  if (!deferredEngineNames || !deferredEngineNames.length) {
+    dynamicVisualsReady = startDynamicVisuals();
+  } else {
+    dynamicVisualsReady = new Promise(function(resolve) {
+      afterPaint(function() {
+        whenIdle(function() {
+          loadDeferredEngines(resolve);
+        });
+      });
+    }).then(startDynamicVisuals, startDynamicVisuals);
+  }
 
   if (window.ResizeObserver && container) {
     var visualSizeObserver = new window.ResizeObserver(scheduleVisualResize);
@@ -2928,6 +3110,9 @@ async function main() {
   preparedMarkdown.degraded = degradedFences.degraded;
   const markdownContent = preparedMarkdown.markdown;
   const resourceMarkup = buildResourceMarkup(selectedResources, resourceManifest);
+  const deferredEngineNames = selectedResources.filter(function(name) {
+    return DEFERRED_RESOURCE_NAMES.has(name);
+  });
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -3204,8 +3389,9 @@ body.visual-maximized-open { overflow: hidden; }
 <header class="viewer-header"><div class="viewer-header-inner" id="viewer-controls"></div></header>
 <div class="viewer-layout" id="viewer-layout"><main class="container" id="content"></main><aside class="toc-panel" id="toc-panel" aria-label="文档目录" aria-hidden="true"><div class="toc-title">目录</div><nav id="toc-content"></nav></aside></div>
 ${licenseMarkup()}
-${resourceMarkup.scripts}
-<script>(${clientRuntime.toString()})(${scriptJson(markdownContent)}, ${scriptJson(sourceDownloadName)}, ${scriptJson(preparedMarkdown.blocks)}, ${scriptJson(options)}, ${scriptJson(title)}, ${scriptJson(preparedMarkdown.degraded)});</script>
+${resourceMarkup.scriptsCritical}
+<script>(${clientRuntime.toString()})(${scriptJson(markdownContent)}, ${scriptJson(sourceDownloadName)}, ${scriptJson(preparedMarkdown.blocks)}, ${scriptJson(options)}, ${scriptJson(title)}, ${scriptJson(preparedMarkdown.degraded)}, ${scriptJson(deferredEngineNames)});</script>
+${resourceMarkup.scriptsDeferred}
 </body>
 </html>`;
 
@@ -3214,7 +3400,7 @@ ${resourceMarkup.scripts}
   const sizeMB = (Buffer.byteLength(html) / 1024 / 1024).toFixed(1);
   const size = sizeKB > 1024 ? sizeMB + ' MB' : sizeKB + ' KB';
   const resourceSummary = output.mode === 'single'
-    ? `内联资源 ${selectedResources.length} 个`
+    ? (resources.mode === 'linked' ? `引用资源 ${selectedResources.length} 个` : `内联资源 ${selectedResources.length} 个`)
     : `本地资源 ${resourceMarkup.copied.length} 个`;
   console.log(`已生成: ${outputFile} (${size}, ${resourceSummary})`);
   if (preparedMarkdown.warnings.length) {

@@ -307,7 +307,7 @@ PREVIEW_EDITOR_STYLE = """
 
 
 PREVIEW_RENDER_CSP = (
-    "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; "
+    "default-src 'none'; script-src 'unsafe-inline' 'self'; style-src 'unsafe-inline' 'self'; "
     "img-src data: blob:; font-src data:; media-src data: blob:; connect-src 'none'; "
     "object-src 'none'; frame-src 'none'; worker-src blob:; base-uri 'none'; form-action 'none'"
 )

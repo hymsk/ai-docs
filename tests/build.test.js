@@ -34,8 +34,16 @@ function assertFailure(result, text, description) {
   assert.match(result.stderr, text, `${description}\n${result.stderr}`);
 }
 
+function findClientRuntimeScript(html) {
+  const scripts = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi), function(match) { return match[1]; });
+  // 延后引擎脚本排在 clientRuntime 之后；按语义取渲染入口而不是"最后一个"。
+  const script = scripts.find(function(code) { return code.indexOf('container.innerHTML = md.render(raw);') !== -1; });
+  assert.ok(script, '未在生成页面中找到 clientRuntime 渲染入口脚本');
+  return script;
+}
+
 function renderClientMarkdown(html) {
-  const script = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi), function(match) { return match[1]; }).at(-1);
+  const script = findClientRuntimeScript(html);
   const stop = {};
   let rendered = '';
   function element() {
@@ -88,7 +96,7 @@ function assertColumnsRuntime(html) {
 }
 
 function getVisualBlockDefinitions(html) {
-  const script = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi), function(match) { return match[1]; }).at(-1);
+  const script = findClientRuntimeScript(html);
   const stop = {};
   const instrumented = script.replace(
     'container.innerHTML = md.render(raw);',
@@ -238,6 +246,25 @@ try {
   assert(!/<(?:script|link|img|iframe|object|embed|source|video|audio)\b[^>]*(?:src|href)\s*=\s*["'](?:https?:)?\/\//i.test(html), '生成页面不应引用外部资源');
   const scripts = Array.from(html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi), function(match) { return match[1]; });
   scripts.forEach(function(script, index) { new vm.Script(script, { filename: `generated-${index}.js` }); });
+  // 首屏只被关键小库阻塞：延后引擎必须排在 clientRuntime 之后并带等待标记
+  const runtimeAt = html.indexOf('container.innerHTML = md.render(raw);');
+  assert(runtimeAt > 0, '页面应包含 clientRuntime 渲染入口');
+  const markdownItAt = html.indexOf('<script>/*! markdown-it');
+  assert(markdownItAt > -1 && markdownItAt < runtimeAt, 'markdown-it 必须在 clientRuntime 之前');
+  const mermaidTagAt = html.indexOf('<script type="text/ai-docs-engine" data-defer-engine="mermaid">');
+  assert(mermaidTagAt > runtimeAt, 'Mermaid 必须延后到 clientRuntime 之后');
+  const katexAt = html.indexOf('KaTeX parse error');
+  if (katexAt !== -1) assert(katexAt < runtimeAt, 'KaTeX 必须保持在 clientRuntime 之前（公式渲染是同步链路）');
+  // clientRuntime 自身之后只允许出现带延后标记的引擎脚本
+  const runtimeScriptEnd = html.indexOf('</script>', runtimeAt);
+  assert(runtimeScriptEnd > runtimeAt, 'clientRuntime 调用应以 </script> 结束');
+  const tailScripts = Array.from(html.slice(runtimeScriptEnd).matchAll(/<script(?:\s[^>]*)?>/g), function(match) { return match[0]; });
+  assert(tailScripts.length > 0, '延后引擎脚本应出现在 clientRuntime 之后');
+  tailScripts.forEach(function(tag) {
+    assert.match(tag, /^<script type="text\/ai-docs-engine" data-defer-engine="/, `clientRuntime 之后的脚本必须是延后引擎: ${tag}`);
+  });
+  assert(html.indexOf('data-defer-engine="markdownIt"') === -1, '关键资源不能被标记为延后引擎');
+  assert(html.indexOf('<script type="text/ai-docs-engine" data-defer-engine="mermaid">') > -1, '内联延后引擎应输出为非执行 script 标签');
   const renderedColumns = assertColumnsRuntime(html);
   assert.match(renderedColumns, /id="static-echarts-1"/, '列内 ECharts 应注册为静态图表');
   assert.match(renderedColumns, /id="mermaid-2"/, '列内依赖图应注册为 Mermaid 动态图表');

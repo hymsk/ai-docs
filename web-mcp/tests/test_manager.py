@@ -783,7 +783,10 @@ class WebMcpManagerTest(unittest.TestCase):
             self.assertIn("limit_req_zone $binary_remote_addr zone=ai_docs_docs:10m rate=120r/m;", content)
             self.assertIn("limit_req zone=ai_docs_docs burst=40;", content)
             self.assertIn("location = /mcp { return 404; }", content)
-            self.assertNotIn("immutable", content)
+            # 缓存策略由后端决定：/docs/ 永不缓存，/assets/ 由后端发 immutable，
+            # 模板本身不得声明任何 Cache-Control。
+            self.assertIn("location ^~ /assets/", content)
+            self.assertNotIn("Cache-Control", content)
             self.assertNotIn("static", content)
 
     def test_nginx_template_uses_the_configured_service_port(self):

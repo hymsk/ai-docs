@@ -23,6 +23,7 @@ SKILL_ROOT = WEB_MCP_ROOT.parent
 SOURCE_ROOT = WEB_MCP_ROOT / "source"
 sys.path.insert(0, str(SOURCE_ROOT))
 
+from ai_docs_common import DEFAULT_ASSETS_PREFIX, renderer_fingerprint
 from ai_docs_config import migrate_config_v1
 from ai_docs_public import CacheEntry, RenderCache
 from ai_docs_web import (
@@ -1363,6 +1364,70 @@ class AiDocsServerTest(unittest.TestCase):
         self.assertIn("https://example.test/page", rendered)
         self.assertIn("img-src data: blob:", rendered)
         self.assertIn("connect-src &#x27;none&#x27;", rendered)
+        # 引用型 HTML 需要同源脚本/样式；仍然拒绝任何远程源
+        self.assertIn("script-src &#x27;unsafe-inline&#x27; &#x27;self&#x27;", rendered)
+        self.assertIn("style-src &#x27;unsafe-inline&#x27; &#x27;self&#x27;", rendered)
+
+    def test_renderer_assets_serve_whitelisted_files_with_fingerprinted_cache(self):
+        fingerprint = renderer_fingerprint(self.config)
+        assets = "{}{}/".format(DEFAULT_ASSETS_PREFIX, fingerprint)
+        self.publish("README.md", "# Home\n\n```mermaid\ngraph TD; A-->B;\n```\n")
+        status, payload, headers = self.request("GET", "/docs/", token=None)
+        self.assertEqual(status, 200)
+        page = payload.decode("utf-8")
+
+        # 渲染产物只引用托管资源：大引擎排在 clientRuntime 之后以避免阻塞首屏
+        self.assertIn(assets + "markdown-it.min.js", page)
+        runtime_index = page.index("container.innerHTML = md.render(raw);")
+        self.assertLess(page.index(assets + "markdown-it.min.js"), runtime_index)
+        mermaid_index = page.index(assets + "mermaid.min.js")
+        self.assertLess(runtime_index, mermaid_index)
+        self.assertIn('data-defer-engine="mermaid"', page)
+        self.assertNotIn("globalThis.mermaid", page, "引擎不应内联进 HTML")
+        self.assertIn("script-src 'unsafe-inline' 'self'", headers["content-security-policy"])
+
+        # 端点返回经 build.js 同套转换的字节，可长期缓存
+        status, asset, asset_headers = self.request("GET", assets + "mermaid.min.js", token=None)
+        self.assertEqual(status, 200)
+        self.assertIn(b"mermaid", asset[:400])
+        self.assertEqual(asset_headers["content-type"], "application/javascript; charset=utf-8")
+        self.assertEqual(asset_headers["cache-control"], "public, max-age=31536000, immutable")
+        self.assertEqual(asset_headers["x-content-type-options"], "nosniff")
+
+        status, asset, asset_headers = self.request("GET", assets + "katex.min.css", token=None)
+        self.assertEqual(status, 200)
+        self.assertEqual(asset_headers["content-type"], "text/css; charset=utf-8")
+
+        status, d3, _ = self.request("GET", assets + "d3.min.js", token=None)
+        self.assertEqual(status, 200)
+        self.assertIn(b"var d3=globalThis.d3;", d3[-80:], "资源必须经过与内联一致的转换")
+
+        status, body, _ = self.request("HEAD", assets + "markdown-it.min.js", token=None)
+        self.assertEqual(status, 200)
+        self.assertEqual(body, b"")
+
+        # 白名单外、坏路径、坏指纹都不可读；端点不参与 Bearer 鉴权（srcdoc 子资源无法携带 header）
+        for bad_path in (
+            assets + "build.js",
+            DEFAULT_ASSETS_PREFIX + fingerprint + "/../build.js",
+            DEFAULT_ASSETS_PREFIX + "not-a-fingerprint/markdown-it.min.js",
+            DEFAULT_ASSETS_PREFIX + "extra/" + fingerprint + "/markdown-it.min.js",
+            # 合法格式但与当前 renderer 不符的指纹同样 404（不得触发资源导出）
+            DEFAULT_ASSETS_PREFIX + ("0" * 64) + "/markdown-it.min.js",
+        ):
+            status, _, _ = self.request("GET", bad_path, token=None)
+            self.assertEqual(status, 404, bad_path)
+
+    def test_renderer_asset_endpoint_rejects_missing_assets(self):
+        fingerprint = renderer_fingerprint(self.config)
+        assets = "{}{}/".format(DEFAULT_ASSETS_PREFIX, fingerprint)
+        status, _, _ = self.request("GET", assets + "markdown-it.min.js", token=None)
+        self.assertEqual(status, 200)
+        # 未被文档选中的资源依然可服务（白名单是 manifest 而非页面选择结果）
+        status, _, _ = self.request("GET", assets + "markmap-lib.browser.js", token=None)
+        self.assertEqual(status, 200)
+        status, _, _ = self.request("GET", DEFAULT_ASSETS_PREFIX, token=None)
+        self.assertEqual(status, 404)
 
 
 if __name__ == "__main__":

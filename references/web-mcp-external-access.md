@@ -86,7 +86,7 @@ python3 <SKILL_DIR>/scripts/web-mcp-manager.py nginx-template \
   --output /tmp/ai-docs-web.conf
 ```
 
-模板默认只代理 `/docs/`（动态、带限速）；显式传 `--expose-preview` 时额外代理预览前缀并加 Basic Auth。预览代理块不发送 `Forwarded`、`X-Forwarded-Proto` 或可由客户端污染的代理链头；应用是否设置 `Secure` cookie 只依赖受管 `server.public.scheme`。对未授权的 `/mcp`、`/v1/`、`/healthz` 与预览前缀明确返回 `404`。证书路径、域名、Nginx 安装位置及 reload 必须由用户确认后单独处理。相同输出路径已有不同内容时管理器拒绝覆盖，应先写入新的审阅路径并比较。
+模板默认只代理 `/docs/`（动态、带限速）与 `/assets/`（渲染器资源，只读白名单、后端发 `immutable` 缓存头；HTML 的引用型脚本与样式依赖该路径，缺失会导致图表引擎加载失败）；显式传 `--expose-preview` 时额外代理预览前缀并加 Basic Auth。预览代理块不发送 `Forwarded`、`X-Forwarded-Proto` 或可由客户端污染的代理链头；应用是否设置 `Secure` cookie 只依赖受管 `server.public.scheme`。对未授权的 `/mcp`、`/v1/`、`/healthz` 与预览前缀明确返回 `404`。证书路径、域名、Nginx 安装位置及 reload 必须由用户确认后单独处理。相同输出路径已有不同内容时管理器拒绝覆盖，应先写入新的审阅路径并比较。
 
 公网预览授权示例（仅在用户明确同意后）：
 
@@ -177,4 +177,4 @@ python3 <SKILL_DIR>/scripts/web-mcp-manager.py nginx-template \
 https://example.com/ai-docs/docs/guide/intro
 ```
 
-对应 Nginx location 也必须同步使用这些前缀。公开 origin 只由 `server.public.scheme/host/port` 组成，不包含子路径。
+对应 Nginx location 也必须同步使用这些前缀。`/assets/` 固定在域名根路径、不随 `documents_prefix` 变化。公开 origin 只由 `server.public.scheme/host/port` 组成，不包含子路径。
