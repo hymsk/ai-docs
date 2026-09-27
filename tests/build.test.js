@@ -270,6 +270,19 @@ try {
   assert.match(renderedColumns, /id="mermaid-2"/, '列内依赖图应注册为 Mermaid 动态图表');
   assert.match(renderedColumns, /id="mermaid-3"/, '列内流程图应注册为 Mermaid 动态图表');
   assert.match(renderedColumns, /id="markmap-1"/, '列内 Markmap 应注册为动态图表');
+  // 图表 loading 占位：引擎加载与渲染完成前可见，渲染成功或失败后移除
+  assert.match(renderedColumns, /<div class="visual-box mermaid-box" id="mermaid-2"><div class="visual-loading" role="status"><span class="visual-loading-spinner" aria-hidden="true"><\/span><span class="visual-loading-text">图表渲染中…<\/span><\/div><\/div>/, 'Mermaid 容器应在引擎加载前输出 loading 占位');
+  assert.match(renderedColumns, /<div class="visual-box markmap-box" id="markmap-1"><div class="visual-loading" role="status">/, 'Markmap 容器应在引擎加载前输出 loading 占位');
+  assert.match(renderedColumns, /<div class="visual-box static-chart" id="static-echarts-1"><div class="visual-loading" role="status">/, '静态图容器应在渲染前输出 loading 占位');
+  assert.match(html, /stage\.appendChild\(createVisualLoadingNode\(\)\);[\s\S]*?shell\.stage = stage;/, '图表 shell 创建时应在视口内放置 loading');
+  assert.match(html, /image\.addEventListener\('load', function\(\) \{\s*clearVisualLoading\(shell\);\s*measureStaticImage\(shell\);/, '静态图加载完成后应移除 loading');
+  assert.match(html, /fitMermaidDiagram\(shell\);\s*clearVisualLoading\(shell\);/, 'Mermaid 渲染完成后应移除 loading');
+  assert.match(html, /\}\)\.then\(fit\)\.then\(function\(\) \{\s*clearVisualLoading\(shell\);\s*\}\)\.catch\(/, 'Markmap 适配完成后应移除 loading');
+  assert.match(html, /shell\.stage\.querySelector\('\.visual-loading'\)/, 'loading 移除应限定在对应图表视口内');
+  assert.match(html, /\.visual-loading \{[^}]*display: flex;[^}]*min-height: 120px;/, 'loading 应有稳定的占位高度');
+  assert.match(html, /@keyframes visual-loading-spin \{ to \{ transform: rotate\(360deg\); \} \}/, 'loading 应有旋转动画');
+  assert.match(html, /@media \(prefers-reduced-motion: reduce\) \{ \.visual-loading-spinner \{ animation: none; \} \}/, '减弱动效时应停用 loading 动画');
+  assert.match(html, /\.viewer-header, \.toc-panel, \.visual-toolbar, \.code-toolbar, \.visual-loading \{ display: none !important; \}/, '打印时应隐藏 loading 占位');
   assert.match(renderedColumns, /<pre><code>保持缩进的代码块/, '列内 Markdown 缩进必须保留');
   assert.match(html, /stage\.classList\.add\('visual-stage-explicit'\)/, '显式尺寸图表应使用统一等比视口');
   assert.match(html, /stage\.style\.aspectRatio = shell\.dimensions\.width \+ ' \/ ' \+ shell\.dimensions\.height/, '显式尺寸图表应保持声明比例');

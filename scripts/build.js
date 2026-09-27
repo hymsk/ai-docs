@@ -1714,6 +1714,12 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     return self.renderToken(tokens, index, rendererOptions);
   };
 
+  // 图表容器先输出 loading 占位：延后引擎加载与渲染完成前保持可见反馈，
+  // createVisualShell 清空容器后会在 stage 内重新放置 loading，渲染成功或失败后移除。
+  function visualLoadingHtml() {
+    return '<div class="visual-loading" role="status"><span class="visual-loading-spinner" aria-hidden="true"></span><span class="visual-loading-text">图表渲染中…</span></div>';
+  }
+
   var defaultFence = md.renderer.rules.fence.bind(md.renderer.rules);
   md.renderer.rules.fence = function(tokens, index, rendererOptions, env, self) {
     var token = tokens[index];
@@ -1740,7 +1746,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
         id: mermaidId, label: 'Mermaid 图表', language: 'mermaid', source: content,
         dimensions: infoMatch[2] ? { width: Number(infoMatch[2]), height: Number(infoMatch[3]) } : null
       });
-      return '<div class="visual-box mermaid-box" id="' + mermaidId + '"></div>\n';
+      return '<div class="visual-box mermaid-box" id="' + mermaidId + '">' + visualLoadingHtml() + '</div>\n';
     }
 
     if (infoMatch && (infoMatch[1] === 'markmap' || infoMatch[1] === 'mindmap')) {
@@ -1749,7 +1755,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
         id: markmapId, label: '思维导图', language: 'markmap', source: content,
         dimensions: infoMatch[2] ? { width: Number(infoMatch[2]), height: Number(infoMatch[3]) } : null
       });
-      return '<div class="visual-box markmap-box" id="' + markmapId + '"></div>\n';
+      return '<div class="visual-box markmap-box" id="' + markmapId + '">' + visualLoadingHtml() + '</div>\n';
     }
 
     if (infoMatch && infoMatch[1] === 'echarts') {
@@ -1758,7 +1764,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
       });
       if (blockIndex < 0) return '<div class="callout callout-err">图表预渲染结果缺失。</div>\n';
       var block = staticBlockQueue.splice(blockIndex, 1)[0];
-      return '<div class="visual-box static-chart" id="' + block.id + '"></div>\n';
+      return '<div class="visual-box static-chart" id="' + block.id + '">' + visualLoadingHtml() + '</div>\n';
     }
 
     return defaultFence(tokens, index, rendererOptions, env, self);
@@ -2063,6 +2069,27 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     updateVisualZoomControl(shell);
   }
 
+  function createVisualLoadingNode() {
+    var loading = document.createElement('div');
+    loading.className = 'visual-loading';
+    loading.setAttribute('role', 'status');
+    var spinner = document.createElement('span');
+    spinner.className = 'visual-loading-spinner';
+    spinner.setAttribute('aria-hidden', 'true');
+    var text = document.createElement('span');
+    text.className = 'visual-loading-text';
+    text.textContent = '图表渲染中…';
+    loading.appendChild(spinner);
+    loading.appendChild(text);
+    return loading;
+  }
+
+  function clearVisualLoading(shell) {
+    if (!shell || !shell.stage) return;
+    var loading = shell.stage.querySelector('.visual-loading');
+    if (loading) loading.remove();
+  }
+
   function createVisualShell(element, definition) {
     element.innerHTML = '';
     var shell = {
@@ -2142,6 +2169,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
       stage.style.aspectRatio = shell.dimensions.width + ' / ' + shell.dimensions.height;
     }
     stage.setAttribute('aria-label', definition.label + '预览');
+    stage.appendChild(createVisualLoadingNode());
     element.appendChild(stage);
     shell.stage = stage;
 
@@ -2567,6 +2595,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
       image.className = 'static-svg-image';
       image.alt = block.label;
       image.addEventListener('load', function() {
+        clearVisualLoading(shell);
         measureStaticImage(shell);
       });
       image.addEventListener('error', function() {
@@ -2702,6 +2731,7 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
         shell.onResize = function() { fitMermaidDiagram(shell); };
         shell.onReveal = shell.onResize;
         fitMermaidDiagram(shell);
+        clearVisualLoading(shell);
       }).catch(function(error) {
         if (generation !== renderGeneration) return;
         var message = 'Mermaid 渲染错误: ' + (error.message || error);
@@ -2780,7 +2810,9 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
       element._visualResize = shell.onResize;
       return new Promise(function(resolve) {
         window.requestAnimationFrame(resolve);
-      }).then(fit).catch(function(error) {
+      }).then(fit).then(function() {
+        clearVisualLoading(shell);
+      }).catch(function(error) {
         if (generation !== renderGeneration) return;
         var message = '思维导图渲染错误: ' + (error.message || error);
         showVisualError(shell, message);
@@ -3308,6 +3340,11 @@ body.visual-maximized-open { overflow: hidden; }
 .visual-stage-explicit .static-svg-image { min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; margin: auto; object-fit: contain; }
 .visual-stage-explicit > svg { grid-area: 1 / 1; width: 100%; height: 100%; min-width: 0; min-height: 0; max-width: 100%; max-height: 100%; }
 .visual-stage-explicit > .diagram > svg { min-width: 0; max-width: 100%; max-height: 100%; }
+.visual-loading { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.55rem; width: 100%; height: 100%; min-height: 120px; padding: 1.25rem 1rem; color: var(--text2); font-size: 0.84rem; }
+.visual-stage-explicit > .visual-loading { grid-area: 1 / 1; min-height: 0; }
+.visual-loading-spinner { width: 22px; height: 22px; flex: 0 0 auto; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: visual-loading-spin 0.8s linear infinite; }
+@keyframes visual-loading-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .visual-loading-spinner { animation: none; } }
 .markmap-box .markmap-node text { fill: var(--text); }
 .markmap-box foreignObject { color: var(--text); }
 .math-display { max-width: 100%; margin: 1em 0; overflow: visible; text-align: center; }
@@ -3345,7 +3382,7 @@ body.visual-maximized-open { overflow: hidden; }
   @page { margin: 12mm; }
   html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   body { margin: 0 !important; padding: 0 !important; width: 100% !important; }
-  .viewer-header, .toc-panel, .visual-toolbar, .code-toolbar { display: none !important; }
+  .viewer-header, .toc-panel, .visual-toolbar, .code-toolbar, .visual-loading { display: none !important; }
   .viewer-layout { display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; transform: none !important; }
   .container { width: 100% !important; max-width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; box-sizing: border-box !important; }
   h1, h2, h3 { break-after: avoid-page; page-break-after: avoid; }
