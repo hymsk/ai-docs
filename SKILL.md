@@ -30,7 +30,7 @@ compatibility: 构建需要 Node.js 18+ 和文件系统访问；Python 工具需
 - 需要长期常驻的浏览器预览或 Markdown 目录浏览时，使用 Web MCP 的 `/preview/` 路由：它通过无 URL Token 的 POST 登录换取会话 cookie，再提供库目录列表和左右分栏编辑器。该路由的启用与公网暴露属于部署动作，仍需用户明确要求。
 - 先根据表达目的选择组件，再写图表语法；不要为了“看起来丰富”堆叠无信息增益的图表。
 - 默认保持 `strict: true` 和 `mermaidSecurity: strict`。只有来源可信且用户确有需要时才考虑 Mermaid `loose`。
-- 不在 Markdown 中使用原始 HTML、脚本、事件属性或任意嵌入内容。分栏只使用受限的 `::: columns` 语法。
+- 不在 Markdown 中使用原始 HTML、脚本、事件属性或任意嵌入内容。分栏只使用受限的 `::: columns` 语法，折叠块只使用受限的 `:::detail` / `<detail>` 语法。
 - 不使用 `code-group`，也不承诺直接生成 PDF。需要 PDF 时使用生成页面的浏览器原生打印；需要源文件时使用页面的“下载 MD”。
 - 把 ECharts 构建成功和 Mermaid/Markmap 浏览器运行成功区分开；未做浏览器检查时明确说明。
 - 不使用 `dot`/`graphviz` fence。AI Docs 不内置 Graphviz，已有 DOT 图应迁移为 Mermaid flowchart；残留 fence 会降级为代码块并在表头给出警示标识，不中断构建。
@@ -72,6 +72,7 @@ node <SKILL_DIR>/scripts/build-component-index.js --query "依赖 拓扑"
 | 提纲、知识树、主题分解 | Markmap | Markdown 层级可直接转为思维导图 |
 | 行内或块级数学表达 | KaTeX | 公式比图片更清晰、可复制 |
 | 并列比较、说明与图表同屏 | `::: columns` | 保持 Markdown 源码和打印布局 |
+| 次级细节、附录等可折叠内容 | `:::detail` / `<detail>` | 默认收起，打印自动展开 |
 | 配置、源码、命令、SQL | fenced code block | 提供语言高亮、复制和可选折叠 |
 | 对比矩阵、字段说明、清单 | Markdown table | 扫读效率通常高于图表 |
 

@@ -95,6 +95,19 @@ function assertColumnsRuntime(html) {
   return rendered;
 }
 
+function assertDetailRuntime(html) {
+  const rendered = renderClientMarkdown(html);
+  assert.match(rendered, /<details class="md-detail"><summary class="md-detail-summary">参数说明<\/summary><div class="md-detail-body">/, ':::detail 应渲染为标准 details 折叠块');
+  assert.match(rendered, /折叠体内 <strong>粗体<\/strong> 内容/, '折叠体应渲染内部 Markdown');
+  assert.match(rendered, /::: 折叠内保持为代码/, '折叠体 fence 中的 ::: 应保留为代码而非闭合块');
+  assert.match(rendered, /<details class="md-detail"><summary class="md-detail-summary">第二语法 <code>代码<\/code> 标题<\/summary><div class="md-detail-body">/, '<detail> 写法应等价渲染且标题支持行内 Markdown');
+  assert.match(rendered, /标签写法的折叠内容/, '<detail> 写法应渲染折叠体内容');
+  assert.match(rendered, /&lt;\/detail&gt; 这行保持为代码/, '<detail> 折叠体 fence 中的闭合标签应保留为代码');
+  assert.match(rendered, /<summary class="md-detail-summary">详情<\/summary>/, '无标题折叠块应使用默认标题');
+  assert.match(rendered, /:::detail 未闭合块/, '未闭合的折叠块应按普通 Markdown 保留');
+  return rendered;
+}
+
 function getVisualBlockDefinitions(html) {
   const script = findClientRuntimeScript(html);
   const stop = {};
@@ -151,7 +164,7 @@ function getVisualBlockDefinitions(html) {
 }
 
 try {
-  const source = write('fixture.md', `# 标题\n\n## 重复标题\n\n## 重复标题\n\n\`\`\`mermaid\nflowchart LR\n  GraphA --> GraphB\n\`\`\`\n\n\`\`\`echarts\n{"series":[{"type":"bar","data":[1,2]}],"xAxis":{"type":"category","data":["A","B"]},"yAxis":{"type":"value"}}\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\n  A --> B\n\`\`\`\n\n\`\`\`markmap\n# Root\n## Branch\n\`\`\`\n\n::: columns\n::: column\n左列内容\n\n\`\`\`mermaid\nflowchart LR\n  Left --> Right\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\n  ColumnA --> ColumnB\n\`\`\`\n\n    保持缩进的代码块\n\n\`\`\`text\n::: 保持为代码\n\`\`\`\n:::\n::: column\n右列内容\n\n\`\`\`echarts\n{"series":[{"type":"line","data":[2,3]}],"xAxis":{"type":"category","data":["A","B"]},"yAxis":{"type":"value"}}\n\`\`\`\n\n\`\`\`markmap\n# Column Root\n## Column Branch\n\`\`\`\n:::\n:::\n\n公式：$E = mc^2$。\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\n\`\`\`javascript\nconsole.log('hello');\nconst closingTag = '</script>';\n\`\`\`\n`);
+  const source = write('fixture.md', `# 标题\n\n## 重复标题\n\n## 重复标题\n\n\`\`\`mermaid\nflowchart LR\n  GraphA --> GraphB\n\`\`\`\n\n\`\`\`echarts\n{"series":[{"type":"bar","data":[1,2]}],"xAxis":{"type":"category","data":["A","B"]},"yAxis":{"type":"value"}}\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\n  A --> B\n\`\`\`\n\n\`\`\`markmap\n# Root\n## Branch\n\`\`\`\n\n::: columns\n::: column\n左列内容\n\n\`\`\`mermaid\nflowchart LR\n  Left --> Right\n\`\`\`\n\n\`\`\`mermaid\nflowchart LR\n  ColumnA --> ColumnB\n\`\`\`\n\n    保持缩进的代码块\n\n\`\`\`text\n::: 保持为代码\n\`\`\`\n:::\n::: column\n右列内容\n\n\`\`\`echarts\n{"series":[{"type":"line","data":[2,3]}],"xAxis":{"type":"category","data":["A","B"]},"yAxis":{"type":"value"}}\n\`\`\`\n\n\`\`\`markmap\n# Column Root\n## Column Branch\n\`\`\`\n:::\n:::\n\n公式：$E = mc^2$。\n\n$$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$\n\n:::detail 参数说明\n\n折叠体内 **粗体** 内容。\n\n\`\`\`text\n::: 折叠内保持为代码\n</detail> 保持为代码\n\`\`\`\n\n:::\n\n<detail>第二语法 \`代码\` 标题\n\n标签写法的折叠内容。\n\n\`\`\`text\n</detail> 这行保持为代码\n\`\`\`\n\n</detail>\n\n:::detail\n\n无标题折叠内容。\n\n:::\n\n:::detail 未闭合块\n这行应原样保留。\n\n\`\`\`javascript\nconsole.log('hello');\nconst closingTag = '</script>';\n\`\`\`\n`);
   const output = path.join(tempDir, 'fixture.html');
   const build = run(['--input', source, '--output', output, '--theme', 'dark']);
   assertSuccess(build, '默认构建应成功');
@@ -192,6 +205,13 @@ try {
   assert.match(html, /restoreVisualsAfterPrint/);
   assert.match(html, /columns-layout/);
   assert.match(html, /columns\.length < 2 \|\| columns\.length > 4/);
+  assert.match(html, /md\.block\.ruler\.before\('fence', 'detail',/, 'clientRuntime 应注册折叠块解析规则');
+  assert.match(html, /md-detail-summary/, 'clientRuntime 应输出折叠块样式');
+  assert.match(html, /\.md-detail \{ margin: 1\.2em 0; border: 1px solid var\(--border\);/, '折叠块应有卡片式容器样式');
+  assert.match(html, /\.md-detail > \.md-detail-body \{ display: block !important; \}/, '打印时应强制展开折叠块内容');
+  assert.match(html, /function revealDetails\(target\)/, '应有折叠块锚点展开逻辑');
+  assert.match(html, /detail\.open = true/, '锚点命中折叠块时应展开祖先 details');
+  assert.match(html, /event\.target\.closest\('a\[href\^="#"\]'\)/, '应拦截页内锚点点击以展开折叠块');
   assert.match(html, /::: 保持为代码/);
   assert.match(html, /保持缩进的代码块/);
   assert.match(html, /static-echarts-1/);
@@ -266,6 +286,7 @@ try {
   assert(html.indexOf('data-defer-engine="markdownIt"') === -1, '关键资源不能被标记为延后引擎');
   assert(html.indexOf('<script type="text/ai-docs-engine" data-defer-engine="mermaid">') > -1, '内联延后引擎应输出为非执行 script 标签');
   const renderedColumns = assertColumnsRuntime(html);
+  assertDetailRuntime(html);
   assert.match(renderedColumns, /id="static-echarts-1"/, '列内 ECharts 应注册为静态图表');
   assert.match(renderedColumns, /id="mermaid-2"/, '列内依赖图应注册为 Mermaid 动态图表');
   assert.match(renderedColumns, /id="mermaid-3"/, '列内流程图应注册为 Mermaid 动态图表');

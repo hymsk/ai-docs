@@ -1704,6 +1704,69 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     }).join('') + '</div>\n';
   };
 
+  // 折叠块：:::detail 容器与 <detail> 标签两种写法等价，标题取首行参数。
+  // 与 columns 相同的严格策略：未闭合、带属性或其他变体一律按普通
+  // Markdown 保留；代码 fence 内的标记行不参与解析。
+  md.block.ruler.before('fence', 'detail', function(state, startLine, endLine, silent) {
+    var start = state.bMarks[startLine] + state.tShift[startLine];
+    var opener = state.src.slice(start, state.eMarks[startLine]).trim();
+    var title = null;
+    var isCloser = null;
+    var match = opener.match(/^:::detail(?:\s+(.*))?$/);
+    if (match) {
+      title = match[1] || '';
+      isCloser = function(trimmed) { return trimmed === ':::'; };
+    } else {
+      match = opener.match(/^<detail>(.*)$/i);
+      if (!match) return false;
+      title = match[1].trim();
+      isCloser = function(trimmed) { return /^<\/detail>$/i.test(trimmed); };
+    }
+    var nextLine = startLine + 1;
+    var body = [];
+    var fence = null;
+    var closed = false;
+    while (nextLine < endLine) {
+      var line = state.src.slice(state.bMarks[nextLine], state.eMarks[nextLine]);
+      var trimmed = line.trim();
+      var fenceMatch = trimmed.match(/^(`{3,}|~{3,})/);
+      if (fence) {
+        body.push(line);
+        if (fenceMatch && fenceMatch[1].charAt(0) === fence.marker && fenceMatch[1].length >= fence.length &&
+            trimmed.slice(fenceMatch[0].length).trim() === '') fence = null;
+        nextLine++;
+        continue;
+      }
+      if (fenceMatch) {
+        body.push(line);
+        fence = { marker: fenceMatch[1].charAt(0), length: fenceMatch[1].length };
+        nextLine++;
+        continue;
+      }
+      if (isCloser(trimmed)) {
+        closed = true;
+        nextLine++;
+        break;
+      }
+      body.push(line);
+      nextLine++;
+    }
+    if (!closed) return false;
+    if (silent) return true;
+    state.line = nextLine;
+    var token = state.push('detail', 'details', 0);
+    token.block = true;
+    token.meta = { title: title, body: body.join('\n') };
+    return true;
+  }, { alt: ['paragraph', 'reference', 'blockquote', 'list'] });
+
+  md.renderer.rules.detail = function(tokens, index) {
+    var meta = tokens[index].meta;
+    var title = meta.title.trim() ? meta.title : '详情';
+    return '<details class="md-detail"><summary class="md-detail-summary">' + md.renderInline(title) +
+      '</summary><div class="md-detail-body">' + md.render(meta.body) + '</div></details>\n';
+  };
+
   md.renderer.rules.heading_open = function(tokens, index, rendererOptions, env, self) {
     var token = tokens[index];
     if (!settings.toc) return self.renderToken(tokens, index, rendererOptions);
@@ -3012,6 +3075,31 @@ function clientRuntime(raw, sourceDownloadName, staticBlocks, viewerOptions, tit
     headerElement.classList.toggle('is-scrolled', (window.scrollY || window.pageYOffset || 0) > 8);
   }
 
+  // 目录或标题锚点指向折叠块内的标题时，先展开祖先 <details>，
+  // 再让浏览器完成默认跳转；初始 hash 命中折叠块同样处理。
+  function revealDetails(target) {
+    var detail = target && target.closest ? target.closest('details') : null;
+    while (detail) {
+      detail.open = true;
+      detail = detail.parentElement ? detail.parentElement.closest('details') : null;
+    }
+  }
+
+  document.addEventListener('click', function(event) {
+    var link = event.target && event.target.closest ? event.target.closest('a[href^="#"]') : null;
+    if (!link) return;
+    var id = link.getAttribute('href').slice(1);
+    if (!id) return;
+    try { id = decodeURIComponent(id); } catch (error) {}
+    revealDetails(document.getElementById(id));
+  });
+
+  if (location.hash.length > 1) {
+    var hashId = location.hash.slice(1);
+    try { hashId = decodeURIComponent(hashId); } catch (error) {}
+    revealDetails(document.getElementById(hashId));
+  }
+
   decorateHeadings();
   buildToc();
   setupTocSpy();
@@ -3364,6 +3452,14 @@ body.visual-maximized-open { overflow: hidden; }
 .column-layout .visual-actions > * { flex: 0 0 auto; }
 .column-layout > :first-child { margin-top: 0; }
 .column-layout > :last-child { margin-bottom: 0; }
+.md-detail { margin: 1.2em 0; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg2); box-shadow: var(--shadow-sm); }
+.md-detail > summary { padding: .75rem 1.1rem; font-weight: 600; cursor: pointer; border-radius: var(--radius); user-select: none; }
+.md-detail > summary:hover { background: var(--accent-bg); }
+.md-detail > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.md-detail[open] > summary { border-bottom: 1px solid var(--border); border-radius: var(--radius) var(--radius) 0 0; }
+.md-detail-body { padding: 1.1rem; }
+.md-detail-body > :first-child { margin-top: 0; }
+.md-detail-body > :last-child { margin-bottom: 0; }
 @media screen and (min-width: 761px) {
   .viewer-layout:not(.toc-is-floating).toc-is-open { display: grid; grid-template-columns: minmax(0, 1fr) minmax(10rem, var(--toc-width)); align-items: start; }
   .viewer-layout[data-toc-layout="right"] .toc-panel { grid-column: 2; }
@@ -3407,6 +3503,7 @@ body.visual-maximized-open { overflow: hidden; }
   .column-layout { width: auto; min-width: 0; padding: 4mm; }
   .column-layout .visual-box { width: 100% !important; max-width: 100% !important; }
   .code-block.is-collapsed pre { display: block !important; }
+  .md-detail > .md-detail-body { display: block !important; }
   pre { overflow: visible; white-space: pre-wrap; word-break: break-word; }
   .math-display { overflow: visible !important; text-align: center !important; }
 }

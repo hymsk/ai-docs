@@ -106,10 +106,12 @@
     {
       "component": "layouts",
       "title": "Layouts and Markdown",
-      "summary": "使用受限分栏、代码块和表格组织图文内容，并保持响应式与打印完整。",
+      "summary": "使用受限分栏、折叠块、代码块和表格组织图文内容，并保持响应式与打印完整。",
       "aliases": [
         "columns",
+        "detail",
         "分栏",
+        "折叠",
         "代码块",
         "表格",
         "布局"
@@ -122,6 +124,17 @@
             "layout",
             "markdown",
             "布局"
+          ]
+        },
+        {
+          "path": "layouts/detail.md",
+          "purpose": "可折叠的次级细节、附录与打印行为",
+          "keywords": [
+            "detail",
+            "details",
+            "折叠",
+            "collapse",
+            "附录"
           ]
         },
         {
