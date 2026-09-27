@@ -53,6 +53,6 @@ python3 licenses/verify-provenance.py --archive-dir /path/to/tarballs
 python3 licenses/verify-provenance.py --download
 ```
 
-脚本检查精确 tarball 摘要、包身份、10 个 vendor 完整字节、130 个许可/notice 载荷的源范围/转换/摘要，以及上述 Mermaid、markdown-it 源成员。`github-file` 同时复核许可 Git blob 与同 commit 代码/npm 成员匹配：离线缓存命名为 `<source_sha256>.source`，放入 `--archive-dir`；缺失时只有显式 `--download` 才通过 GitHub contents API 读取固定 commit 并验证解码后的原始字节，联网失败不会跳过。没有任何 vendor 换行豁免。不重新联网验证外部锁文件、可变公告快照或法律充分性。网络快照与当前残余安全公告见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
+脚本检查精确 tarball 摘要、包身份、14 个 vendor 完整字节、131 个许可/notice 载荷的源范围/转换/摘要，以及上述 Mermaid、markdown-it 源成员。`github-file` 同时复核许可 Git blob 与同 commit 代码/npm 成员匹配：离线缓存命名为 `<source_sha256>.source`，放入 `--archive-dir`；缺失时只有显式 `--download` 才通过 GitHub contents API 读取固定 commit 并验证解码后的原始字节，联网失败不会跳过。没有任何 vendor 换行豁免。不重新联网验证外部锁文件、可变公告快照或法律充分性。网络快照与当前残余安全公告见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
 
 部分上游原文包含行尾空格、额外末尾空行或版权年份差异，保留它们用于复核；不要为了通用 whitespace 检查擅自改写许可证。本目录不包含下载包、包执行代码或新运行时依赖。

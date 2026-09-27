@@ -65,6 +65,10 @@ RUNTIME_FILES = (
     "source/ai_docs_http.py",
     "assets/default-resources.json",
     "scripts/build.js",
+    "scripts/vendor/codemirror-continuelist.js",
+    "scripts/vendor/codemirror-markdown.js",
+    "scripts/vendor/codemirror.css",
+    "scripts/vendor/codemirror.js",
     "scripts/vendor/d3.min.js",
     "scripts/vendor/echarts.min.js",
     "scripts/vendor/highlight-styles.css",
@@ -187,8 +191,9 @@ def _runtime_sources() -> Dict[str, Path]:
         **{
             "scripts/vendor/" + name: root / "scripts" / "vendor" / name
             for name in (
-                "d3.min.js", "echarts.min.js", "highlight-styles.css", "highlight.min.js",
-                "katex.min.css", "katex.min.js", "markdown-it.min.js",
+                "codemirror-continuelist.js", "codemirror-markdown.js", "codemirror.css",
+                "codemirror.js", "d3.min.js", "echarts.min.js", "highlight-styles.css",
+                "highlight.min.js", "katex.min.css", "katex.min.js", "markdown-it.min.js",
                 "markmap-lib.browser.js", "markmap-view.browser.js", "mermaid.min.js",
             )
         },

@@ -14,6 +14,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 VENDOR_HASHES = {
+    "codemirror-continuelist.js": "6ba9cd9528b74e7f76f4b9ce9ed0677bfed7057d1aade0050185368cfd0ea2e3",
+    "codemirror-markdown.js": "8fe7b11848f79cc9119b2a239f38a00944f6f2bb764a00bc837ecf8d34cf7690",
+    "codemirror.css": "eb494ea972d2661ef86f7f6ac656dd6786d721e49c9c1b46e1eb967e4b6f9bf3",
+    "codemirror.js": "8e8b5e3cc4be7530a9b6b624bce95ff966cd667283005a103739fe37d3bdd97c",
     "d3.min.js": "d6b03aefc9f6c44c7bc78713679c78c295028fa914319119e5cc4b4954855b1c",
     "echarts.min.js": "bf4a223524e40b77c304bec67e1222cf551f14880cf42c69dc046558e11c07b1",
     "highlight.min.js": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381",
@@ -277,6 +281,14 @@ def main() -> int:
     # ECharts is consumed directly by the Node renderer for static SSR rather
     # than emitted through the browser resource manifest.
     referenced_vendor_names.add("echarts.min.js")
+    # CodeMirror 只用于预览编辑页（preview.js 与 Web MCP 预览），
+    # 不进入文档渲染资源清单。
+    referenced_vendor_names.update({
+        "codemirror-continuelist.js",
+        "codemirror-markdown.js",
+        "codemirror.css",
+        "codemirror.js",
+    })
     if referenced_vendor_names != set(VENDOR_HASHES):
         errors.append("default-resources.json vendor set does not match release manifest")
 

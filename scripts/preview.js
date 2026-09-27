@@ -64,6 +64,27 @@ function fail(message) {
   throw new Error(message);
 }
 
+// 预览编辑器使用随附的 CodeMirror vendor 文件，与渲染产物一样只内联
+// 经校验不含闭合标签的上游预构建文件；缺失或异常时启动即失败。
+function readEditorAssets() {
+  const files = {
+    css: 'codemirror.css',
+    core: 'codemirror.js',
+    markdownMode: 'codemirror-markdown.js',
+    continuelist: 'codemirror-continuelist.js'
+  };
+  const assets = {};
+  for (const [key, name] of Object.entries(files)) {
+    const file = path.join(__dirname, 'vendor', name);
+    const content = fs.readFileSync(file, 'utf8');
+    if (key === 'css' ? /<\/style/i.test(content) : /<\/script/i.test(content)) {
+      throw new Error(`编辑器资源 ${name} 包含不能安全内联的闭合标签。`);
+    }
+    assets[key] = content;
+  }
+  return assets;
+}
+
 function optionValue(argv, index, flag) {
   if (index + 1 >= argv.length || argv[index + 1].startsWith('-')) fail(`${flag} 需要一个值。`);
   return argv[index + 1];
@@ -243,7 +264,7 @@ function injectScrollKeeper(rendered) {
   return rendered.slice(0, index) + SCROLL_KEEPER_SCRIPT + rendered.slice(index);
 }
 
-function previewPage({ initialMarkdown, fileName }) {
+function previewPage({ initialMarkdown, fileName, editorAssets }) {
   const pageTitle = `AI Docs 实时预览 · ${fileName}`;
   return `<!doctype html>
 <html lang="zh-CN">
@@ -251,6 +272,7 @@ function previewPage({ initialMarkdown, fileName }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(pageTitle)}</title>
+<style>${editorAssets.css}</style>
 <style>
 :root { color-scheme: light dark; --bg: #ffffff; --panel: #fafafa; --text: #171717; --muted: #737373; --border: #e5e5e5; --accent: #2563eb; --accent-strong: #1d4ed8; --accent-fg: #ffffff; --accent-bg: rgba(37, 99, 235, 0.08); --error: #dc2626; --radius-sm: 6px; --radius: 10px; --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04); --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05); }
 @media (prefers-color-scheme: dark) { :root { --bg: #0a0a0a; --panel: #141414; --text: #fafafa; --muted: #a3a3a3; --border: #262626; --accent: #60a5fa; --accent-strong: #93c5fd; --accent-fg: #0a0a0a; --accent-bg: rgba(96, 165, 250, 0.12); --error: #f87171; --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.35); } }
@@ -280,6 +302,12 @@ button { font: inherit; }
 .panel-label { display: flex; align-items: center; min-height: 2.25rem; padding: .35rem .9rem; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--border); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .editor-panel { border-right: 1px solid var(--border); }
 #editor { width: 100%; height: 100%; resize: none; padding: 1.1rem 1.2rem; color: var(--text); background: var(--bg); border: 0; outline: 0; caret-color: var(--accent); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; tab-size: 2; }
+.CodeMirror { height: 100%; padding: .6rem .2rem; color: var(--text); background: var(--bg); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
+.CodeMirror-gutters { background: var(--panel); border-right: 1px solid var(--border); }
+.CodeMirror-linenumber { color: var(--muted); }
+.CodeMirror-cursor { border-left-color: var(--accent); }
+.CodeMirror-selected, .CodeMirror-focused .CodeMirror-selected { background: var(--accent-bg); }
+@media (prefers-color-scheme: dark) { .cm-s-default .cm-header { color: #79b8ff; } .cm-s-default .cm-quote { color: #a5d6a7; } .cm-s-default .cm-keyword { color: #d2a8ff; } .cm-s-default .cm-atom, .cm-s-default .cm-number { color: #ff9ecb; } .cm-s-default .cm-def, .cm-s-default .cm-link, .cm-s-default .cm-url, .cm-s-default .cm-attribute { color: #79b8ff; } .cm-s-default .cm-variable-2 { color: #e6edf3; } .cm-s-default .cm-variable-3, .cm-s-default .cm-type { color: #ffd479; } .cm-s-default .cm-comment, .cm-s-default .cm-meta { color: #8b949e; } .cm-s-default .cm-string { color: #a5d6ff; } .cm-s-default .cm-tag { color: #7ee787; } .cm-s-default .cm-formatting { color: #6e7681; } }
 #preview { width: 100%; height: 100%; border: 0; background: var(--bg); }
 #splitter { z-index: 2; margin-left: -1px; background: var(--panel); border-right: 1px solid var(--border); cursor: col-resize; touch-action: none; transition: background-color 120ms ease; }
 #splitter:hover, #splitter.is-dragging { background: var(--accent); }
@@ -308,6 +336,9 @@ button { font: inherit; }
     </section>
   </section>
 </main>
+<script>${editorAssets.core}</script>
+<script>${editorAssets.markdownMode}</script>
+<script>${editorAssets.continuelist}</script>
 <script>
 (function() {
   'use strict';
@@ -328,6 +359,27 @@ button { font: inherit; }
   var accessKey = new URLSearchParams(window.location.search).get('key') || '';
 
   editor.value = initialMarkdown;
+
+  // CodeMirror 提供 Markdown 语法高亮、行号与列表续行；加载失败时回退为纯文本域。
+  var cm = window.CodeMirror ? CodeMirror.fromTextArea(editor, {
+    mode: 'markdown',
+    lineNumbers: true,
+    lineWrapping: true,
+    indentUnit: 2,
+    tabSize: 2,
+    extraKeys: {
+      Enter: 'newlineAndIndentContinueMarkdownList',
+      Tab: function(instance) {
+        if (instance.somethingSelected()) instance.indentSelection('add');
+        else instance.replaceSelection('  ', 'end');
+      }
+    }
+  }) : null;
+  var scroller = cm ? cm.getScrollerElement() : editor;
+
+  function getMarkdown() {
+    return cm ? cm.getValue() : editor.value;
+  }
 
   function setStatus(message, error) {
     status.textContent = message;
@@ -355,7 +407,7 @@ button { font: inherit; }
     var requestId = ++latestRequest;
     setStatus('正在使用 AI Docs renderer 渲染…');
     renderButton.disabled = true;
-    request('/render', { markdown: editor.value }).then(function(result) {
+    request('/render', { markdown: getMarkdown() }).then(function(result) {
       if (requestId !== latestRequest) return;
       restoreToken++;
       preview.style.visibility = 'hidden';
@@ -379,7 +431,7 @@ button { font: inherit; }
   function save() {
     saveButton.disabled = true;
     setStatus('正在保存 Markdown…');
-    request('/save', { markdown: editor.value }).then(function() {
+    request('/save', { markdown: getMarkdown() }).then(function() {
       setStatus('已保存到输入 Markdown 文件');
     }).catch(function(error) {
       setStatus(error.message || '保存失败。', true);
@@ -413,6 +465,7 @@ button { font: inherit; }
     dragging = false;
     splitter.classList.remove('is-dragging');
     if (splitter.hasPointerCapture(event.pointerId)) splitter.releasePointerCapture(event.pointerId);
+    if (cm) cm.refresh();
   });
   splitter.addEventListener('keydown', function(event) {
     var current = Number(splitter.getAttribute('aria-valuenow')) || 50;
@@ -422,7 +475,7 @@ button { font: inherit; }
     if (event.key === 'End') { setEditorWidth(75); event.preventDefault(); }
   });
 
-  editor.addEventListener('input', scheduleRender);
+  if (cm) cm.on('change', scheduleRender); else editor.addEventListener('input', scheduleRender);
   renderButton.addEventListener('click', render);
   saveButton.addEventListener('click', save);
   document.addEventListener('keydown', function(event) {
@@ -431,14 +484,14 @@ button { font: inherit; }
     if (event.key === 'Enter') { event.preventDefault(); render(); }
   });
   // 双向按进度同步手动滚动；重渲染则优先恢复原可见标题及其视口偏移。
-  editor.addEventListener('scroll', function() {
-    if (editorSyncTarget !== null && Math.abs(editor.scrollTop - editorSyncTarget) < 2) {
+  scroller.addEventListener('scroll', function() {
+    if (editorSyncTarget !== null && Math.abs(scroller.scrollTop - editorSyncTarget) < 2) {
       editorSyncTarget = null;
       return;
     }
     editorSyncTarget = null;
-    var max = Math.max(0, editor.scrollHeight - editor.clientHeight);
-    var ratio = max ? editor.scrollTop / max : 0;
+    var max = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+    var ratio = max ? scroller.scrollTop / max : 0;
     if (preview.style.visibility === 'hidden') previewScrollState = { ratio: ratio, id: '', offset: 0 };
     else try { preview.contentWindow.postMessage({ type: 'ai-docs-scroll-sync', ratio: ratio }, '*'); } catch (error) {}
   }, { passive: true });
@@ -451,10 +504,10 @@ button { font: inherit; }
     if (data && data.type === 'ai-docs-scroll-state' && typeof data.ratio === 'number' && preview.style.visibility !== 'hidden') {
       previewScrollState = data;
       if (!data.sync) {
-        var top = Math.max(0, editor.scrollHeight - editor.clientHeight) * Math.max(0, Math.min(1, data.ratio));
-        if (Math.abs(editor.scrollTop - top) > 1) {
+        var top = Math.max(0, scroller.scrollHeight - scroller.clientHeight) * Math.max(0, Math.min(1, data.ratio));
+        if (Math.abs(scroller.scrollTop - top) > 1) {
           editorSyncTarget = top;
-          editor.scrollTop = top;
+          scroller.scrollTop = top;
         }
       }
     }
@@ -616,11 +669,12 @@ async function main() {
   try {
     page = previewPage({
       initialMarkdown: await fs.promises.readFile(inputFile, 'utf8'),
-      fileName: path.basename(inputFile)
+      fileName: path.basename(inputFile),
+      editorAssets: readEditorAssets()
     });
   } catch (error) {
     await fs.promises.rm(workspace, { recursive: true, force: true });
-    console.error(`预览启动失败: 无法读取输入 Markdown: ${error.message || error}`);
+    console.error(`预览启动失败: 无法读取输入 Markdown 或编辑器资源: ${error.message || error}`);
     return 1;
   }
   let renderTail = Promise.resolve();

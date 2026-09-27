@@ -2,7 +2,7 @@
 
 AI Docs 自有代码使用 `AGPL-3.0-or-later`。`scripts/vendor/` 中的预构建浏览器资源仍遵循各自的上游许可证；本文件不改变或替代这些许可证。
 
-下表记录实际分发的 10 个 vendor 文件的版本、来源及 SHA-256。更新只使用公开 npm tarball 中的预构建文件，不本地重打包、不引入运行时 npm 依赖、不修改压缩后的程序。日常检查核对本地文件与清单；更新时核对相应上游发布文件。SHA-256 用于完整性校验，不构成法律认证。
+下表记录实际分发的 14 个 vendor 文件的版本、来源及 SHA-256。更新只使用公开 npm tarball 中的预构建文件，不本地重打包、不引入运行时 npm 依赖、不修改压缩后的程序。日常检查核对本地文件与清单；更新时核对相应上游发布文件。SHA-256 用于完整性校验，不构成法律认证。
 
 离线许可正文、必要的已识别 NOTICE 和 bundle 许可注释保存在 [`licenses/`](./licenses/README.md)；[`licenses/manifest.json`](./licenses/manifest.json) 记录每个文件的来源 URL、包内路径、原始/本地摘要、提取范围与未决缺口。包的顶层许可证不代表所有内嵌依赖都采用相同许可证。
 
@@ -18,6 +18,10 @@ AI Docs 自有代码使用 `AGPL-3.0-or-later`。`scripts/vendor/` 中的预构�
 | `scripts/vendor/markmap-lib.browser.js` | [`markmap-lib@0.17.2`](https://www.npmjs.com/package/markmap-lib/v/0.17.2) | `dist/browser/index.iife.js` | [MIT](./licenses/markmap-lib-0.17.2/LICENSE)；另见内嵌依赖 | `7fa851eda0f0eaf08a88d8894c843a987934bc029dbe0df5901698897ae4131b` |
 | `scripts/vendor/markmap-view.browser.js` | [`markmap-view@0.17.2`](https://www.npmjs.com/package/markmap-view/v/0.17.2) | `dist/browser/index.js` | [MIT](./licenses/markmap-view-0.17.2/LICENSE)；另见内嵌依赖 | `98770326cd0014f7bcfaaf906316ab6aba170239a93098d5857298f59be405ab` |
 | `scripts/vendor/echarts.min.js` | [`echarts@5.6.0`](https://www.npmjs.com/package/echarts/v/5.6.0) | `dist/echarts.min.js` | [Apache-2.0 与 subcomponents 声明](./licenses/echarts-5.6.0/LICENSE)、[NOTICE](./licenses/echarts-5.6.0/NOTICE) | `bf4a223524e40b77c304bec67e1222cf551f14880cf42c69dc046558e11c07b1` |
+| `scripts/vendor/codemirror.js` | [`codemirror@5.65.20`](https://www.npmjs.com/package/codemirror/v/5.65.20) | `lib/codemirror.js` | [MIT](./licenses/codemirror-5.65.20/LICENSE) | `8e8b5e3cc4be7530a9b6b624bce95ff966cd667283005a103739fe37d3bdd97c` |
+| `scripts/vendor/codemirror.css` | [`codemirror@5.65.20`](https://www.npmjs.com/package/codemirror/v/5.65.20) | `lib/codemirror.css` | [MIT](./licenses/codemirror-5.65.20/LICENSE) | `eb494ea972d2661ef86f7f6ac656dd6786d721e49c9c1b46e1eb967e4b6f9bf3` |
+| `scripts/vendor/codemirror-markdown.js` | [`codemirror@5.65.20`](https://www.npmjs.com/package/codemirror/v/5.65.20) | `mode/markdown/markdown.js` | [MIT](./licenses/codemirror-5.65.20/LICENSE) | `8fe7b11848f79cc9119b2a239f38a00944f6f2bb764a00bc837ecf8d34cf7690` |
+| `scripts/vendor/codemirror-continuelist.js` | [`codemirror@5.65.20`](https://www.npmjs.com/package/codemirror/v/5.65.20) | `addon/edit/continuelist.js` | [MIT](./licenses/codemirror-5.65.20/LICENSE) | `6ba9cd9528b74e7f76f4b9ce9ed0677bfed7057d1aade0050185368cfd0ea2e3` |
 
 包内路径在 tarball 中统一带 `package/` 前缀。来源修正：`highlight.js@11.11.1` tarball 不含 `highlight.min.js`，JS 实际匹配官方 CDN assets 包；CSS 在两包中逐字节相同，LICENSE 也相同。当前 `markmap-lib` 与上游完全一致，旧版“版本标识清理”的说法没有字节证据支持，故移除。
 

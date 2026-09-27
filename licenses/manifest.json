@@ -92,6 +92,13 @@
       "declared_license": "BSD-2-Clause"
     },
     {
+      "name": "codemirror",
+      "version": "5.65.20",
+      "source_url": "https://registry.npmjs.org/codemirror/-/codemirror-5.65.20.tgz",
+      "archive_sha256": "0ef6484ea4f71c28c6b3dd146349e79786762fc4b42e5b33befea6201c7fa6c8",
+      "declared_license": "MIT"
+    },
+    {
       "name": "cose-base",
       "version": "1.0.3",
       "source_url": "https://registry.npmjs.org/cose-base/-/cose-base-1.0.3.tgz",
@@ -1068,6 +1075,46 @@
         "licenses/tslib-2.3.0/LICENSE.txt",
         "licenses/tslib-2.3.0/CopyrightNotice.txt"
       ]
+    },
+    {
+      "file": "scripts/vendor/codemirror.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/lib/codemirror.js",
+      "sha256": "8e8b5e3cc4be7530a9b6b624bce95ff966cd667283005a103739fe37d3bdd97c",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror.css",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/lib/codemirror.css",
+      "sha256": "eb494ea972d2661ef86f7f6ac656dd6786d721e49c9c1b46e1eb967e4b6f9bf3",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-markdown.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/markdown/markdown.js",
+      "sha256": "8fe7b11848f79cc9119b2a239f38a00944f6f2bb764a00bc837ecf8d34cf7690",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-continuelist.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/addon/edit/continuelist.js",
+      "sha256": "6ba9cd9528b74e7f76f4b9ce9ed0677bfed7057d1aade0050185368cfd0ea2e3",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
     }
   ],
   "files": [
@@ -1101,7 +1148,12 @@
       "source_sha256": "400205bfc1925fd42161173b29d84c114929e98b4e4df05d6d420e6f267f67b5",
       "sha256": "57b066dffd08aa0ce0bc9b2ff4a942f9b974c2d8dcf501f9f17608ff03dc8151",
       "normalization": "byte-ranges-joined-with-lf-and-final-lf",
-      "source_ranges": [[5275, 5351]]
+      "source_ranges": [
+        [
+          5275,
+          5351
+        ]
+      ]
     },
     {
       "file": "licenses/katex-0.16.47/REACT-NOTICE.txt",
@@ -1113,7 +1165,12 @@
       "source_sha256": "09a78a9812d1e7d3ace85033512e6a450127b9554ef281b4b6567408694c6e36",
       "sha256": "57b066dffd08aa0ce0bc9b2ff4a942f9b974c2d8dcf501f9f17608ff03dc8151",
       "normalization": "byte-ranges-joined-with-lf-and-final-lf",
-      "source_ranges": [[2171, 2247]]
+      "source_ranges": [
+        [
+          2171,
+          2247
+        ]
+      ]
     },
     {
       "file": "licenses/babel-runtime-7.22.6/LICENSE",
@@ -2624,6 +2681,17 @@
       "source_sha256": "a681e9d183c72b4af4856935893805eb48c08f0f5a3f260203db7444c20fb98a",
       "sha256": "55ea01207028f76d844678511f29fc800f8a1e67a8a0fe80470128677847ad32",
       "normalization": "crlf-to-lf-and-ensure-final-lf"
+    },
+    {
+      "file": "licenses/codemirror-5.65.20/LICENSE",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "kind": "license",
+      "source_url": "https://registry.npmjs.org/codemirror/-/codemirror-5.65.20.tgz",
+      "source_path": "package/LICENSE",
+      "source_sha256": "168a4becc968f5001e2ee2e0291b6e4daabafc1894a11ade1e11d56e96096e07",
+      "sha256": "168a4becc968f5001e2ee2e0291b6e4daabafc1894a11ade1e11d56e96096e07",
+      "normalization": "none"
     }
   ],
   "evidence": [

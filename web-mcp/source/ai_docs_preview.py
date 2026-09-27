@@ -7,13 +7,16 @@ import hashlib
 import hmac
 import html
 import json
+import re
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 from urllib.parse import quote
 
 from ai_docs_common import (
     PREVIEW_SESSION_CLOCK_SKEW, PREVIEW_SESSION_MAX_AGE, ServiceError,
-    human_readable_size, json_compact, safe_relative_markdown_path,
+    effective_renderer_directory, human_readable_size, json_compact,
+    safe_relative_markdown_path,
 )
 
 
@@ -134,6 +137,26 @@ td.size, th.size { text-align: right; white-space: nowrap; color: var(--muted); 
 """
 
 
+_EDITOR_VENDOR_STYLE = "codemirror.css"
+_EDITOR_VENDOR_SCRIPTS = ("codemirror.js", "codemirror-markdown.js", "codemirror-continuelist.js")
+
+
+@lru_cache(maxsize=1)
+def preview_editor_vendor_assets() -> Tuple[str, Tuple[str, ...]]:
+    """Read the vendored CodeMirror editor assets shipped with the renderer."""
+    vendor = effective_renderer_directory() / "scripts" / "vendor"
+    try:
+        style = (vendor / _EDITOR_VENDOR_STYLE).read_text(encoding="utf-8")
+        scripts = tuple((vendor / name).read_text(encoding="utf-8") for name in _EDITOR_VENDOR_SCRIPTS)
+    except OSError as error:
+        raise ServiceError(500, "editor_assets_unavailable", "bundled editor assets are unavailable") from error
+    if re.search(r"</style", style, re.IGNORECASE):
+        raise ServiceError(500, "editor_assets_unsafe", "bundled editor style cannot be inlined safely")
+    if any(re.search(r"</script", script, re.IGNORECASE) for script in scripts):
+        raise ServiceError(500, "editor_assets_unsafe", "bundled editor scripts cannot be inlined safely")
+    return style, scripts
+
+
 PREVIEW_EDITOR_SCRIPT = """
 (function() {
   'use strict';
@@ -152,6 +175,27 @@ PREVIEW_EDITOR_SCRIPT = """
   var previewScrollState = null;
   var restoreToken = 0;
   var editorSyncTarget = null;
+
+  // CodeMirror 提供 Markdown 语法高亮、行号与列表续行；加载失败时回退为纯文本域。
+  var cm = window.CodeMirror ? CodeMirror.fromTextArea(editor, {
+    mode: 'markdown',
+    lineNumbers: true,
+    lineWrapping: true,
+    indentUnit: 2,
+    tabSize: 2,
+    extraKeys: {
+      Enter: 'newlineAndIndentContinueMarkdownList',
+      Tab: function(instance) {
+        if (instance.somethingSelected()) instance.indentSelection('add');
+        else instance.replaceSelection('  ', 'end');
+      }
+    }
+  }) : null;
+  var scroller = cm ? cm.getScrollerElement() : editor;
+
+  function getMarkdown() {
+    return cm ? cm.getValue() : editor.value;
+  }
 
   function setStatus(message, error) {
     status.textContent = message;
@@ -177,7 +221,7 @@ PREVIEW_EDITOR_SCRIPT = """
     var requestId = ++latestRequest;
     setStatus('正在使用 AI Docs renderer 渲染…');
     renderButton.disabled = true;
-    request(base + 'api/render', { path: path, markdown: editor.value }).then(function(result) {
+    request(base + 'api/render', { path: path, markdown: getMarkdown() }).then(function(result) {
       if (requestId !== latestRequest) return;
       restoreToken++;
       preview.style.visibility = 'hidden';
@@ -201,7 +245,7 @@ PREVIEW_EDITOR_SCRIPT = """
   function save() {
     saveButton.disabled = true;
     setStatus('正在保存 Markdown…');
-    request(base + 'api/save', { path: path, markdown: editor.value }).then(function() {
+    request(base + 'api/save', { path: path, markdown: getMarkdown() }).then(function() {
       setStatus('已保存到库文件');
     }).catch(function(error) {
       setStatus(error.message || '保存失败。', true);
@@ -235,6 +279,7 @@ PREVIEW_EDITOR_SCRIPT = """
     dragging = false;
     splitter.classList.remove('is-dragging');
     if (splitter.hasPointerCapture(event.pointerId)) splitter.releasePointerCapture(event.pointerId);
+    if (cm) cm.refresh();
   });
   splitter.addEventListener('keydown', function(event) {
     var current = Number(splitter.getAttribute('aria-valuenow')) || 50;
@@ -244,7 +289,7 @@ PREVIEW_EDITOR_SCRIPT = """
     if (event.key === 'End') { setEditorWidth(75); event.preventDefault(); }
   });
 
-  editor.addEventListener('input', scheduleRender);
+  if (cm) cm.on('change', scheduleRender); else editor.addEventListener('input', scheduleRender);
   renderButton.addEventListener('click', render);
   saveButton.addEventListener('click', save);
   document.addEventListener('keydown', function(event) {
@@ -253,14 +298,14 @@ PREVIEW_EDITOR_SCRIPT = """
     if (event.key === 'Enter') { event.preventDefault(); render(); }
   });
   // 双向按进度同步手动滚动；重渲染则优先恢复原可见标题及其视口偏移。
-  editor.addEventListener('scroll', function() {
-    if (editorSyncTarget !== null && Math.abs(editor.scrollTop - editorSyncTarget) < 2) {
+  scroller.addEventListener('scroll', function() {
+    if (editorSyncTarget !== null && Math.abs(scroller.scrollTop - editorSyncTarget) < 2) {
       editorSyncTarget = null;
       return;
     }
     editorSyncTarget = null;
-    var max = Math.max(0, editor.scrollHeight - editor.clientHeight);
-    var ratio = max ? editor.scrollTop / max : 0;
+    var max = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+    var ratio = max ? scroller.scrollTop / max : 0;
     if (preview.style.visibility === 'hidden') previewScrollState = { ratio: ratio, id: '', offset: 0 };
     else try { preview.contentWindow.postMessage({ type: 'ai-docs-scroll-sync', ratio: ratio }, '*'); } catch (error) {}
   }, { passive: true });
@@ -273,10 +318,10 @@ PREVIEW_EDITOR_SCRIPT = """
     if (data && data.type === 'ai-docs-scroll-state' && typeof data.ratio === 'number' && preview.style.visibility !== 'hidden') {
       previewScrollState = data;
       if (!data.sync) {
-        var top = Math.max(0, editor.scrollHeight - editor.clientHeight) * Math.max(0, Math.min(1, data.ratio));
-        if (Math.abs(editor.scrollTop - top) > 1) {
+        var top = Math.max(0, scroller.scrollHeight - scroller.clientHeight) * Math.max(0, Math.min(1, data.ratio));
+        if (Math.abs(scroller.scrollTop - top) > 1) {
           editorSyncTarget = top;
-          editor.scrollTop = top;
+          scroller.scrollTop = top;
         }
       }
     }
@@ -299,6 +344,12 @@ PREVIEW_EDITOR_STYLE = """
 .panel-label { display: flex; align-items: center; min-height: 2.25rem; padding: .35rem .9rem; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--border); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .editor-panel { border-right: 1px solid var(--border); }
 #editor { width: 100%; height: 100%; resize: none; padding: 1.1rem 1.2rem; color: var(--text); background: var(--bg); border: 0; outline: 0; caret-color: var(--accent); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; tab-size: 2; }
+.CodeMirror { height: 100%; padding: .6rem .2rem; color: var(--text); background: var(--bg); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
+.CodeMirror-gutters { background: var(--panel); border-right: 1px solid var(--border); }
+.CodeMirror-linenumber { color: var(--muted); }
+.CodeMirror-cursor { border-left-color: var(--accent); }
+.CodeMirror-selected, .CodeMirror-focused .CodeMirror-selected { background: var(--accent-bg); }
+@media (prefers-color-scheme: dark) { .cm-s-default .cm-header { color: #79b8ff; } .cm-s-default .cm-quote { color: #a5d6a7; } .cm-s-default .cm-keyword { color: #d2a8ff; } .cm-s-default .cm-atom, .cm-s-default .cm-number { color: #ff9ecb; } .cm-s-default .cm-def, .cm-s-default .cm-link, .cm-s-default .cm-url, .cm-s-default .cm-attribute { color: #79b8ff; } .cm-s-default .cm-variable-2 { color: #e6edf3; } .cm-s-default .cm-variable-3, .cm-s-default .cm-type { color: #ffd479; } .cm-s-default .cm-comment, .cm-s-default .cm-meta { color: #8b949e; } .cm-s-default .cm-string { color: #a5d6ff; } .cm-s-default .cm-tag { color: #7ee787; } .cm-s-default .cm-formatting { color: #6e7681; } }
 #preview { width: 100%; height: 100%; min-height: calc(100vh - 6rem); border: 0; background: var(--bg); }
 #splitter { z-index: 2; margin-left: -1px; background: var(--panel); border-right: 1px solid var(--border); cursor: col-resize; touch-action: none; transition: background-color 120ms ease; }
 #splitter:hover, #splitter.is-dragging { background: var(--accent); }
@@ -759,6 +810,7 @@ def preview_login_page(preview_path: str, login_mode: str = "token") -> str:
 
 def preview_editor_page(relative: str, markdown: str, preview_path: str, write_back: bool) -> str:
     save_button = '<button id="save" type="button" class="primary" title="保存到库文件（Ctrl/⌘ + S）">保存</button>' if write_back else ""
+    vendor_style, vendor_scripts = preview_editor_vendor_assets()
     body = (
         '<main class="app">'
         '<header class="toolbar">'
@@ -783,6 +835,7 @@ def preview_editor_page(relative: str, markdown: str, preview_path: str, write_b
         '</section>'
         '</section>'
         '</main>'
+        '%(vendor_scripts)s'
         '<script>%(script)s</script>'
     ) % {
         "label": html.escape(relative),
@@ -792,7 +845,8 @@ def preview_editor_page(relative: str, markdown: str, preview_path: str, write_b
         "path": html.escape(relative, quote=True),
         "base": html.escape(preview_path + "/", quote=True),
         "markdown": html.escape(markdown),
+        "vendor_scripts": "".join("<script>%s</script>" % script for script in vendor_scripts),
         "script": PREVIEW_EDITOR_SCRIPT,
         "sandbox": PREVIEW_EDITOR_SANDBOX,
     }
-    return preview_document("AI Docs 预览 · {}".format(relative), body, PREVIEW_EDITOR_STYLE)
+    return preview_document("AI Docs 预览 · {}".format(relative), body, vendor_style + PREVIEW_EDITOR_STYLE)

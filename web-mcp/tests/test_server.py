@@ -1073,6 +1073,22 @@ class AiDocsServerTest(unittest.TestCase):
         self.assertIn('data-base="/preview/"', editor)
         self.assertIn("type: 'ai-docs-scroll-sync'", editor)
         self.assertIn("type: 'ai-docs-scroll-restore'", editor)
+        # 编辑区由 CodeMirror 增强：vendor 资源按依赖顺序内联，缺失时回退纯文本域
+        self.assertIn("CodeMirror.fromTextArea(editor, {", editor)
+        self.assertIn("mode: 'markdown'", editor)
+        self.assertIn("newlineAndIndentContinueMarkdownList", editor)
+        self.assertIn("cm ? cm.getValue() : editor.value", editor)
+        self.assertIn("cm ? cm.getScrollerElement() : editor", editor)
+        core_at = editor.index("CodeMirror, copyright (c) by Marijn Haverbeke")
+        mode_at = editor.index('CodeMirror.defineMode("markdown",')
+        init_at = editor.index("CodeMirror.fromTextArea(editor, {")
+        self.assertLess(core_at, mode_at)
+        self.assertLess(mode_at, init_at)
+        self.assertIn(".cm-s-default .cm-header {color: blue;}", editor)
+        self.assertLess(
+            editor.index(".cm-s-default .cm-header {color: blue;}"),
+            editor.index(".CodeMirror-gutters { background: var(--panel);"),
+        )
 
         render_body = json.dumps({
             "path": "notes/guide.md",
