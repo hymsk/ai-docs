@@ -1115,6 +1115,86 @@
       "license_files": [
         "licenses/codemirror-5.65.20/LICENSE"
       ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-meta.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/meta.js",
+      "sha256": "f95786f9c83e631225fe7866f39892f808aeb015e80ce9d8a58d5a1d4e9c4bb6",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-clike.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/clike/clike.js",
+      "sha256": "25c92495700d1883b5f0e08f2e77d6fe0265f992e47b59199aa8746f66c4021b",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-python.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/python/python.js",
+      "sha256": "19a59ca387addb04e95002c9adbe2b8c231427ce49369ac537107e3088a6947c",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-go.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/go/go.js",
+      "sha256": "a3402cad4f69a45992d8f22019f156c560c1d8f06c82d7cbbf4339f2745a6b0d",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-shell.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/shell/shell.js",
+      "sha256": "24f77cb162ea9d9e9fc79b95ba547a7cc10a0767e3a5a52c786d4c24253736fe",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-javascript.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/javascript/javascript.js",
+      "sha256": "1311c73c66308ba6f78512b4c2e770a6900c80c3629683763329668ee6111163",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-sql.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/sql/sql.js",
+      "sha256": "d5edb6bd39caa6155cab6bcdeb380a29229264a8a26e5fddd21ca12f0ebf359f",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
+    },
+    {
+      "file": "scripts/vendor/codemirror-yaml.js",
+      "package": "codemirror",
+      "version": "5.65.20",
+      "source_path": "package/mode/yaml/yaml.js",
+      "sha256": "7de73109e5bfb6951d53764f5210f00f7859b57525811fab6b6f843980a7726e",
+      "license_files": [
+        "licenses/codemirror-5.65.20/LICENSE"
+      ]
     }
   ],
   "files": [

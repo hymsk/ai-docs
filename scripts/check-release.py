@@ -14,8 +14,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 VENDOR_HASHES = {
+    "codemirror-clike.js": "25c92495700d1883b5f0e08f2e77d6fe0265f992e47b59199aa8746f66c4021b",
     "codemirror-continuelist.js": "6ba9cd9528b74e7f76f4b9ce9ed0677bfed7057d1aade0050185368cfd0ea2e3",
+    "codemirror-go.js": "a3402cad4f69a45992d8f22019f156c560c1d8f06c82d7cbbf4339f2745a6b0d",
+    "codemirror-javascript.js": "1311c73c66308ba6f78512b4c2e770a6900c80c3629683763329668ee6111163",
     "codemirror-markdown.js": "8fe7b11848f79cc9119b2a239f38a00944f6f2bb764a00bc837ecf8d34cf7690",
+    "codemirror-meta.js": "f95786f9c83e631225fe7866f39892f808aeb015e80ce9d8a58d5a1d4e9c4bb6",
+    "codemirror-python.js": "19a59ca387addb04e95002c9adbe2b8c231427ce49369ac537107e3088a6947c",
+    "codemirror-shell.js": "24f77cb162ea9d9e9fc79b95ba547a7cc10a0767e3a5a52c786d4c24253736fe",
+    "codemirror-sql.js": "d5edb6bd39caa6155cab6bcdeb380a29229264a8a26e5fddd21ca12f0ebf359f",
+    "codemirror-yaml.js": "7de73109e5bfb6951d53764f5210f00f7859b57525811fab6b6f843980a7726e",
     "codemirror.css": "eb494ea972d2661ef86f7f6ac656dd6786d721e49c9c1b46e1eb967e4b6f9bf3",
     "codemirror.js": "8e8b5e3cc4be7530a9b6b624bce95ff966cd667283005a103739fe37d3bdd97c",
     "d3.min.js": "d6b03aefc9f6c44c7bc78713679c78c295028fa914319119e5cc4b4954855b1c",
@@ -284,8 +292,16 @@ def main() -> int:
     # CodeMirror 只用于预览编辑页（preview.js 与 Web MCP 预览），
     # 不进入文档渲染资源清单。
     referenced_vendor_names.update({
+        "codemirror-clike.js",
         "codemirror-continuelist.js",
+        "codemirror-go.js",
+        "codemirror-javascript.js",
         "codemirror-markdown.js",
+        "codemirror-meta.js",
+        "codemirror-python.js",
+        "codemirror-shell.js",
+        "codemirror-sql.js",
+        "codemirror-yaml.js",
         "codemirror.css",
         "codemirror.js",
     })

@@ -65,8 +65,16 @@ RUNTIME_FILES = (
     "source/ai_docs_http.py",
     "assets/default-resources.json",
     "scripts/build.js",
+    "scripts/vendor/codemirror-clike.js",
     "scripts/vendor/codemirror-continuelist.js",
+    "scripts/vendor/codemirror-go.js",
+    "scripts/vendor/codemirror-javascript.js",
     "scripts/vendor/codemirror-markdown.js",
+    "scripts/vendor/codemirror-meta.js",
+    "scripts/vendor/codemirror-python.js",
+    "scripts/vendor/codemirror-shell.js",
+    "scripts/vendor/codemirror-sql.js",
+    "scripts/vendor/codemirror-yaml.js",
     "scripts/vendor/codemirror.css",
     "scripts/vendor/codemirror.js",
     "scripts/vendor/d3.min.js",
@@ -191,8 +199,11 @@ def _runtime_sources() -> Dict[str, Path]:
         **{
             "scripts/vendor/" + name: root / "scripts" / "vendor" / name
             for name in (
-                "codemirror-continuelist.js", "codemirror-markdown.js", "codemirror.css",
-                "codemirror.js", "d3.min.js", "echarts.min.js", "highlight-styles.css",
+                "codemirror-clike.js", "codemirror-continuelist.js", "codemirror-go.js",
+                "codemirror-javascript.js", "codemirror-markdown.js", "codemirror-meta.js",
+                "codemirror-python.js", "codemirror-shell.js", "codemirror-sql.js",
+                "codemirror-yaml.js", "codemirror.css", "codemirror.js",
+                "d3.min.js", "echarts.min.js", "highlight-styles.css",
                 "highlight.min.js", "katex.min.css", "katex.min.js", "markdown-it.min.js",
                 "markmap-lib.browser.js", "markmap-view.browser.js", "mermaid.min.js",
             )
