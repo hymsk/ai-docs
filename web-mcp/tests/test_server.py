@@ -1089,6 +1089,18 @@ class AiDocsServerTest(unittest.TestCase):
             editor.index(".cm-s-default .cm-header {color: blue;}"),
             editor.index(".CodeMirror-gutters { background: var(--panel);"),
         )
+        # 格式化工具栏：按钮齐全，CodeMirror 与回退文本域共用偏移量选区实现
+        self.assertIn('id="editor-toolbar"', editor)
+        for action in (
+            "bold", "italic", "strike", "inline-code", "heading",
+            "quote", "bullet-list", "ordered-list", "code-block", "link",
+        ):
+            self.assertIn(f'data-action="{action}"', editor)
+        self.assertIn("cm.indexFromPos(cm.getCursor('from'))", editor)
+        self.assertIn("editor.setRangeText(text, start, end, 'end')", editor)
+        self.assertIn("wrapSelection('**', '**', '加粗文本')", editor)
+        self.assertIn("editTarget.focus();", editor)
+        self.assertIn("scheduleRender();", editor)
 
         render_body = json.dumps({
             "path": "notes/guide.md",

@@ -300,7 +300,12 @@ button { font: inherit; }
 .workspace { --editor-width: 50%; min-height: 0; display: grid; grid-template-columns: minmax(18rem, var(--editor-width)) .55rem minmax(0, 1fr); }
 .panel { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
 .panel-label { display: flex; align-items: center; min-height: 2.25rem; padding: .35rem .9rem; color: var(--muted); background: var(--panel); border-bottom: 1px solid var(--border); font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
-.editor-panel { border-right: 1px solid var(--border); }
+.editor-panel { border-right: 1px solid var(--border); grid-template-rows: auto auto minmax(0, 1fr); }
+.editor-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: .3rem .6rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+.editor-toolbar button { display: inline-flex; align-items: center; justify-content: center; min-width: 1.75rem; height: 1.75rem; padding: 0 .45rem; border: 1px solid transparent; border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-size: .8rem; font-weight: 600; line-height: 1; }
+.editor-toolbar button:hover { background: var(--accent-bg); color: var(--accent); }
+.editor-toolbar button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.editor-toolbar-sep { width: 1px; height: 1.1rem; margin: 0 .3rem; background: var(--border); }
 #editor { width: 100%; height: 100%; resize: none; padding: 1.1rem 1.2rem; color: var(--text); background: var(--bg); border: 0; outline: 0; caret-color: var(--accent); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; tab-size: 2; }
 .CodeMirror { height: 100%; padding: .6rem .2rem; color: var(--text); background: var(--bg); font: .88rem/1.65 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace; }
 .CodeMirror-gutters { background: var(--panel); border-right: 1px solid var(--border); }
@@ -327,6 +332,20 @@ button { font: inherit; }
   <section id="workspace" class="workspace">
     <section class="panel editor-panel" aria-label="Markdown 编辑器">
       <div class="panel-label">Markdown 编辑器</div>
+      <div id="editor-toolbar" class="editor-toolbar" role="toolbar" aria-label="Markdown 格式化工具栏">
+        <button type="button" data-action="bold" title="加粗" aria-label="加粗"><strong>B</strong></button>
+        <button type="button" data-action="italic" title="斜体" aria-label="斜体"><em>I</em></button>
+        <button type="button" data-action="strike" title="删除线" aria-label="删除线"><s>S</s></button>
+        <button type="button" data-action="inline-code" title="行内代码" aria-label="行内代码"><code>&lt;/&gt;</code></button>
+        <span class="editor-toolbar-sep" aria-hidden="true"></span>
+        <button type="button" data-action="heading" title="标题级别（重复点击循环 1-6 级）" aria-label="标题">H</button>
+        <button type="button" data-action="quote" title="引用块" aria-label="引用块">&gt;</button>
+        <button type="button" data-action="bullet-list" title="无序列表" aria-label="无序列表">•</button>
+        <button type="button" data-action="ordered-list" title="有序列表" aria-label="有序列表">1.</button>
+        <span class="editor-toolbar-sep" aria-hidden="true"></span>
+        <button type="button" data-action="code-block" title="代码块" aria-label="代码块"><code>\`\`\`</code></button>
+        <button type="button" data-action="link" title="链接" aria-label="链接"><u>链</u></button>
+      </div>
       <textarea id="editor" aria-label="Markdown 编辑器" spellcheck="false"></textarea>
     </section>
     <div id="splitter" role="separator" aria-label="调整编辑器与预览区域宽度" aria-orientation="vertical" aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" tabindex="0"></div>
@@ -350,6 +369,7 @@ button { font: inherit; }
   var saveButton = document.getElementById('save');
   var workspace = document.getElementById('workspace');
   var splitter = document.getElementById('splitter');
+  var editorToolbar = document.getElementById('editor-toolbar');
   var renderTimer = 0;
   var latestRequest = 0;
   var dragging = false;
@@ -380,6 +400,108 @@ button { font: inherit; }
   function getMarkdown() {
     return cm ? cm.getValue() : editor.value;
   }
+
+  // 格式化工具栏：所有操作基于选区偏移量实现，CodeMirror 与回退文本域共用一套逻辑。
+  var editTarget = {
+    focus: function() { (cm || editor).focus(); },
+    get: getMarkdown,
+    selectionRange: function() {
+      if (cm) {
+        return { start: cm.indexFromPos(cm.getCursor('from')), end: cm.indexFromPos(cm.getCursor('to')) };
+      }
+      return { start: editor.selectionStart, end: editor.selectionEnd };
+    },
+    replaceRange: function(text, start, end, selectStart, selectEnd) {
+      if (selectEnd == null) selectEnd = selectStart;
+      if (cm) {
+        cm.replaceRange(text, cm.posFromIndex(start), cm.posFromIndex(end));
+        cm.setSelection(cm.posFromIndex(selectStart), cm.posFromIndex(selectEnd));
+      } else {
+        editor.setRangeText(text, start, end, 'end');
+        editor.setSelectionRange(selectStart, selectEnd);
+      }
+    }
+  };
+
+  function wrapSelection(before, after, placeholder) {
+    var range = editTarget.selectionRange();
+    var selected = editTarget.get().slice(range.start, range.end);
+    var insert = before + (selected || placeholder) + after;
+    var selectEnd = selected ? range.start + insert.length : range.start + before.length + placeholder.length;
+    editTarget.replaceRange(insert, range.start, range.end, range.start + before.length, selectEnd);
+  }
+
+  function eachSelectedLine(format) {
+    var value = editTarget.get();
+    var range = editTarget.selectionRange();
+    var lineStart = value.lastIndexOf('\\n', range.start - 1) + 1;
+    var end = range.end;
+    if (end > lineStart && value.charAt(end - 1) === '\\n') end--;
+    var lineEnd = value.indexOf('\\n', end);
+    if (lineEnd === -1) lineEnd = value.length;
+    var lines = value.slice(lineStart, lineEnd).split('\\n');
+    var next = format(lines).join('\\n');
+    editTarget.replaceRange(next, lineStart, lineEnd, lineStart, lineStart + next.length);
+  }
+
+  var editorActions = {
+    bold: function() { wrapSelection('**', '**', '加粗文本'); },
+    italic: function() { wrapSelection('*', '*', '斜体文本'); },
+    strike: function() { wrapSelection('~~', '~~', '删除线文本'); },
+    'inline-code': function() { wrapSelection('\`', '\`', '代码'); },
+    heading: function() {
+      eachSelectedLine(function(lines) {
+        return lines.map(function(line) {
+          var match = line.match(/^(#{1,6})\\s+/);
+          if (!match) return '# ' + line;
+          if (match[1].length >= 6) return line.slice(match[0].length);
+          return '#' + line;
+        });
+      });
+    },
+    quote: function() {
+      eachSelectedLine(function(lines) {
+        return lines.map(function(line) { return line ? '> ' + line : line; });
+      });
+    },
+    'bullet-list': function() {
+      eachSelectedLine(function(lines) {
+        return lines.map(function(line) { return line ? '- ' + line : line; });
+      });
+    },
+    'ordered-list': function() {
+      eachSelectedLine(function(lines) {
+        return lines.map(function(line, index) { return line ? (index + 1) + '. ' + line : line; });
+      });
+    },
+    'code-block': function() {
+      var range = editTarget.selectionRange();
+      var value = editTarget.get();
+      var selected = value.slice(range.start, range.end);
+      var content = selected || '代码块';
+      var prefix = range.start > 0 && value.charAt(range.start - 1) !== '\\n' ? '\\n' : '';
+      var insert = prefix + '\`\`\`\\n' + content + '\\n\`\`\`\\n';
+      var contentStart = range.start + prefix.length + 4;
+      editTarget.replaceRange(insert, range.start, range.end, contentStart, contentStart + content.length);
+    },
+    link: function() {
+      var range = editTarget.selectionRange();
+      var selected = editTarget.get().slice(range.start, range.end) || '链接文字';
+      var insert = '[' + selected + '](https://)';
+      var urlStart = range.start + selected.length + 3;
+      editTarget.replaceRange(insert, range.start, range.end, urlStart, urlStart + 8);
+    }
+  };
+
+  editorToolbar.addEventListener('click', function(event) {
+    var button = event.target.closest ? event.target.closest('button[data-action]') : null;
+    if (!button) return;
+    var action = editorActions[button.getAttribute('data-action')];
+    if (!action) return;
+    editTarget.focus();
+    action();
+    scheduleRender();
+  });
 
   function setStatus(message, error) {
     status.textContent = message;

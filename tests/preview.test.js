@@ -154,7 +154,7 @@ function assertEditorScrollProtocol(page) {
   };
   const preview = { style: {}, contentWindow: frame, addEventListener: (type, callback) => { frameListeners[type] = callback; } };
   const element = { disabled: false, classList: { toggle: () => {} }, addEventListener: () => {}, setAttribute: () => {}, getAttribute: () => '50' };
-  const elements = { editor, preview, status: { ...element }, render: { ...element }, save: { ...element }, workspace: { ...element }, splitter: { ...element } };
+  const elements = { editor, preview, status: { ...element }, render: { ...element }, save: { ...element }, workspace: { ...element }, splitter: { ...element }, 'editor-toolbar': { ...element } };
   let resolveRender;
   const context = {
     document: { getElementById: (id) => elements[id], addEventListener: (type, callback) => { listeners[type] = callback; } },
@@ -226,6 +226,16 @@ async function main() {
     assert.match(page.body, /\.CodeMirror-gutters \{ background: var\(--panel\);/, '页面应覆盖编辑器主题样式');
     assert.ok(page.body.indexOf('.cm-s-default .cm-header {color: blue;}') < page.body.indexOf('.CodeMirror-gutters { background: var(--panel);'), '编辑器样式覆盖应在 vendor 样式之后');
     assert.match(page.body, /@media \(prefers-color-scheme: dark\) \{ \.cm-s-default \.cm-header \{ color: #79b8ff; \}/, '暗色模式应覆盖语法高亮配色');
+    // 格式化工具栏：按钮齐全，CodeMirror 与回退文本域共用偏移量选区实现
+    assert.match(page.body, /id="editor-toolbar" class="editor-toolbar" role="toolbar"/, '编辑页应包含格式化工具栏');
+    ['bold', 'italic', 'strike', 'inline-code', 'heading', 'quote', 'bullet-list', 'ordered-list', 'code-block', 'link'].forEach(function(action) {
+      assert.ok(page.body.includes(`data-action="${action}"`), `工具栏应包含 ${action} 按钮`);
+    });
+    assert.match(page.body, /cm\.indexFromPos\(cm\.getCursor\('from'\)\)/, '工具栏应在 CodeMirror 上换算偏移量选区');
+    assert.match(page.body, /editor\.setRangeText\(text, start, end, 'end'\)/, '工具栏应支持回退文本域');
+    assert.match(page.body, /wrapSelection\('\*\*', '\*\*', '加粗文本'\)/, '加粗应包裹选中文本');
+    assert.match(page.body, /line\.match\(\/\^\(#\{1,6\}\)\\s\+\/\)/, '标题按钮应循环标题级别');
+    assert.match(page.body, /editTarget\.focus\(\);\s+action\(\);\s+scheduleRender\(\);/, '工具栏操作后应保持焦点并调度重渲染');
     await assertEditorScrollProtocol(page.body);
 
     const changedMarkdown = '# 新标题\n\n```mermaid\nflowchart LR\n  A --> B\n```\n';
