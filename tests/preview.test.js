@@ -218,10 +218,17 @@ async function main() {
     assert.match(page.body, /CodeMirror, copyright \(c\) by Marijn Haverbeke/, '页面应内联 CodeMirror vendor 脚本');
     assert.match(page.body, /CodeMirror\.defineMode\("markdown",/, '页面应内联 Markdown 模式');
     const coreAt = page.body.indexOf('CodeMirror, copyright (c) by Marijn Haverbeke');
+    const metaAt = page.body.indexOf('CodeMirror.findModeByName');
+    const clikeAt = page.body.indexOf('CodeMirror.defineMode("clike"');
+    const pythonAt = page.body.indexOf('CodeMirror.defineMode("python"');
     const modeAt = page.body.indexOf('CodeMirror.defineMode("markdown",');
     const continuelistAt = page.body.indexOf('newlineAndIndentContinueMarkdownList');
     const initAt = page.body.indexOf('CodeMirror.fromTextArea(editor, {');
-    assert.ok(coreAt > -1 && modeAt > coreAt && continuelistAt > modeAt && initAt > continuelistAt, 'CodeMirror 资源应按依赖顺序内联');
+    assert.ok(coreAt > -1 && metaAt > coreAt && clikeAt > metaAt && pythonAt > clikeAt &&
+      modeAt > pythonAt && continuelistAt > modeAt && initAt > continuelistAt, 'CodeMirror 资源应按依赖顺序内联');
+    ['clike', 'python', 'go', 'shell', 'javascript', 'sql', 'yaml'].forEach(function(mode) {
+      assert.match(page.body, new RegExp(`CodeMirror\\.defineMode\\(["']${mode}["']`), `页面应内联 ${mode} 语言模式`);
+    });
     assert.match(page.body, /\.cm-s-default \.cm-header \{color: blue;\}/, '页面应内联 CodeMirror vendor 样式');
     assert.match(page.body, /\.CodeMirror-gutters \{ background: var\(--panel\);/, '页面应覆盖编辑器主题样式');
     assert.ok(page.body.indexOf('.cm-s-default .cm-header {color: blue;}') < page.body.indexOf('.CodeMirror-gutters { background: var(--panel);'), '编辑器样式覆盖应在 vendor 样式之后');

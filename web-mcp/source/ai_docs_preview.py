@@ -138,7 +138,19 @@ td.size, th.size { text-align: right; white-space: nowrap; color: var(--muted); 
 
 
 _EDITOR_VENDOR_STYLE = "codemirror.css"
-_EDITOR_VENDOR_SCRIPTS = ("codemirror.js", "codemirror-markdown.js", "codemirror-continuelist.js")
+_EDITOR_VENDOR_SCRIPTS = (
+    "codemirror.js",
+    "codemirror-meta.js",
+    "codemirror-clike.js",
+    "codemirror-python.js",
+    "codemirror-go.js",
+    "codemirror-shell.js",
+    "codemirror-javascript.js",
+    "codemirror-sql.js",
+    "codemirror-yaml.js",
+    "codemirror-markdown.js",
+    "codemirror-continuelist.js",
+)
 
 
 @lru_cache(maxsize=1)

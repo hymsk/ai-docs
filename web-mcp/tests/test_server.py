@@ -1080,10 +1080,14 @@ class AiDocsServerTest(unittest.TestCase):
         self.assertIn("cm ? cm.getValue() : editor.value", editor)
         self.assertIn("cm ? cm.getScrollerElement() : editor", editor)
         core_at = editor.index("CodeMirror, copyright (c) by Marijn Haverbeke")
+        meta_at = editor.index("CodeMirror.findModeByName")
         mode_at = editor.index('CodeMirror.defineMode("markdown",')
         init_at = editor.index("CodeMirror.fromTextArea(editor, {")
-        self.assertLess(core_at, mode_at)
+        self.assertLess(core_at, meta_at)
+        self.assertLess(meta_at, mode_at)
         self.assertLess(mode_at, init_at)
+        for mode in ("clike", "python", "go", "shell", "javascript", "sql", "yaml"):
+            self.assertRegex(editor, r'CodeMirror\.defineMode\(["\']' + mode + r'["\']')
         self.assertIn(".cm-s-default .cm-header {color: blue;}", editor)
         self.assertLess(
             editor.index(".cm-s-default .cm-header {color: blue;}"),

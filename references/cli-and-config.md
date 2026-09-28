@@ -181,7 +181,7 @@ node <SKILL_DIR>/scripts/build.js --preview --input document.md --port 0 --open
 | `-p, --port <port>` | `8000` | 监听端口；`0` 自动选择空闲端口 |
 | `--open` / `--no-open` | `false` | 启动后是否打开默认浏览器 |
 
-编辑区由随附的 CodeMirror 5 vendor（`scripts/vendor/codemirror*`，内联进页面）提供 Markdown 语法高亮、行号与列表续行；资源加载失败时回退为纯文本域，不影响渲染与写回路径。编辑器会在输入停止约 350 ms 后刷新，`Ctrl/⌘ + Enter` 可立即渲染。点击“保存”或按 `Ctrl/⌘ + S` 才会原子写回输入 Markdown；仅渲染不会修改源文件。编辑器和预览之间的分隔栏可以拖动，窄屏时自动改为上下布局。
+编辑区由随附的 CodeMirror 5 vendor（`scripts/vendor/codemirror*`，内联进页面）提供 Markdown 语法高亮、行号与列表续行；围栏代码块内的 C/C++、Python、Go、Shell、JavaScript/TypeScript/JSON、SQL、YAML 按语言着色（`mode/meta.js` 提供别名解析，其余语言保持不着色）；资源加载失败时回退为纯文本域，不影响渲染与写回路径。编辑器会在输入停止约 350 ms 后刷新，`Ctrl/⌘ + Enter` 可立即渲染。点击“保存”或按 `Ctrl/⌘ + S` 才会原子写回输入 Markdown；仅渲染不会修改源文件。编辑器和预览之间的分隔栏可以拖动，窄屏时自动改为上下布局。
 
 预览网页不公开静态目录，也不接受文件路径参数；它只服务自身页面并接收当前编辑器中的 Markdown 内容。为了避免长期运行的本地服务被滥用，单次 Markdown 限制为 4 MiB。停止命令后，临时构建文件会被删除。
 

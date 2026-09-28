@@ -70,17 +70,29 @@ function readEditorAssets() {
   const files = {
     css: 'codemirror.css',
     core: 'codemirror.js',
+    meta: 'codemirror-meta.js',
+    modes: [
+      'codemirror-clike.js',
+      'codemirror-python.js',
+      'codemirror-go.js',
+      'codemirror-shell.js',
+      'codemirror-javascript.js',
+      'codemirror-sql.js',
+      'codemirror-yaml.js'
+    ],
     markdownMode: 'codemirror-markdown.js',
     continuelist: 'codemirror-continuelist.js'
   };
   const assets = {};
-  for (const [key, name] of Object.entries(files)) {
-    const file = path.join(__dirname, 'vendor', name);
-    const content = fs.readFileSync(file, 'utf8');
-    if (key === 'css' ? /<\/style/i.test(content) : /<\/script/i.test(content)) {
+  const read = (name, isCss) => {
+    const content = fs.readFileSync(path.join(__dirname, 'vendor', name), 'utf8');
+    if ((isCss ? /<\/style/i : /<\/script/i).test(content)) {
       throw new Error(`编辑器资源 ${name} 包含不能安全内联的闭合标签。`);
     }
-    assets[key] = content;
+    return content;
+  };
+  for (const [key, name] of Object.entries(files)) {
+    assets[key] = Array.isArray(name) ? name.map((item) => read(item, false)) : read(name, key === 'css');
   }
   return assets;
 }
@@ -356,6 +368,8 @@ button { font: inherit; }
   </section>
 </main>
 <script>${editorAssets.core}</script>
+<script>${editorAssets.meta}</script>
+${editorAssets.modes.map(function(source) { return '<script>' + source + '<\/script>'; }).join('\n')}
 <script>${editorAssets.markdownMode}</script>
 <script>${editorAssets.continuelist}</script>
 <script>
